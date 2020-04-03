@@ -21,9 +21,7 @@ Those projects *will be* supported/integrated.
 
 ## wasmi (Rust)
 
-Wasm interpreter in Rust:
-- [github](https://github.com/paritytech/wasmi)
-- [documentation](https://paritytech.github.io/wasmi/wasmi/index.html)
+Wasm interpreter in Rust: [github](https://github.com/paritytech/wasmi) / [documentation](https://paritytech.github.io/wasmi/wasmi/index.html)
 
 - APIs:
 	- `wasmi::Module::from_buffer`: Load, validate and prepare a `parity_wasm`'s `Module`. - [impl](https://github.com/paritytech/wasmi/blob/b67af25899874de7aac187e08e3b2a30d9bbc388/src/lib.rs#L426)
@@ -38,9 +36,7 @@ Wasm interpreter in Rust:
 
 ## wasmtime (Rust)
 
-Standalone JIT-style runtime for WebAssembly:
-- [github](https://github.com/bytecodealliance/wasmtime)
-- [guide](https://bytecodealliance.github.io/wasmtime/)
+Standalone JIT-style runtime for WebAssembly: [github](https://github.com/bytecodealliance/wasmtime) / [guide](https://bytecodealliance.github.io/wasmtime/)
 
 
 - backends:
@@ -59,9 +55,7 @@ Standalone JIT-style runtime for WebAssembly:
 
 ## wasmer (Rust)
 
-Standalone WebAssembly runtime:
-- [github](https://github.com/wasmerio/wasmer)
-- [documentation](https://docs.wasmer.io/)
+Standalone WebAssembly runtime: [github](https://github.com/wasmerio/wasmer) / [documentation](https://docs.wasmer.io/)
 
 - backends:
 	- [singlepass](https://github.com/wasmerio/wasmer/tree/master/lib/singlepass-backend)
@@ -81,10 +75,7 @@ Standalone WebAssembly runtime:
 
 ## binaryen (C++/Rust)
 
-Compiler infrastructure and toolchain: 
-- [binaryen github](https://github.com/WebAssembly/binaryen)
-- [binaryen/interpreter](https://github.com/WebAssembly/binaryen/blob/master/src/wasm-interpreter.h)
-- [rust bindings](https://github.com/pepyakin/binaryen-rs)
+Compiler infrastructure and toolchain: [github](https://github.com/WebAssembly/binaryen) / [rust bindings](https://github.com/pepyakin/binaryen-rs)
 
 - Rust APIs:
 	- `binaryen::Module::read`: Deserialize a module from binary form. - [impl](https://github.com/pepyakin/binaryen-rs/blob/abe2babb2d1d8e88a5f2aa47fb6e24393e19e8c0/src/lib.rs#L64)
@@ -96,9 +87,7 @@ Compiler infrastructure and toolchain:
 
 ## parity-wasm (Rust)
 
-WebAssembly serialization/deserialization in rust:
-- [github](https://github.com/paritytech/parity-wasm)
-- [documentation](https://docs.rs/parity-wasm/0.41.0/parity_wasm/)
+WebAssembly serialization/deserialization in rust: [github](https://github.com/paritytech/parity-wasm) / [documentation](https://docs.rs/parity-wasm/0.41.0/parity_wasm/)
 
 - APIs:
 	- `parity_wasm::deserialize_file`: module parsing - [test](https://github.com/paritytech/parity-wasm/blob/master/src/elements/module.rs#L650-L656)
@@ -112,9 +101,7 @@ WebAssembly serialization/deserialization in rust:
 
 ## wasmparser (Rust)
 
-A simple event-driven library for parsing WebAssembly binary files:
-- [github](https://github.com/bytecodealliance/wasmparser)
-- [documentation](https://docs.rs/wasmparser/0.51.4/wasmparser/)
+A simple event-driven library for parsing WebAssembly binary files: [github](https://github.com/bytecodealliance/wasmparser) / [documentation](https://docs.rs/wasmparser/0.51.4/wasmparser/)
 
 - APIs:
 	- `wasmparser::Parser`: Event-driven parser of WebAssembly binary - [impl](https://github.com/bytecodealliance/wasmparser/blob/master/src/parser.rs#L212)
