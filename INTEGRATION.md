@@ -10,14 +10,14 @@ Regarding APIs, we will focus first on:
 
 # Projects integrated
 
-Those projects *are already* supported/integrated.
+Those projects **are already** supported/integrated.
 
 - TODO
 
 
 # Projects to be integrated.
 
-Those projects *will be* supported/integrated.
+Those projects **will be** supported/integrated.
 
 ## wasmi (Rust)
 
@@ -73,18 +73,6 @@ Standalone WebAssembly runtime: [github](https://github.com/wasmerio/wasmer) / [
 	- [fuzzing](https://github.com/wasmerio/wasmer/tree/master/fuzz)
 	- [fuzzing](https://github.com/wasmerio/wasm-fuzz)
 
-## binaryen (C++/Rust)
-
-Compiler infrastructure and toolchain: [github](https://github.com/WebAssembly/binaryen) / [rust bindings](https://github.com/pepyakin/binaryen-rs)
-
-- Rust APIs:
-	- `binaryen::Module::read`: Deserialize a module from binary form. - [impl](https://github.com/pepyakin/binaryen-rs/blob/abe2babb2d1d8e88a5f2aa47fb6e24393e19e8c0/src/lib.rs#L64)
-	- `binaryen::Module::optimize`: Run the standard optimization passes on the module. - [impl](https://github.com/pepyakin/binaryen-rs/blob/abe2babb2d1d8e88a5f2aa47fb6e24393e19e8c0/src/lib.rs#L81)
-	- `Binaryen` interpreter: Simple WebAssembly interpreter - [code](https://github.com/WebAssembly/binaryen/blob/master/src/wasm-interpreter.h)
-
-- Rust examples:
-	- [examples](https://github.com/pepyakin/binaryen-rs/tree/abe2babb2d1d8e88a5f2aa47fb6e24393e19e8c0/examples)
-
 ## parity-wasm (Rust)
 
 WebAssembly serialization/deserialization in rust: [github](https://github.com/paritytech/parity-wasm) / [documentation](https://docs.rs/parity-wasm/0.41.0/parity_wasm/)
@@ -113,9 +101,21 @@ A simple event-driven library for parsing WebAssembly binary files: [github](htt
 	- [examples](https://github.com/bytecodealliance/wasmparser/tree/master/examples)
 	- [fuzzing](https://github.com/bytecodealliance/wasmparser/tree/master/fuzz/fuzz_targets)
 
+## binaryen (C++/Rust)
+
+Compiler infrastructure and toolchain: [github](https://github.com/WebAssembly/binaryen) / [rust bindings](https://github.com/pepyakin/binaryen-rs)
+
+- Rust APIs:
+	- `binaryen::Module::read`: Deserialize a module from binary form. - [impl](https://github.com/pepyakin/binaryen-rs/blob/abe2babb2d1d8e88a5f2aa47fb6e24393e19e8c0/src/lib.rs#L64)
+	- `binaryen::Module::optimize`: Run the standard optimization passes on the module. - [impl](https://github.com/pepyakin/binaryen-rs/blob/abe2babb2d1d8e88a5f2aa47fb6e24393e19e8c0/src/lib.rs#L81)
+	- `Binaryen` interpreter: Simple WebAssembly interpreter - [code](https://github.com/WebAssembly/binaryen/blob/master/src/wasm-interpreter.h)
+
+- Rust examples:
+	- [examples](https://github.com/pepyakin/binaryen-rs/tree/abe2babb2d1d8e88a5f2aa47fb6e24393e19e8c0/examples)
+
 # Projects potentially integrated.
 
-Those projects *will be potentially* supported/integrated in the future.
+Those projects **will be potentially** supported/integrated in the future.
 
 - [wabt](https://github.com/WebAssembly/wabt) - The WebAssembly Binary Toolkit - [rust bindings](https://github.com/pepyakin/wabt-rs)
 - [wasm3](https://github.com/wasm3/wasm3) - high performance WebAssembly interpreter written in C.
