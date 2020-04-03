@@ -2,11 +2,12 @@
 
 List of projects can be found below. This list is subject to changes in the future.
 
-Regarding APIs, we will focus first on:
-- [YES] WebAssembly module parsing/deserialization.
-- [YES] WebAssembly module instantiation.
-- [YES] WebAssembly module execution.
-- [MAYBE] WebAssembly module serialization.
+Regarding APIs, we will focus first on apis in charge of the following operations:
+- [YES] parsing/deserialization.
+- [YES] validation.
+- [YES] instantiation.
+- [YES] execution.
+- [MAYBE] serialization.
 
 # Projects integrated
 
