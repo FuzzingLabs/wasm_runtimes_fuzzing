@@ -64,12 +64,12 @@ SUBCOMMANDS:
 1. List of major WebAssembly runtimes and APIs to interact with them. - [DONE](INTEGRATION.md)
 2. Development of the project base (architecture and interface) - [DONE](warf/)
 3. Creation of integration APIs + documentation - [DONE](warf/common/src/lib.rs) / [DONE](documentation/how_to_add_new_target.md)
-4. Tutorial for project installation and testings - [WIP](README.md)
+4. Tutorial for project installation and testings - [WIP](README.md#quick-start)
 
 ## Roadmap #2
 
-1.	Integration of main runtimes engines.
-2.	CLI tool allowing execution of wasm modules through all runtimes.
+1.	Integration of main runtimes engines. [WIP](warf/common/src/lib.rs)
+2.	CLI tool allowing execution of wasm modules through all runtimes. (using new subcommand) ?
 3.	Improvement of the project (threading, runtimes perf monitoring)
 4.	Development of fuzzing harness per runtimes.
 5.	Dockers to install runtimes engines easily
@@ -95,3 +95,11 @@ This tool helped to find the following bugs/vulnerabilities:
 
 - [Web 3 Foundation](https://web3.foundation/) for sponsoring this project.
 - [Rust Fuzzing Authority](https://github.com/rust-fuzz) for Rust fuzzing tools.
+
+# Contact
+
+Patrick Ventuzelo - [@pat_ventuzelo](https://twitter.com/pat_ventuzelo) - Independent Security Researcher.
+
+More details about my trainings:
+* 4-days **WebAssembly security** training: [here](https://webassembly-security.com/trainings/)
+* 2-days **Rustlang security** training: [here](https://webassembly-security.com/rust-security-training/)
