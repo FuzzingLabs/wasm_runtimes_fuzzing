@@ -81,7 +81,7 @@ WebAssembly serialization/deserialization in rust: [github](https://github.com/p
 - APIs:
 	- `parity_wasm::deserialize_file`: module parsing - [test](https://github.com/paritytech/parity-wasm/blob/master/src/elements/module.rs#L650-L656)
 	- `parity_wasm::Module` struct: WebAssembly module [impl](https://github.com/paritytech/parity-wasm/blob/master/src/elements/module.rs#L48)
-	- `parity_wasm::serialize_to_file`: will not be supported.
+	- `parity_wasm::serialize_to_file`: will not be supported for the moment.
 
 - Examples:
 	- [tests](https://github.com/paritytech/parity-wasm/blob/master/src/elements/module.rs#L650-L656)
