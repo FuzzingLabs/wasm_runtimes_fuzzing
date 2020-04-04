@@ -1,0 +1,9 @@
+[package]
+name = "fuzz-targets-libfuzzer"
+version = "0.1.0"
+authors = ["Patrick Ventuzelo <ventuzelo.patrick@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+fuzz-targets-common = {path = "../common"}
+libfuzzer-sys = "0.3"

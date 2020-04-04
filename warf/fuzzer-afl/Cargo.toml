@@ -1,0 +1,9 @@
+[package]
+name = "fuzz-targets-afl"
+version = "0.1.0"
+authors = ["Patrick Ventuzelo <ventuzelo.patrick@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+fuzz-targets-common = {path = "../common"}
+afl = "0.6"

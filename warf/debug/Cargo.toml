@@ -1,0 +1,8 @@
+[package]
+name = "fuzz-targets-debug"
+version = "0.1.0"
+authors = ["Patrick Ventuzelo <ventuzelo.patrick@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+fuzz-targets-common = {path = "../common"}
