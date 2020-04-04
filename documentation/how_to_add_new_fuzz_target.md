@@ -57,5 +57,6 @@ Everything is OK
 ## 5. Start fuzzing
 
 ``` sh
+# default fuzzing engine is honggfuzz
 $ cargo run target wasmer_validate
 ```
