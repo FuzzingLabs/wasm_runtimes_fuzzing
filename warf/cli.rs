@@ -191,19 +191,22 @@ fn run() -> Result<(), Error> {
     Ok(())
 }
 
-fn common_dir() -> Result<PathBuf, Error> {
+fn default_dir() -> Result<PathBuf, Error> {
     let p = env::var("CARGO_MANIFEST_DIR")
         .map(From::from)
-        .or_else(|_| env::current_dir())?
-        .join("common");
+        .or_else(|_| env::current_dir())?;
+    Ok(p)
+}
+
+fn common_dir() -> Result<PathBuf, Error> {
+    let p = default_dir()?
+    .join("common");
 
     Ok(p)
 }
 
 fn corpora_dir() -> Result<PathBuf, Error> {
-    let p = env::var("CARGO_MANIFEST_DIR")
-        .map(From::from)
-        .or_else(|_| env::current_dir())?
+    let p = default_dir()?
         .join("fuzzing_workspace")
         .join("corpora");
 
@@ -272,6 +275,8 @@ fn build_honggfuzz() -> Result<(), Error> {
         write_fuzzer_target(fuzzer, target)?;
     }
     let dir = fuzzer.dir()?;
+
+    println!("[WARF] {}: Start building", fuzzer);
 
     // Build fuzzing target
     let fuzzer_bin = Command::new("cargo")
@@ -386,16 +391,18 @@ fn build_afl(target: &str) -> Result<(), Error> {
 fn run_afl(target: &str, _timeout: Option<i32>) -> Result<(), Error> {
     let fuzzer = Fuzzer::Afl;
 
-    // Build the target
-    build_afl(target)?;
+    // Build the target if target not already compiled
+    if !default_dir()?.join(&format!("target/debug/{}", target)).exists() {
+        println!("[WARF] {}: {:?} don't exist", fuzzer, default_dir()?.join(&format!("target/debug/{}", target)));
+        build_afl(target)?;
+    }
 
     let dir = fuzzer.dir()?;
 
     let seed_dir = create_wasm_dir()?;
     let corpus_dir = fuzzer.work_dir()?; //create_corpus_dir(&dir, target)?;
+    // create corpus dir (fuzzing_workspace/afl)
     fs::create_dir_all(&corpus_dir).context(format!("unable to create corpora/wasm dir"))?;
-
-    build_afl(target)?;
 
     // Determined if existing fuzzing session exist
     let queue_dir = corpus_dir.join("queue");
