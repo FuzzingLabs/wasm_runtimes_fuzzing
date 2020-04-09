@@ -84,6 +84,11 @@ Details about the different warf subcommands [here](documentation/warf_cli_tutor
 Differents open-source projects (WebAssembly VMs/runtimes/parsers) will be integrated to WARF along the development.
 More details [here](documentation/INTEGRATION.md)
 
+# Corpora initialization
+
+TODO
+
+
 
 # Roadmap
 
