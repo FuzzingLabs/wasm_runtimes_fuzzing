@@ -15,8 +15,9 @@ rustup override set nightly
 # Install honggfuzz-rs and subcommand in cargo
 cargo +nightly install --force honggfuzz
 
+# DO NOT INSTALL - FAIL FOR THE MOMENT
 # Install cargo-fuzz (libfuzzer for Rust) and subcommand in cargo
-cargo +nightly install --force cargo-fuzz
+# cargo +nightly install --force cargo-fuzz
 
 # Install afl-rs and subcommand in cargo
 cargo +nightly install --force afl

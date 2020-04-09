@@ -76,34 +76,42 @@ Prefered command:
 # -t => timeout of 10 min, will restart the fuzzer every 10 min
 ```
 
-## Specific fuzzer engine options
+## fuzzer engines
 
 It's possible to provide extra flags to fuzzing engines (honggfuzz, afl, libfuzzer)
 
-### honggfuzz-rs
+### honggfuzz-rs (WORKING)
 
 FLAG: `HFUZZ_RUN_ARGS`
 
 Limit corpus file size: `HFUZZ_RUN_ARGS="-F 500000"`.
 TODO
 
-### afl-rs
+### afl-rs (ALMOST WORKING)
 
-TODO
 
-### cargo-fuzz (libfuzzer)
+- You need to execute the following commands to get afl running properly:
+``` sh
+echo core >/proc/sys/kernel/core_pattern
+# sudo su -c "echo core >/proc/sys/kernel/core_pattern"
+cd /sys/devices/system/cpu ; echo performance | tee cpu*/cpufreq/scaling_governor
+# sudo su -c "cd /sys/devices/system/cpu; echo performance | tee cpu*/cpufreq/scaling_governor"
+```
+
+
+### libfuzzer (NOT WORKING)
 
 TODO
 
 # Improvements
 
-This tool can be improved 
+This tool will be improved over the time
 
 ## General improvement for this tool
 
 - add first time running script for afl
 - add more documentation
-- fix libfuzzer (cargofuzz) => use cargo-fuzz instead of existing code.
+- fix libfuzzer (cargofuzz) => maybe use cargo-fuzz instead of existing code.
 - support new fuzzers (lain, fuzzcheck, customs, etc.)
-- compile all target before running fuzzing (no need to compile targets each time fuzzer restart)
+- compile all target before running fuzzing (no need to compile targets each time fuzzer restart) ?
 - Verify sharing coverage + seeds work as expected
