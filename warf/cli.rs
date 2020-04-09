@@ -56,6 +56,17 @@ enum Cli {
         )]
         fuzzer: Fuzzer,
     },
+    /// Build all targets for this specific fuzzer
+    #[structopt(name = "build")]
+    Build {
+        /// Which fuzzer to run
+        #[structopt(
+            long = "fuzzer",
+            default_value = "Honggfuzz",
+            raw(possible_values = "&Fuzzer::variants()", case_insensitive = "true")
+        )]
+        fuzzer: Fuzzer,
+    },
     /// Debug one target
     #[structopt(name = "debug")]
     Debug {
@@ -85,6 +96,14 @@ fn run() -> Result<(), Error> {
         ListTargets => {
             for target in &get_targets()? {
                 println!("{}", target);
+            }
+        }
+        Build { fuzzer } => {
+            use Fuzzer::*;
+            match fuzzer {
+                Afl => build_targets_afl()?,
+                Honggfuzz => build_honggfuzz()?,
+                Libfuzzer => build_libfuzzer()?,
             }
         }
         Run { target, fuzzer } => {
@@ -181,9 +200,27 @@ fn common_dir() -> Result<PathBuf, Error> {
     Ok(p)
 }
 
+fn corpora_dir() -> Result<PathBuf, Error> {
+    let p = env::var("CARGO_MANIFEST_DIR")
+        .map(From::from)
+        .or_else(|_| env::current_dir())?
+        .join("fuzzing_workspace")
+        .join("corpora");
+
+    Ok(p)
+}
+
+/*
 fn create_seed_dir(target: &str) -> Result<PathBuf, Error> {
     let seed_dir = common_dir()?.join("seeds").join(&target);
     fs::create_dir_all(&seed_dir).context(format!("unable to create seed dir for {}", target))?;
+    Ok(seed_dir)
+}
+*/
+
+fn create_wasm_dir() -> Result<PathBuf, Error> {
+    let seed_dir = corpora_dir()?.join("wasm");
+    fs::create_dir_all(&seed_dir).context(format!("unable to create corpora/wasm dir"))?;
     Ok(seed_dir)
 }
 
@@ -224,32 +261,63 @@ fn run_cargo_update() -> Result<(), Error> {
 }
 
 #[derive(Fail, Debug)]
-#[fail(display = "Fuzzer quit")]
+#[fail(display = "[WARF] Fuzzer quit")]
 pub struct FuzzerQuit;
+
+/// Build all targets with honggfuzz
+fn build_honggfuzz() -> Result<(), Error> {
+    let fuzzer = Fuzzer::Honggfuzz;
+
+    for target in &get_targets()? {
+        write_fuzzer_target(fuzzer, target)?;
+    }
+    let dir = fuzzer.dir()?;
+
+    // Build fuzzing target
+    let fuzzer_bin = Command::new("cargo")
+        .args(&["hfuzz", "build"])
+        .current_dir(&dir)
+        .spawn()
+        .context(format!("error building {} targets", fuzzer))?
+        .wait()
+        .context(format!("error while waiting for {:?} building", fuzzer))?;
+
+    // Check if success
+    if !fuzzer_bin.success() {
+        Err(FuzzerQuit)?;
+    }
+    println!("[WARF] {}: building OK", fuzzer);
+    Ok(())
+}
 
 fn run_honggfuzz(target: &str, timeout: Option<i32>) -> Result<(), Error> {
     let fuzzer = Fuzzer::Honggfuzz;
     write_fuzzer_target(fuzzer, target)?;
     let dir = fuzzer.dir()?;
+    let work_dir = fuzzer.work_dir()?;
 
-    let seed_dir = create_seed_dir(&target)?;
+    //let seed_dir = create_seed_dir(&target)?;
+    let seed_dir = create_wasm_dir()?;
 
     // test if this is the first time we run the fuzzer
     // and if existing coverage file exist
-    let mut input_folder = format!("fuzzer-honggfuzz/hfuzz_workspace/{}/input", target);
-    if Path::new(&input_folder).exists() {
-        input_folder = format!("hfuzz_workspace/{}/input", target);
+    // mut input_folder = format!("fuzzer-honggfuzz/hfuzz_workspace/{}/input", target);
+    let mut input_folder = seed_dir.to_string_lossy().to_string();
+    if Path::new(&work_dir).exists() {
+        println!("{:?}", work_dir);
+        input_folder = work_dir.to_string_lossy().to_string();
     } else {
-        input_folder = seed_dir.to_string_lossy().to_string();
+        // create workir directory
+        fs::create_dir_all(&work_dir).context(format!("unable to create corpora/wasm dir"))?;
     }
 
     let args = format!(
         "-i {} \
-         --output hfuzz_workspace/{}/input \
+         --output {} \
          {} \
          {}",
         input_folder,
-        target,
+        work_dir.to_string_lossy().to_string(),
         if let Some(t) = timeout {
             format!("--run_time {}", t)
         } else {
@@ -260,6 +328,7 @@ fn run_honggfuzz(target: &str, timeout: Option<i32>) -> Result<(), Error> {
 
     //.env("RUSTFLAGS", "-C debuginfo=2")
 
+    // Honggfuzz will first build than run the fuzzer using cargo
     let fuzzer_bin = Command::new("cargo")
         .args(&["hfuzz", "run", &target])
         .env("HFUZZ_RUN_ARGS", &args)
@@ -278,16 +347,23 @@ fn run_honggfuzz(target: &str, timeout: Option<i32>) -> Result<(), Error> {
     Ok(())
 }
 
-fn run_afl(target: &str, _timeout: Option<i32>) -> Result<(), Error> {
+/// Build all targets with afl
+fn build_targets_afl() -> Result<(), Error> {
+    for target in &get_targets()? {
+        build_afl(target)?;
+    }
+    Ok(())
+}
+
+/// Build single target with afl
+fn build_afl(target: &str) -> Result<(), Error> {
     let fuzzer = Fuzzer::Afl;
     write_fuzzer_target(fuzzer, target)?;
+
     let dir = fuzzer.dir()?;
 
-    let seed_dir = create_seed_dir(&target)?;
-    let corpus_dir = create_corpus_dir(&dir, target)?;
-
     let build_cmd = Command::new("cargo")
-        .args(&["afl", "build", "--release", "--bin", target])
+        .args(&["afl", "build", "--bin", target]) // TODO: not sure we want to compile afl in "--release"
         .current_dir(&dir)
         .spawn()
         .context(format!(
@@ -304,6 +380,24 @@ fn run_afl(target: &str, _timeout: Option<i32>) -> Result<(), Error> {
         Err(FuzzerQuit)?;
     }
 
+    Ok(())
+}
+
+fn run_afl(target: &str, _timeout: Option<i32>) -> Result<(), Error> {
+    let fuzzer = Fuzzer::Afl;
+
+    // Build the target
+    build_afl(target)?;
+
+    let dir = fuzzer.dir()?;
+
+    let seed_dir = create_wasm_dir()?;
+    let corpus_dir = fuzzer.work_dir()?; //create_corpus_dir(&dir, target)?;
+    fs::create_dir_all(&corpus_dir).context(format!("unable to create corpora/wasm dir"))?;
+
+    build_afl(target)?;
+
+    // Determined if existing fuzzing session exist
     let queue_dir = corpus_dir.join("queue");
     let input_arg: &OsStr = if queue_dir.is_dir() && fs::read_dir(queue_dir)?.next().is_some() {
         "-".as_ref()
@@ -311,13 +405,14 @@ fn run_afl(target: &str, _timeout: Option<i32>) -> Result<(), Error> {
         seed_dir.as_ref()
     };
 
+    // Run the fuzzer using cargo
     let fuzzer_bin = Command::new("cargo")
         .args(&["afl", "fuzz"])
         .arg("-i")
         .arg(&input_arg)
         .arg("-o")
         .arg(&corpus_dir)
-        .args(&["--", &format!("../target/release/{}", target)])
+        .args(&["--", &format!("../target/debug/{}", target)])
         .current_dir(&dir)
         .spawn()
         .context(format!("error starting {:?} to run {}", fuzzer, target))?
@@ -333,12 +428,16 @@ fn run_afl(target: &str, _timeout: Option<i32>) -> Result<(), Error> {
     Ok(())
 }
 
+fn build_libfuzzer() -> Result<(), Error> {
+    Ok(())
+}
+
 fn run_libfuzzer(target: &str, timeout: Option<i32>) -> Result<(), Error> {
     let fuzzer = Fuzzer::Libfuzzer;
     write_fuzzer_target(fuzzer, target)?;
     let dir = fuzzer.dir()?;
 
-    let seed_dir = create_seed_dir(&target)?;
+    let seed_dir = create_wasm_dir()?;
     let corpus_dir = create_corpus_dir(&dir, target)?;
 
     #[cfg(target_os = "macos")]
@@ -369,6 +468,7 @@ fn run_libfuzzer(target: &str, timeout: Option<i32>) -> Result<(), Error> {
         "".into()
     };
 
+    // Run the fuzzer using cargo
     let fuzzer_bin = Command::new("cargo")
         .args(&[
             "run",
@@ -395,9 +495,14 @@ fn run_libfuzzer(target: &str, timeout: Option<i32>) -> Result<(), Error> {
     if !fuzzer_bin.success() {
         Err(FuzzerQuit)?;
     }
+    println!("[WARF] {}: {} compiled", fuzzer, &format!("debug_{}", target));
     Ok(())
 }
 
+/// Write the fuzzing target
+///
+/// Copy the fuzzer/template.rs
+/// Replace ###TARGET### by the target
 fn write_fuzzer_target(fuzzer: Fuzzer, target: &str) -> Result<(), Error> {
     use std::io::Write;
 
@@ -426,6 +531,7 @@ fn write_fuzzer_target(fuzzer: Fuzzer, target: &str) -> Result<(), Error> {
 
     let source = template.replace("###TARGET###", &target);
     file.write_all(source.as_bytes())?;
+    println!("[WARF] {}: {} created", fuzzer, target);
     Ok(())
 }
 
@@ -447,6 +553,7 @@ fn run_debug(target: &str) -> Result<(), Error> {
     if !debug_bin.success() {
         Err(FuzzerQuit)?;
     }
+    println!("[WARF] Debug: {} compiled", &format!("debug_{}", target));
     Ok(())
 }
 
@@ -499,6 +606,20 @@ impl Fuzzer {
             Afl => cwd.join("fuzzer-afl"),
             Honggfuzz => cwd.join("fuzzer-honggfuzz"),
             Libfuzzer => cwd.join("fuzzer-libfuzzer"),
+        };
+
+        Ok(p)
+    }
+
+    fn work_dir(&self) -> Result<PathBuf, Error> {
+        let cwd = env::current_dir().context("error getting current directory")?;
+        let cwd = cwd.join("fuzzing_workspace");
+
+        use Fuzzer::*;
+        let p = match self {
+            Afl => cwd.join("afl"),
+            Honggfuzz => cwd.join("hfuzz"),
+            Libfuzzer => cwd.join("libfuzzer"),
         };
 
         Ok(p)
