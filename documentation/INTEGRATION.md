@@ -122,3 +122,4 @@ Those projects **will be potentially** supported/integrated in the future.
 - [wabt](https://github.com/WebAssembly/wabt) - The WebAssembly Binary Toolkit - [rust bindings](https://github.com/pepyakin/wabt-rs)
 - [wasm3](https://github.com/wasm3/wasm3) - high performance WebAssembly interpreter written in C.
 - [WAVM](https://github.com/WAVM/WAVM) - WebAssembly Virtual Machine in C++.
+- [webassemblyjs](https://github.com/xtuc/webassemblyjs) - Toolchain for WebAssembly in JavaScript.

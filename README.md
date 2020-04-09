@@ -82,7 +82,7 @@ Details about the different warf subcommands [here](documentation/warf_cli_tutor
 # Integration/support
 
 Differents open-source projects (WebAssembly VMs/runtimes/parsers) will be integrated to WARF along the development.
-More details [here](INTEGRATION.md)
+More details [here](documentation/INTEGRATION.md)
 
 
 # Roadmap
