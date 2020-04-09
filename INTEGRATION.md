@@ -65,6 +65,7 @@ Standalone WebAssembly runtime: [github](https://github.com/wasmerio/wasmer) / [
 
 - APIs:
 	- `wasmer_runtime::validate`: Perform validation of the wasm module - [doc](https://docs.rs/wasmer-runtime-core/0.16.2/src/wasmer_runtime_core/lib.rs.html#140-142)
+	- `wasmer_runtime::validate_and_report_errors_with_features`: Perform validation with a Features - doc[https://docs.rs/wasmer-runtime-core/0.7.0/wasmer_runtime_core/fn.validate_and_report_errors_with_features.html]
 	- `wasmer_runtime::{compile, compile_with}`: Compile WebAssembly binary code into a Module, backends can be specified here - [doc](https://docs.rs/wasmer-runtime/0.16.2/wasmer_runtime/fn.compile.html)
 	- `wasmer_runtime::instantiate`: Compile and instantiate wasm code - [doc](https://docs.rs/wasmer-runtime/0.16.2/wasmer_runtime/fn.instantiate.html)
 

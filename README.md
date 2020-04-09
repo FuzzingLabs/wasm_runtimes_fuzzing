@@ -2,20 +2,15 @@
 
 Goal of this project is to improve security and resilience of WebAssembly VMs/runtimes/parsers using differents fuzzing techniques.
 
-## Integration/support
-
-Differents open-source projects (WebAssembly VMs/runtimes/parsers) will be integrated to WARF along the development. 
-
-
-More details about current project integration/support available [here](INTEGRATION.md)
-
-
 ## Quick Start
 
 - Install system dependencies:
 ``` sh
 # Install Rust and Cargo
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# It's better to install fuzzers using nightly compiler
+rustup override set nightly
 
 # Install honggfuzz-rs and subcommand in cargo
 cargo +nightly install --force honggfuzz
@@ -30,14 +25,16 @@ cargo +nightly install --force afl
 - Install WARF:
 ``` sh
 $ git clone --depth 1 https://github.com/pventuzelo/wasm_runtimes_fuzzing
-$ cd wasm_runtimes_fuzzing
+$ cd wasm_runtimes_fuzzing/warf
 ```
 
 - Build & run the project:
 ``` sh
-# we are using nightly compiler
-cargo +nightly build
-./target/debug/warf
+# Build the CLI tool
+$ cargo +nightly build
+
+# Run warf cli
+$ ./target/debug/warf
 
 warf 0.1.0
 WARF - WebAssembly Runtimes Fuzzing project
@@ -57,6 +54,36 @@ SUBCOMMANDS:
     target          Run one target with specific fuzzer
 ```
 
+- Testing:
+``` sh
+# Run wasmer_validate fuzzer (honggfuzz)
+./target/debug/warf target wasmer_validate
+
+------------------------[  0 days 00 hrs 00 mins 02 secs ]----------------------
+  Iterations : 272,647 [272.65k]
+  Mode [3/3] : Feedback Driven Mode
+      Target : hfuzz_target/x86_64-unknown-linux-gnu/release/wasmer_validate
+     Threads : 4, CPUs: 8, CPU%: 529% [66%/CPU]
+       Speed : 171,238/sec [avg: 136,323]
+     Crashes : 0 [unique: 0, blacklist: 0, verified: 0]
+    Timeouts : 0 [10 sec]
+ Corpus Size : 754, max: 8,192 bytes, init: 1,126 files
+  Cov Update : 0 days 00 hrs 00 mins 01 secs ago
+    Coverage : edge: 3,194/58,784 [5%] pc: 2 cmp: 41,653
+---------------------------------- [ LOGS ] ------------------/ honggfuzz 2.0 /-
+Size:77 (i,b,hw,ed,ip,cmp): 0/0/0/1/0/0, Tot:0/0/0/3159/2/41623
+[...]
+```
+
+Details about the different warf subcommands [here](documentation/warf_cli_tutorial.md)
+
+
+# Integration/support
+
+Differents open-source projects (WebAssembly VMs/runtimes/parsers) will be integrated to WARF along the development.
+More details [here](INTEGRATION.md)
+
+
 # Roadmap
 
 ## Roadmap #1
@@ -64,7 +91,7 @@ SUBCOMMANDS:
 1. List of major WebAssembly runtimes and APIs to interact with them. - [DONE](INTEGRATION.md)
 2. Development of the project base (architecture and interface) - [DONE](warf/)
 3. Creation of integration APIs + documentation - [DONE](warf/common/src/lib.rs) / [DONE](documentation/how_to_add_new_target.md)
-4. Tutorial for project installation and testings - [WIP](README.md#quick-start)
+4. Tutorial for project installation and testings - [DONE](README.md#quick-start)
 
 ## Roadmap #2
 
