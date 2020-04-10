@@ -89,13 +89,12 @@ More details [here](documentation/INTEGRATION.md)
 TODO
 
 
-
 # Roadmap
 
-## Roadmap #1
+## Roadmap #1 (DONE)
 
 1. List of major WebAssembly runtimes and APIs to interact with them. - [DONE](INTEGRATION.md)
-2. Development of the project base (architecture and interface) - [DONE](warf/)
+2. Development of the project base (architecture and interface) - [DONE](warf/cli.rs)
 3. Creation of integration APIs + documentation - [DONE](warf/common/src/lib.rs) / [DONE](documentation/how_to_add_new_target.md)
 4. Tutorial for project installation and testings - [DONE](README.md#quick-start)
 
@@ -121,7 +120,7 @@ TODO
 
 This tool helped to find the following bugs/vulnerabilities:
 
-- TODO
+- [wasmer/wasmer_clif_fork_wasm: index out of bounds panic](https://github.com/wasmerio/wasmer/issues/1372)
 
 
 # Thanks
@@ -133,6 +132,6 @@ This tool helped to find the following bugs/vulnerabilities:
 
 Patrick Ventuzelo - [@pat_ventuzelo](https://twitter.com/pat_ventuzelo) - Independent Security Researcher.
 
-More details about my trainings:
+Consulting & trainings:
 * 4-days **WebAssembly security** training: [here](https://webassembly-security.com/trainings/)
 * 2-days **Rustlang security** training: [here](https://webassembly-security.com/rust-security-training/)

@@ -199,16 +199,13 @@ fn default_dir() -> Result<PathBuf, Error> {
 }
 
 fn common_dir() -> Result<PathBuf, Error> {
-    let p = default_dir()?
-    .join("common");
+    let p = default_dir()?.join("common");
 
     Ok(p)
 }
 
 fn corpora_dir() -> Result<PathBuf, Error> {
-    let p = default_dir()?
-        .join("fuzzing_workspace")
-        .join("corpora");
+    let p = default_dir()?.join("fuzzing_workspace").join("corpora");
 
     Ok(p)
 }
@@ -392,8 +389,15 @@ fn run_afl(target: &str, _timeout: Option<i32>) -> Result<(), Error> {
     let fuzzer = Fuzzer::Afl;
 
     // Build the target if target not already compiled
-    if !default_dir()?.join(&format!("target/debug/{}", target)).exists() {
-        println!("[WARF] {}: {:?} don't exist", fuzzer, default_dir()?.join(&format!("target/debug/{}", target)));
+    if !default_dir()?
+        .join(&format!("target/debug/{}", target))
+        .exists()
+    {
+        println!(
+            "[WARF] {}: {:?} don't exist",
+            fuzzer,
+            default_dir()?.join(&format!("target/debug/{}", target))
+        );
         build_afl(target)?;
     }
 
@@ -401,7 +405,7 @@ fn run_afl(target: &str, _timeout: Option<i32>) -> Result<(), Error> {
 
     let seed_dir = create_wasm_dir()?;
     let corpus_dir = fuzzer.work_dir()?; //create_corpus_dir(&dir, target)?;
-    // create corpus dir (fuzzing_workspace/afl)
+                                         // create corpus dir (fuzzing_workspace/afl)
     fs::create_dir_all(&corpus_dir).context(format!("unable to create corpora/wasm dir"))?;
 
     // Determined if existing fuzzing session exist
@@ -502,7 +506,11 @@ fn run_libfuzzer(target: &str, timeout: Option<i32>) -> Result<(), Error> {
     if !fuzzer_bin.success() {
         Err(FuzzerQuit)?;
     }
-    println!("[WARF] {}: {} compiled", fuzzer, &format!("debug_{}", target));
+    println!(
+        "[WARF] {}: {} compiled",
+        fuzzer,
+        &format!("debug_{}", target)
+    );
     Ok(())
 }
 
