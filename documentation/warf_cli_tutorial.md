@@ -26,6 +26,7 @@ Help:
 $ ./target/debug/warf help
 [...]
 SUBCOMMANDS:
+    build           Build all targets for this specific fuzzer
     continuously    Run all fuzz targets
     debug           Debug one target
     help            Prints this message or the help of the given subcommand(s)
@@ -70,13 +71,12 @@ OPTIONS:
 
 Prefered command:
 ``` sh
-./target/debug/warf continuously -i wasmer -t 600
+./target/debug/warf continuously -i -t 600
 # -i => infinite mode
-# -q => will run all wasmer targets
 # -t => timeout of 10 min, will restart the fuzzer every 10 min
 ```
 
-## fuzzer engines
+## Fuzzer engines
 
 It's possible to provide extra flags to fuzzing engines (honggfuzz, afl, libfuzzer)
 
@@ -84,11 +84,12 @@ It's possible to provide extra flags to fuzzing engines (honggfuzz, afl, libfuzz
 
 FLAG: `HFUZZ_RUN_ARGS`
 
-Limit corpus file size: `HFUZZ_RUN_ARGS="-F 500000"`.
-TODO
+
+Example:
+- Limit corpus file size: `HFUZZ_RUN_ARGS="-F 500000"`.
+
 
 ### afl-rs (ALMOST WORKING)
-
 
 - You need to execute the following commands to get afl running properly:
 ``` sh
@@ -97,7 +98,6 @@ echo core >/proc/sys/kernel/core_pattern
 cd /sys/devices/system/cpu ; echo performance | tee cpu*/cpufreq/scaling_governor
 # sudo su -c "cd /sys/devices/system/cpu; echo performance | tee cpu*/cpufreq/scaling_governor"
 ```
-
 
 ### libfuzzer (NOT WORKING)
 

@@ -7,3 +7,11 @@ edition = "2018"
 [dependencies]
 parity-wasm = "0.41"
 wasmer-runtime = "0.16.2"
+wasmparser = "0.51.4"
+wasmer-singlepass-backend = "0.16.2"
+#wasmtime = { path = "../../wasmtime/crates/api" }
+#wasmtime-fuzzing = { path = "../../wasmtime/crates/fuzzing" }
+
+#cranelift-wasm = "0.62.0"
+#cranelift-codegen = "0.62.0"
+#target-lexicon = "0.10"
