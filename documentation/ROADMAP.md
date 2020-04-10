@@ -4,7 +4,7 @@
 
 1. Integration Plan / List of major WebAssembly runtimes and APIs to interact with them. - [DONE](INTEGRATION.md)
 2. Project development / Development of the project base (architecture and interface) - [DONE](../warf/cli.rs)
-3. APIs / Creation of integration APIs + documentation - [DONE](../warf/common/src/lib.rs) / [DONE](how_to_add_new_target.md)
+3. APIs / Creation of integration APIs + documentation - [DONE](../warf/common/src/lib.rs) / [DONE](how_to_add_new_fuzz_target.md)
 4. Delivery report / Tutorial for project installation and testings - [DONE](../README.md#quick-start)
 
 ## Roadmap #2
