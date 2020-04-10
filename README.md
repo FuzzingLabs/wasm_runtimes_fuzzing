@@ -79,42 +79,14 @@ Size:77 (i,b,hw,ed,ip,cmp): 0/0/0/1/0/0, Tot:0/0/0/3159/2/41623
 Details about the different warf subcommands [here](documentation/warf_cli_tutorial.md)
 
 
-# Integration/support
+# Future of the project
 
 Differents open-source projects (WebAssembly VMs/runtimes/parsers) will be integrated to WARF along the development.
 More details [here](documentation/INTEGRATION.md)
 
-# Corpora initialization
 
-TODO
+Global roadmap [here](documentation/ROADMAP.md)
 
-
-# Roadmap
-
-## Roadmap #1 (DONE)
-
-1. List of major WebAssembly runtimes and APIs to interact with them. - [DONE](INTEGRATION.md)
-2. Development of the project base (architecture and interface) - [DONE](warf/cli.rs)
-3. Creation of integration APIs + documentation - [DONE](warf/common/src/lib.rs) / [DONE](documentation/how_to_add_new_target.md)
-4. Tutorial for project installation and testings - [DONE](README.md#quick-start)
-
-## Roadmap #2
-
-1.	Integration of main runtimes engines. [WIP](warf/common/src/lib.rs)
-2.	CLI tool allowing execution of wasm modules through all runtimes. (using new subcommand) ?
-3.	Improvement of the project (threading, runtimes perf monitoring)
-4.	Development of fuzzing harness per runtimes.
-5.	Dockers to install runtimes engines easily
-6.	Tutorial for runtimes installation, compilation, how to run tools and unittests
-7.	Unittest to verify runtimes engines work as expected
-
-## Roadmap #3
-
-TODO
-
-## Roadmap #4
-
-TODO
 
 # Trophies
 
