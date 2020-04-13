@@ -115,11 +115,27 @@ Compiler infrastructure and toolchain: [github](https://github.com/WebAssembly/b
 - Rust examples:
 	- [examples](https://github.com/pepyakin/binaryen-rs/tree/abe2babb2d1d8e88a5f2aa47fb6e24393e19e8c0/examples)
 
+## wabt
+
+- [wabt](https://github.com/WebAssembly/wabt) - The WebAssembly Binary Toolkit - [rust bindings](https://github.com/pepyakin/wabt-rs)
+
+- Rust Apis:
+	- `Module`: WebAssembly module. (take a `Features` struct - possible to active `enable_all`(https://github.com/pepyakin/wabt-rs/blob/master/src/lib.rs#L182))
+	- `Module::read_binary` / `wasm2wat::convert`: useful if we validate the module first since `read_binary doesn't do any validation`.
+	- `wasm2wat`: Disassemble wasm binary to wasm text format. - [doc](https://docs.rs/wabt/0.9.2/wabt/fn.wasm2wat.html)
+	- `wasm2wat_with_features`: Disassemble wasm binary to wasm text format with the given features. - [doc](https://docs.rs/wabt/0.9.2/wabt/fn.wasm2wat_with_features.html)
+	- `Module::validate`: Validate the module. - [impl](https://github.com/pepyakin/wabt-rs/blob/master/src/lib.rs#L731)
+	- `wat2wasm`: Translate wasm text source to wasm binary format. - NOT A PRIORITY TO IMPLEMENT - [doc](https://docs.rs/wabt/0.9.2/wabt/fn.wat2wasm.html)
+	- `wat2wasm_with_features`: Translate wasm text source to wasm binary format with the given features. - NOT A PRIORITY TO IMPLEMENT - [doc](https://docs.rs/wabt/0.9.2/wabt/fn.wat2wasm_with_features.html)
+
+
+- Rust examples:
+	- [examples](https://github.com/pepyakin/wabt-rs/blob/a8337f520b404fc09484654a4c6653ee078ac86b/src/lib.rs#L1111)
+
 # Projects potentially integrated.
 
 Those projects **will be potentially** supported/integrated in the future.
 
-- [wabt](https://github.com/WebAssembly/wabt) - The WebAssembly Binary Toolkit - [rust bindings](https://github.com/pepyakin/wabt-rs)
 - [wasm3](https://github.com/wasm3/wasm3) - high performance WebAssembly interpreter written in C.
 - [WAVM](https://github.com/WAVM/WAVM) - WebAssembly Virtual Machine in C++.
 - [webassemblyjs](https://github.com/xtuc/webassemblyjs) - Toolchain for WebAssembly in JavaScript.
