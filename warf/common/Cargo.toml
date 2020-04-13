@@ -5,13 +5,13 @@ authors = ["Patrick Ventuzelo <ventuzelo.patrick@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+wasmi = "0.6"
+wasmi-validation = "0.3"
 parity-wasm = "0.41"
-wasmer-runtime = "0.16.2"
-wasmparser = "0.51.4"
-wasmer-singlepass-backend = "0.16.2"
-#wasmtime = { path = "../../wasmtime/crates/api" }
-#wasmtime-fuzzing = { path = "../../wasmtime/crates/fuzzing" }
-
-#cranelift-wasm = "0.62.0"
-#cranelift-codegen = "0.62.0"
-#target-lexicon = "0.10"
+wasmer-runtime = "0.16"
+wasmer-singlepass-backend = "0.16"
+wasmtime = "0.15"
+lightbeam = "0.15"
+wasmparser = "0.51"
+binaryen = "0.10"
+wabt = "0.9"

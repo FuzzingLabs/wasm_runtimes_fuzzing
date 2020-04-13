@@ -115,7 +115,7 @@ Compiler infrastructure and toolchain: [github](https://github.com/WebAssembly/b
 - Rust examples:
 	- [examples](https://github.com/pepyakin/binaryen-rs/tree/abe2babb2d1d8e88a5f2aa47fb6e24393e19e8c0/examples)
 
-## wabt
+## wabt (C++/Rust)
 
 - [wabt](https://github.com/WebAssembly/wabt) - The WebAssembly Binary Toolkit - [rust bindings](https://github.com/pepyakin/wabt-rs)
 
@@ -136,6 +136,6 @@ Compiler infrastructure and toolchain: [github](https://github.com/WebAssembly/b
 
 Those projects **will be potentially** supported/integrated in the future.
 
-- [wasm3](https://github.com/wasm3/wasm3) - high performance WebAssembly interpreter written in C.
+- [wasm3](https://github.com/wasm3/wasm3) - high performance WebAssembly interpreter written in C. - [rust bindings](https://github.com/Veykril/wasm3-rs)
 - [WAVM](https://github.com/WAVM/WAVM) - WebAssembly Virtual Machine in C++.
 - [webassemblyjs](https://github.com/xtuc/webassemblyjs) - Toolchain for WebAssembly in JavaScript.

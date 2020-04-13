@@ -97,8 +97,6 @@ This tool helped to find the following bugs/vulnerabilities (crashing files are 
 - [wabt: SIGABRT due to std::bad_alloc exception (resizing wasm br_table)](https://github.com/WebAssembly/wabt/issues/1386)
 
 
-
-
 # Thanks
 
 - [Web 3 Foundation](https://web3.foundation/) for sponsoring this project.
