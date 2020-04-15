@@ -74,10 +74,10 @@ pub fn fuzz_wasmer_compile_singlepass(data: &[u8]) {
 /// Fuzzing `wasmer::instantiate` with empty import_object
 pub fn fuzz_wasmer_instantiate(data: &[u8]) {
     use wasmer_runtime::{imports, instantiate};
-    let mut import_object = imports! {};
+    let import_object = imports! {};
     // allow_missing_functions should prevent wasmer to reject
-    // modules with imported functions
-    import_object.allow_missing_functions = true;
+    // modules with imported functions but generate more false positive bugs
+    // import_object.allow_missing_functions = true;
     let _ = instantiate(data, &import_object);
 
     // TODO: improve or create new fuzz harness that iterate
