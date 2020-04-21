@@ -25,7 +25,7 @@ pub fn fuzz_wasmi_instantiate(data: &[u8]) {
     };
     let _ = ModuleInstance::new(&module, &ImportsBuilder::default());
 
-    // TODO: add calls to instance functions like:
+    // TODO(RM3): add calls to instance functions like:
     // - invoke_export: https://github.com/paritytech/wasmi/blob/b67af25899874de7aac187e08e3b2a30d9bbc388/benches/src/lib.rs#L38
     // - run_start: https://github.com/paritytech/wasmi/blob/899cc32e45483fce12907f807ee9b09d837d2636/examples/interpret.rs#L36
 }
@@ -45,7 +45,7 @@ pub fn fuzz_parity_wasm_deserialize(data: &[u8]) {
     let _module: std::result::Result<elements::Module, _> = deserialize_buffer(&data);
 }
 
-// TODO - parity_wasm::elements::serialize
+// TODO(RM4) - parity_wasm::elements::serialize
 
 /***********************************************
 WASMER:
@@ -80,7 +80,7 @@ pub fn fuzz_wasmer_instantiate(data: &[u8]) {
     // import_object.allow_missing_functions = true;
     let _ = instantiate(data, &import_object);
 
-    // TODO: improve or create new fuzz harness that iterate
+    // TODO(RM3): improve or create new fuzz harness that iterate
     // over module functions and call them all
 }
 
@@ -103,7 +103,7 @@ pub fn TODO_fuzz_wasmer_compile_llvm(data: &[u8]) {
     let _res = compile_with(&data, compiler.as_ref());
 }
 
-// TODO - wasmer_runtime::validate_and_report_errors_with_features
+// TODO(RM3) - wasmer_runtime::validate_and_report_errors_with_features
 */
 
 /***********************************************

@@ -1,0 +1,18 @@
+# ignore .git and .cache folders
+.git
+.cache
+
+# ignore all markdown files (md) beside all README*.md other than README-secret.md
+*.md
+!README*.md
+
+# ignore all 
+docs/
+trophies/
+
+# ignore all target folders and their contents
+warf/target*
+warf/*/*target*
+
+# ignore local corpora
+warf/fuzzing_workspace/*

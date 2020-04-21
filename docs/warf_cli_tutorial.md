@@ -38,11 +38,23 @@ SUBCOMMANDS:
 
 Help: `./target/debug/warf target --help`.
 
-Run targets: `./target/debug/warf target wasmer_validate`.
+Run targets with default fuzzing engine (honggfuzz): `./target/debug/warf target wasmer_validate`.
+
+
 Using other fuzzing engines:
 ``` sh
 # --fuzzer <fuzzer>    Which fuzzer to run [default: Honggfuzz]  [possible values: Afl, Honggfuzz, Libfuzzer]
 ./target/debug/warf target wasmer_validate --fuzzer afl
+```
+
+NOTES FOR AFL:
+
+``` sh
+# You need to execute the following commands to get afl running properly
+echo core >/proc/sys/kernel/core_pattern
+# sudo su -c "echo core >/proc/sys/kernel/core_pattern"
+cd /sys/devices/system/cpu ; echo performance | tee cpu*/cpufreq/scaling_governor
+# sudo su -c "cd /sys/devices/system/cpu; echo performance | tee cpu*/cpufreq/scaling_governor"
 ```
 
 ## Continuous fuzzing 
