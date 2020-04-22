@@ -62,7 +62,7 @@ SUBCOMMANDS:
 - Testing:
 ``` sh
 # List all targets
-$ docker run warf list-targets                                                                                                    130 ↵ scop@scop-laptop
+docker run warf list-targets
 wasmi_validate
 wasmi_instantiate
 parity_wasm_deserialize
@@ -82,7 +82,7 @@ wabt_wasm2wat_all_feat_ffi
 wabt_validate_ffi
 
 # Run wasmer_validate fuzzer (honggfuzz)
-$ ./target/debug/warf target wasmer_validate
+./target/debug/warf target wasmer_validate
 [...]
 
 ------------------------[  0 days 00 hrs 00 mins 02 secs ]----------------------
