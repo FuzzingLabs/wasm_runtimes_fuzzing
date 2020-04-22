@@ -13,12 +13,12 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --defaul
 # It's better to install fuzzers using nightly compiler
 rustup override set nightly
 # Install honggfuzz-rs and subcommand in cargo
-sudo apt install build-essential binutils-dev libunwind-dev libblocksruntime-dev
+sudo apt install -y build-essential binutils-dev libunwind-dev libblocksruntime-dev
 cargo +nightly install --force honggfuzz
 # Install cargo-fuzz (libfuzzer for Rust) and subcommand in cargo
 cargo +nightly install --force cargo-fuzz
 # Install afl-rs and subcommand in cargo
-sudo apt install build-essential libtool-bin python3 cmake automake bison libglib2.0-dev libpixman-1-dev clang python-setuptools
+sudo apt install -y build-essential libtool-bin python3 cmake automake bison libglib2.0-dev libpixman-1-dev clang python-setuptools
 cargo +nightly install --force 
 
 # Install WARF
@@ -80,6 +80,7 @@ wasmparser_validate
 binaryen_ffi
 wabt_wasm2wat_all_feat_ffi
 wabt_validate_ffi
+
 # Run wasmer_validate fuzzer (honggfuzz)
 $ ./target/debug/warf target wasmer_validate
 [...]

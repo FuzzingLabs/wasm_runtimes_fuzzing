@@ -13,7 +13,7 @@
 2.	CLI tool / Command line tool allowing execution of wasm modules through all runtimes. (using new subcommand) ?
 3.	Project development / Improvement of the project (threading, runtimes perf monitoring)
 4.	Project development / Development of fuzzing harness per runtimes. [WIP](../warf/common/src/lib.rs)
-5.	Runtimes dockers / Dockers to install runtimes engines easily
+5.	Runtimes dockers / Dockers to install runtimes engines easily [DONE](../Dockerfile)
 6.	Delivery reports / Tutorial for runtimes installation, compilation, how to run tools and unittests
 7.	Unittest / Unittest to verify runtimes engines work as expected
 
