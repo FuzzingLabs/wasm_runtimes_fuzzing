@@ -1,4 +1,4 @@
-name: Rust
+name: CI
 
 on:
   push:
@@ -7,11 +7,22 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  # Check Code style quickly by running `rustfmt` over all code
+  rustfmt:
+    name: Rustfmt
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        submodules: true
+#- uses: ./.github/actions/install-rust
+    - run: rustup component add rustfmt
+    - run: cd warf && cargo fmt --all -- --check
 
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v1
     - name: Build
       run: cd warf && cargo build --verbose
