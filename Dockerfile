@@ -8,7 +8,7 @@ ENV PATH="$PATH:$CARGO_HOME/bin"
 
 # Update ubuntu
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y llvm curl
+RUN apt-get install -y llvm curl cmake
 
 # Install Rust and Cargo
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain "$RUST_TOOLCHAIN"
