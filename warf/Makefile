@@ -6,7 +6,7 @@
 fmt:
 	cargo fmt --all
 
-# Check code quality with rust fmt
+# Check code style quickly by running `rustfmt` over all code
 check-fmt:
 	cargo fmt --all -- --check
 
@@ -24,16 +24,17 @@ clean-all: clean
 #
 # Testing utils
 #
-test-debug:
+test-debug: build
 	./warf debug wasmparser_parser
+	./target/debug/debug_wasmparser_parser workspace/corpora/wasm/fib.wasm
 
-test-libfuzzer:
+test-libfuzzer: build
 	./warf debug wasmparser_parser --fuzzer libfuzzer
 
-test-hfuzz:
+test-hfuzz: build
 	./warf target wasmparser_parser --fuzzer honggfuzz
 
-test-afl:
+test-afl: build
 	./warf target wasmparser_parser --fuzzer afl
 
 # TODO - add more stuff here
