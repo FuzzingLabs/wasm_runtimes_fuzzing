@@ -210,7 +210,7 @@ fn corpora_dir() -> Result<PathBuf, Error> {
     Ok(p)
 }
 
-fn create_wasm_dir() -> Result<PathBuf, Error> {
+fn wasm_dir() -> Result<PathBuf, Error> {
     let seed_dir = corpora_dir()?.join("wasm");
     fs::create_dir_all(&seed_dir).context(format!("unable to create corpora/wasm dir"))?;
     Ok(seed_dir)
@@ -274,34 +274,40 @@ fn build_honggfuzz() -> Result<(), Error> {
     Ok(())
 }
 
+fn setup_workspace()-> Result<(), Error> {
+    Ok(())
+}
+
+fn prepare_hfuzz() -> Result<(), Error> {
+    let fuzzer = Fuzzer::Honggfuzz;
+    let dir = default_dir()?.join("workspace");
+    // Copy fuzzer-honggfuzz/Cargo.toml
+    // copy all target with template inside src/XXX
+
+    let hfuzz_dir = dir.join("hfuzz");
+    fs::create_dir_all(&hfuzz_dir).context(format!("unable to create hfuzz dir"))?;
+
+    let src_dir = hfuzz_dir.join("src");
+    fs::create_dir_all(&src_dir).context(format!("unable to create hfuzz dir"))?;
+
+    fs::copy(fuzzer.dir()?.join("Cargo.toml"), hfuzz_dir.join("Cargo.toml"))?;
+    fs::copy(fuzzer.dir()?.join("src").join("lib.rs"), src_dir.join("lib.rs"))?;
+    Ok(())
+}
+
 fn run_honggfuzz(target: &str, timeout: Option<i32>) -> Result<(), Error> {
     let fuzzer = Fuzzer::Honggfuzz;
+
+    prepare_hfuzz()?;
     write_fuzzer_target(fuzzer, target)?;
-    let dir = fuzzer.dir()?;
+    let dir = fuzzer.work_dir()?;
     let work_dir = fuzzer.work_dir()?;
 
-    //let seed_dir = create_seed_dir(&target)?;
-    let seed_dir = create_wasm_dir()?;
-
-    // test if this is the first time we run the fuzzer
-    // and if existing coverage file exist
-    // mut input_folder = format!("fuzzer-honggfuzz/hfuzz_workspace/{}/input", target);
-    let mut input_folder = seed_dir.to_string_lossy().to_string();
-    if Path::new(&work_dir).exists() {
-        println!("{:?}", work_dir);
-        input_folder = work_dir.to_string_lossy().to_string();
-    } else {
-        // create workir directory
-        fs::create_dir_all(&work_dir).context(format!("unable to create corpora/wasm dir"))?;
-    }
+    let corpora_dir = wasm_dir()?;
 
     let args = format!(
-        "-i {} \
-         --output {} \
-         {} \
+         "{} \
          {}",
-        input_folder,
-        work_dir.to_string_lossy().to_string(),
         if let Some(t) = timeout {
             format!("--run_time {}", t)
         } else {
@@ -310,12 +316,11 @@ fn run_honggfuzz(target: &str, timeout: Option<i32>) -> Result<(), Error> {
         env::var("HFUZZ_RUN_ARGS").unwrap_or_default()
     );
 
-    //.env("RUSTFLAGS", "-C debuginfo=2")
-
     // Honggfuzz will first build than run the fuzzer using cargo
     let fuzzer_bin = Command::new("cargo")
         .args(&["hfuzz", "run", &target])
         .env("HFUZZ_RUN_ARGS", &args)
+        .env("HFUZZ_INPUT", corpora_dir) // todo - replace with wasm_folder
         .current_dir(&dir)
         .spawn()
         .context(format!("error starting {:?} to run {}", fuzzer, target))?
@@ -509,13 +514,27 @@ fn run_libfuzzer(target: &str, timeout: Option<i32>) -> Result<(), Error> {
 fn write_fuzzer_target(fuzzer: Fuzzer, target: &str) -> Result<(), Error> {
     use std::io::Write;
 
+    // TODO - copy all template stuff to workspace
+    // then create target files only on workspace/hfuzz/
+    //use fs_extra::dir::{copy, CopyOptions};
+    //let mut options = CopyOptions::new();
+    //options.overwrite = true; // overwrite existing files.
+    //options.skip_exist = false; // skipe existing files.
+    //options.copy_inside = false; // like cp -r in Unix
+
+    //let a = fuzzer.dir()?;
+    //println!("{:?}", a);
+    //let b = fuzzer.work_dir()?;
+    //println!("{:?}", b);
+    //copy(a, b, &options).expect("copy template dir failed");
+
     let template_path = fuzzer.dir()?.join("template.rs");
     let template = fs::read_to_string(&template_path).context(format!(
         "error reading template file {}",
         template_path.display()
     ))?;
 
-    let target_dir = fuzzer.dir()?.join("src").join("bin");
+    let target_dir = fuzzer.work_dir()?.join("src").join("bin");
     fs::create_dir_all(&target_dir).context(format!(
         "error creating fuzz target dir {}",
         target_dir.display()
@@ -623,6 +642,20 @@ impl Fuzzer {
             Afl => cwd.join("afl"),
             Honggfuzz => cwd.join("hfuzz"),
             Libfuzzer => cwd.join("libfuzzer"),
+        };
+
+        Ok(p)
+    }
+
+    fn workspace_dir(&self) -> Result<PathBuf, Error> {
+        let cwd = env::current_dir().context("error getting current directory")?;
+        let cwd = cwd.join("workspace");
+
+        use Fuzzer::*;
+        let p = match self {
+            Afl => cwd.join("afl").join("fuzzer-afl"),
+            Honggfuzz => cwd.join("hfuzz").join("fuzzer-honggfuzz"),
+            Libfuzzer => cwd.join("libfuzzer").join("fuzzer-libfuzzer"),
         };
 
         Ok(p)
