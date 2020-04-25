@@ -506,13 +506,9 @@ fn run_libfuzzer(target: &str, timeout: Option<i32>) -> Result<(), Error> {
 
     let target_dir = fuzz_dir.join("fuzz_targets");
 
-    fs::remove_dir_all(&target_dir).context(format!(
-        "error removing {}",
-        target_dir.display()
-    ))?;
+    fs::remove_dir_all(&target_dir).context(format!("error removing {}", target_dir.display()))?;
     fs::create_dir_all(&target_dir)
         .context(format!("unable to create {} dir", target_dir.display()))?;
-
 
     fs::create_dir_all(&fuzz_dir)
         .context(format!("unable to create {} dir", fuzz_dir.display()))?;
@@ -522,8 +518,6 @@ fn run_libfuzzer(target: &str, timeout: Option<i32>) -> Result<(), Error> {
         fuzzer.dir()?.join("fuzz").join("Cargo.toml"),
         fuzz_dir.join("Cargo.toml"),
     )?;
-
-
 
     for target in &get_targets()? {
         write_libfuzzer_target(fuzzer, target)?;
