@@ -119,6 +119,7 @@ This tool helped to find the following bugs/vulnerabilities (crashing files are 
 - binaryen: [segfault / out-of-bounds read in WasmBinaryBuilder::readImports](https://github.com/WebAssembly/binaryen/issues/2751) - **FIXED**
 - wabt: [SIGABRT due to std::bad_alloc exception (resizing wasm br_table)](https://github.com/WebAssembly/wabt/issues/1386)
 - wasmtime: [assertion failed in wasmtime_debug::transform::simulate::generate_simulated_dwarf](https://github.com/bytecodealliance/wasmtime/issues/1506) - **FIXED**
+- wasmtime: [assertion failed or unimplemented panic when table type is not anyref](https://github.com/bytecodealliance/wasmtime/issues/1601)
 
 # Thanks
 
