@@ -24,22 +24,13 @@ cargo +nightly install --force
 # Install WARF
 git clone --depth 1 https://github.com/pventuzelo/wasm_runtimes_fuzzing
 cd wasm_runtimes_fuzzing/warf
-# Build the CLI tool
-cargo +nightly build
-# You can go take a coffee, it can take some time.
-./target/debug/warf help
-```
-
-- Install with Docker
-```sh
-docker build . -t warf
-docker run -it warf
 ```
 
 - Build & run the project:
 ``` sh
+make build
 # Run warf cli
-./target/debug/warf
+./warf
 
 warf 0.1.0
 WARF - WebAssembly Runtimes Fuzzing project
@@ -62,7 +53,7 @@ SUBCOMMANDS:
 - Testing:
 ``` sh
 # List all targets
-docker run warf list-targets
+./warf list-targets
 wasmi_validate
 wasmi_instantiate
 parity_wasm_deserialize
@@ -82,7 +73,7 @@ wabt_wasm2wat_all_feat_ffi
 wabt_validate_ffi
 
 # Run wasmer_validate fuzzer (honggfuzz)
-./target/debug/warf target wasmer_validate
+./warf target wasmer_validate
 [...]
 
 ------------------------[  0 days 00 hrs 00 mins 02 secs ]----------------------
@@ -100,6 +91,13 @@ wabt_validate_ffi
 Size:77 (i,b,hw,ed,ip,cmp): 0/0/0/1/0/0, Tot:0/0/0/3159/2/41623
 [...]
 ```
+
+- Using Docker
+```sh
+make docker
+docker run -it warf list-targets
+```
+
 
 Details about the different warf subcommands [here](docs/warf_cli_tutorial.md)
 
