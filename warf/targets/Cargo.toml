@@ -1,5 +1,5 @@
 [package]
-name = "fuzz-targets-common"
+name = "fuzz-targets"
 version = "0.1.0"
 authors = ["Patrick Ventuzelo <ventuzelo.patrick@gmail.com>"]
 edition = "2018"

@@ -198,8 +198,8 @@ fn default_dir() -> Result<PathBuf, Error> {
     Ok(p)
 }
 
-fn common_dir() -> Result<PathBuf, Error> {
-    let p = default_dir()?.join("common");
+fn targets_dir() -> Result<PathBuf, Error> {
+    let p = default_dir()?.join("targets");
 
     Ok(p)
 }
@@ -212,7 +212,7 @@ fn corpora_dir() -> Result<PathBuf, Error> {
 
 /*
 fn create_seed_dir(target: &str) -> Result<PathBuf, Error> {
-    let seed_dir = common_dir()?.join("seeds").join(&target);
+    let seed_dir = targets_dir()?.join("seeds").join(&target);
     fs::create_dir_all(&seed_dir).context(format!("unable to create seed dir for {}", target))?;
     Ok(seed_dir)
 }
@@ -235,7 +235,7 @@ fn create_corpus_dir(base: &Path, target: &str) -> Result<PathBuf, Error> {
 }
 
 fn get_targets() -> Result<Vec<String>, Error> {
-    let source = common_dir()?.join("src/lib.rs");
+    let source = targets_dir()?.join("src/lib.rs");
     let targets_rs = fs::read_to_string(&source).context(format!("unable to read {:?}", source))?;
     let match_fuzz_fs = Regex::new(r"pub fn fuzz_(\w+)\(")?;
     let target_names = match_fuzz_fs
@@ -443,35 +443,56 @@ fn build_libfuzzer() -> Result<(), Error> {
     Ok(())
 }
 
+fn write_libfuzzer_target(fuzzer: Fuzzer, target: &str) -> Result<(), Error> {
+    use std::io::Write;
+
+    let fuzz_dir = fuzzer.dir()?.join("fuzz");
+    println!("{:?}", fuzz_dir);
+
+    let template_path = fuzzer.dir()?.join("template.rs");
+    let template = fs::read_to_string(&template_path).context(format!(
+        "error reading template file {}",
+        template_path.display()
+    ))?;
+
+    // use `cargo fuzz add` to add new bin inside Cargo.toml
+    // and create fuzz_targets dir
+    // and create target.rs
+    let _ = Command::new("cargo")
+        .args(&["fuzz", "add", &target])
+        .current_dir(&fuzz_dir)
+        .spawn()
+        .context(format!("error starting {:?} to run {}", fuzzer, target))?
+        .wait()
+        .context(format!(
+            "error while waiting for {:?} running {}",
+            fuzzer, target
+        ));
+
+    let target_dir = fuzz_dir.join("fuzz_targets");
+
+    let path = target_dir.join(&format!("{}.rs", target));
+
+    let mut file = fs::OpenOptions::new()
+        .write(true)
+        .create(true)
+        .truncate(true)
+        .open(&path)
+        .context(format!(
+            "write_libfuzzer_target error writing fuzz target binary {}",
+            path.display()
+        ))?;
+
+    let source = template.replace("###TARGET###", &target);
+    file.write_all(source.as_bytes())?;
+    Ok(())
+}
+
 fn run_libfuzzer(target: &str, timeout: Option<i32>) -> Result<(), Error> {
     let fuzzer = Fuzzer::Libfuzzer;
-    write_fuzzer_target(fuzzer, target)?;
-    let dir = fuzzer.dir()?;
+    write_libfuzzer_target(fuzzer, target)?;
 
-    let seed_dir = create_wasm_dir()?;
-    let corpus_dir = create_corpus_dir(&dir, target)?;
-
-    #[cfg(target_os = "macos")]
-    let target_platform = "x86_64-apple-darwin";
-    #[cfg(target_os = "linux")]
-    let target_platform = "x86_64-unknown-linux-gnu";
-    #[cfg(not(any(target_os = "linux", target_os = "macos")))]
-    bail!("libfuzzer-sys only supports Linux and macOS");
-
-    let mut rust_flags = env::var("RUSTFLAGS").unwrap_or_default();
-    rust_flags.push_str(
-        " --cfg fuzzing \
-         -C passes=sancov \
-         -C llvm-args=-sanitizer-coverage-level=4 \
-         -C llvm-args=-sanitizer-coverage-trace-pc-guard \
-         -C llvm-args=-sanitizer-coverage-prune-blocks=0 \
-         -C debug-assertions=on \
-         -C debuginfo=0 \
-         -C opt-level=3 ",
-    );
-
-    let mut asan_options = env::var("ASAN_OPTIONS").unwrap_or_default();
-    asan_options.push_str(" detect_odr_violation=0 ");
+    let fuzz_dir = fuzzer.dir()?.join("fuzz");
 
     let max_time = if let Some(timeout) = timeout {
         format!("-max_total_time={}", timeout)
@@ -479,22 +500,12 @@ fn run_libfuzzer(target: &str, timeout: Option<i32>) -> Result<(), Error> {
         "".into()
     };
 
-    // Run the fuzzer using cargo
+    // TODO - fix maxtime
+    println!("{:?}", max_time);
+
     let fuzzer_bin = Command::new("cargo")
-        .args(&[
-            "run",
-            "--target",
-            &target_platform,
-            "--bin",
-            &target,
-            "--",
-            &max_time,
-        ])
-        .arg(&corpus_dir)
-        .arg(&seed_dir)
-        .env("RUSTFLAGS", &rust_flags)
-        .env("ASAN_OPTIONS", &asan_options)
-        .current_dir(&dir)
+        .args(&["-v", "fuzz", "run", &target])
+        .current_dir(&fuzz_dir)
         .spawn()
         .context(format!("error starting {:?} to run {}", fuzzer, target))?
         .wait()
@@ -506,11 +517,6 @@ fn run_libfuzzer(target: &str, timeout: Option<i32>) -> Result<(), Error> {
     if !fuzzer_bin.success() {
         Err(FuzzerQuit)?;
     }
-    println!(
-        "[WARF] {}: {} compiled",
-        fuzzer,
-        &format!("debug_{}", target)
-    );
     Ok(())
 }
 

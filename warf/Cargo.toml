@@ -17,7 +17,7 @@ strsim = "0.10.0"
 
 [workspace]
 members = [
-  "common",
+  "targets",
   "debug",
   "fuzzer-afl",
   "fuzzer-honggfuzz",

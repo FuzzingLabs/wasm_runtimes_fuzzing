@@ -1,0 +1,16 @@
+[package]
+name = "fuzz-targets-libfuzzer"
+version = "0.1.0"
+authors = ["Patrick Ventuzelo <ventuzelo.patrick@gmail.com>"]
+edition = "2018"
+
+[package.metadata]
+cargo-fuzz = true
+
+# Prevent this from interfering with workspaces
+[workspace]
+members = ["."]
+
+[dependencies]
+fuzz-targets = {path = "../../targets"}
+libfuzzer-sys = "0.3"
