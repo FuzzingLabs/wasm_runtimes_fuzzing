@@ -12,33 +12,59 @@ jobs:
     name: Rustfmt
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-      with:
-        submodules: true
-    - run: rustup component add rustfmt
-    - run: cd warf && make check-fmt
+      - uses: actions/checkout@v2
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: nightly
+            override: true
+            components: rustfmt, clippy
+
+      - name: Run cargo fmt
+        run: cd warf && make check-fmt
 
   build:
     name: Building warf cli
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Build
-      run: cd warf && make build
+      - uses: actions/checkout@v2
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: nightly
+            override: true
+            components: rustfmt, clippy
+
+      - name: Build
+        run: cd warf && make build
 
 
   build-docker:
     name: Building docker
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Build Docker
-      run: cd warf && make docker
+      - uses: actions/checkout@v2
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: nightly
+            override: true
+            components: rustfmt, clippy
+
+      - name: Build Docker
+        run: cd warf && make docker
 
   test-debug:
     name: Compile one debug target and run it 
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Test
-      run: cd warf && make test-debug
+      - uses: actions/checkout@v2
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: nightly
+            override: true
+            components: rustfmt, clippy
+
+      - name: Test
+        run: cd warf && make test-debug
