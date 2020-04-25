@@ -210,28 +210,10 @@ fn corpora_dir() -> Result<PathBuf, Error> {
     Ok(p)
 }
 
-/*
-fn create_seed_dir(target: &str) -> Result<PathBuf, Error> {
-    let seed_dir = targets_dir()?.join("seeds").join(&target);
-    fs::create_dir_all(&seed_dir).context(format!("unable to create seed dir for {}", target))?;
-    Ok(seed_dir)
-}
-*/
-
 fn create_wasm_dir() -> Result<PathBuf, Error> {
     let seed_dir = corpora_dir()?.join("wasm");
     fs::create_dir_all(&seed_dir).context(format!("unable to create corpora/wasm dir"))?;
     Ok(seed_dir)
-}
-
-fn create_corpus_dir(base: &Path, target: &str) -> Result<PathBuf, Error> {
-    let corpus_dir = base.join(&format!("corpus-{}", target));
-    fs::create_dir_all(&corpus_dir).context(format!(
-        "unable to create corpus dir for {}{}",
-        base.display(),
-        target
-    ))?;
-    Ok(corpus_dir)
 }
 
 fn get_targets() -> Result<Vec<String>, Error> {
@@ -634,7 +616,7 @@ impl Fuzzer {
 
     fn work_dir(&self) -> Result<PathBuf, Error> {
         let cwd = env::current_dir().context("error getting current directory")?;
-        let cwd = cwd.join("fuzzing_workspace");
+        let cwd = cwd.join("workspace");
 
         use Fuzzer::*;
         let p = match self {

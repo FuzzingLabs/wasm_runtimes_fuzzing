@@ -12,6 +12,7 @@ check-fmt:
 
 # Clean generated fuzz target harnesses
 clean:
+	rm -rf debug/src/bin/*
 	rm -rf fuzzer-afl/src/bin/*
 	rm -rf fuzzer-honggfuzz/src/bin/*
 	# todo for libfuzzer
@@ -21,24 +22,26 @@ clean-all: clean
 	rm -rf target/
 	rm -rf fuzzer-honggfuzz/hfuzz_target/
 
+# Update rust fuzzers (afl, honggfuzz and libfuzzer) to last version
+update:
+	cargo +nightly install --force honggfuzz
+	cargo +nightly install --force cargo-fuzz
+	cargo +nightly install --force afl
+
 #
-# Testing utils
+# Testing warf cli sub-commands
 #
 test-debug: build
 	./warf debug wasmparser_parser
 	./target/debug/debug_wasmparser_parser workspace/corpora/wasm/fib.wasm
 
-test-libfuzzer: build
-	./warf debug wasmparser_parser --fuzzer libfuzzer
+test-continuously-all: build
+	./warf continuously -t 2 --fuzzer libfuzzer
+	./warf continuously -t 2 --fuzzer honggfuzz
+	./warf continuously -t 2 --fuzzer afl
 
-test-hfuzz: build
-	./warf target wasmparser_parser --fuzzer honggfuzz
-
-test-afl: build
-	./warf target wasmparser_parser --fuzzer afl
-
-# TODO - add more stuff here
-test-all: build test-debug
+# TODO - test more stuff here
+test-all: build test-debug test-continuously-all
 
 #
 # User utils
