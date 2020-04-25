@@ -7,7 +7,7 @@ fmt:
 	cargo fmt --all
 
 # Check code quality with rust fmt
-precommit:
+check-fmt:
 	cargo fmt --all -- --check
 
 # Clean generated fuzz target harnesses
