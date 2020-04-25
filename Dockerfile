@@ -34,6 +34,6 @@ WORKDIR /warf
 COPY ./warf /warf
 
 # Build the CLI tool
-RUN cargo +nightly build
+make build
 
-ENTRYPOINT ["./target/debug/warf"]
+ENTRYPOINT ["./warf"]

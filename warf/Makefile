@@ -19,7 +19,7 @@ clean:
 # Clean generated fuzz target harnesses
 clean-all: clean
 	rm -rf target/
-	rm -rf  fuzzer-honggfuzz/hfuzz_target/
+	rm -rf fuzzer-honggfuzz/hfuzz_target/
 
 #
 # Testing utils
