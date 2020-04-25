@@ -293,6 +293,10 @@ fn prepare_fuzzer_workspace(fuzzer: Fuzzer, out_dir: &str) -> Result<(), Error> 
         hfuzz_dir.join("Cargo.toml"),
     )?;
     fs::copy(
+        fuzzer.dir()?.join("template.rs"),
+        hfuzz_dir.join("template.rs"),
+    )?;
+    fs::copy(
         fuzzer.dir()?.join("src").join("lib.rs"),
         src_dir.join("lib.rs"),
     )?;
@@ -448,10 +452,10 @@ fn build_libfuzzer() -> Result<(), Error> {
 fn write_libfuzzer_target(fuzzer: Fuzzer, target: &str) -> Result<(), Error> {
     use std::io::Write;
 
-    let fuzz_dir = fuzzer.dir()?.join("fuzz");
-    println!("{:?}", fuzz_dir);
+    let fuzz_dir = fuzzer.work_dir()?.join("fuzz");
+    let target_dir = fuzz_dir.join("fuzz_targets");
 
-    let template_path = fuzzer.dir()?.join("template.rs");
+    let template_path = fuzzer.work_dir()?.join("template.rs");
     let template = fs::read_to_string(&template_path).context(format!(
         "error reading template file {}",
         template_path.display()
@@ -492,9 +496,40 @@ fn write_libfuzzer_target(fuzzer: Fuzzer, target: &str) -> Result<(), Error> {
 
 fn run_libfuzzer(target: &str, timeout: Option<i32>) -> Result<(), Error> {
     let fuzzer = Fuzzer::Libfuzzer;
-    write_libfuzzer_target(fuzzer, target)?;
 
-    let fuzz_dir = fuzzer.dir()?.join("fuzz");
+    // create afl folder inside workspace/
+    prepare_fuzzer_workspace(fuzzer, "libfuzzer")?;
+
+    let fuzz_dir = fuzzer.work_dir()?.join("fuzz");
+    fs::create_dir_all(&fuzz_dir)
+        .context(format!("unable to create {} dir", fuzz_dir.display()))?;
+
+    let target_dir = fuzz_dir.join("fuzz_targets");
+
+    fs::remove_dir_all(&target_dir).context(format!(
+        "error removing {}",
+        target_dir.display()
+    ))?;
+    fs::create_dir_all(&target_dir)
+        .context(format!("unable to create {} dir", target_dir.display()))?;
+
+
+    fs::create_dir_all(&fuzz_dir)
+        .context(format!("unable to create {} dir", fuzz_dir.display()))?;
+    //println!("{:?}", fuzz_dir);
+
+    fs::copy(
+        fuzzer.dir()?.join("fuzz").join("Cargo.toml"),
+        fuzz_dir.join("Cargo.toml"),
+    )?;
+
+
+
+    for target in &get_targets()? {
+        write_libfuzzer_target(fuzzer, target)?;
+    }
+
+    let fuzz_dir = fuzzer.work_dir()?.join("fuzz");
 
     let max_time = if let Some(timeout) = timeout {
         format!("-max_total_time={}", timeout)
@@ -505,8 +540,10 @@ fn run_libfuzzer(target: &str, timeout: Option<i32>) -> Result<(), Error> {
     // TODO - fix maxtime
     println!("{:?}", max_time);
 
+    let corpus_dir = wasm_dir()?;
     let fuzzer_bin = Command::new("cargo")
-        .args(&["-v", "fuzz", "run", &target])
+        .args(&["fuzz", "run", &target])
+        .arg(&corpus_dir)
         .current_dir(&fuzz_dir)
         .spawn()
         .context(format!("error starting {:?} to run {}", fuzzer, target))?

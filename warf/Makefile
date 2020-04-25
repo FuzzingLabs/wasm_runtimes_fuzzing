@@ -17,10 +17,12 @@ clean:
 	rm -rf fuzzer-honggfuzz/src/bin/*
 	# todo for libfuzzer
 
-# Clean generated fuzz target harnesses
+# Clean all generated fuzz target harnesses
 clean-all: clean
 	rm -rf target/
-	rm -rf fuzzer-honggfuzz/hfuzz_target/
+	rm -rf workspace/afl/target/
+	rm -rf workspace/hfuzz/hfuzz_target/
+	rm -rf workspace/libfuzzer/fuzz/target/
 
 # Update rust fuzzers (afl, honggfuzz and libfuzzer) to last version
 update:
@@ -33,7 +35,7 @@ update:
 #
 test-debug: build
 	./warf debug wasmparser_parser
-	./target/debug/debug_wasmparser_parser workspace/corpora/wasm/fib.wasm
+	./workspace/debug/target/debug/debug_wasmparser_parser workspace/corpora/wasm/fib.wasm
 
 test-continuously-all: build
 	./warf continuously -t 2 --fuzzer libfuzzer
