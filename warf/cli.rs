@@ -524,7 +524,8 @@ fn run_libfuzzer(target: &str, timeout: Option<i32>) -> Result<(), Error> {
 
     let target_dir = fuzz_dir.join("fuzz_targets");
 
-    fs::remove_dir_all(&target_dir).context(format!("error removing {}", target_dir.display()))?;
+    let _ =
+        fs::remove_dir_all(&target_dir).context(format!("error removing {}", target_dir.display()));
     fs::create_dir_all(&target_dir)
         .context(format!("unable to create {} dir", target_dir.display()))?;
 
