@@ -6,6 +6,7 @@ extern crate clap;
 #[macro_use]
 extern crate failure;
 extern crate regex;
+extern crate fs_extra;
 
 use std::env;
 use std::ffi::OsStr;
@@ -278,6 +279,19 @@ fn build_honggfuzz() -> Result<(), Error> {
     Ok(())
 }
 
+fn prepare_target_workspace() -> Result<(), Error> {
+    use fs_extra::dir::{CopyOptions, copy};
+    let from = targets_dir()?;
+    let workspace = workspace_dir()?;
+
+    let mut options = CopyOptions::new();
+    options.overwrite = true;
+    options.skip_exist = true;
+    options.copy_inside = true;
+    copy(from, workspace, &options)?;
+    Ok(())
+}
+
 fn prepare_fuzzer_workspace(fuzzer: Fuzzer, out_dir: &str) -> Result<(), Error> {
     let dir = root_dir()?.join("workspace");
 
@@ -309,6 +323,7 @@ fn run_honggfuzz(target: &str, timeout: Option<i32>) -> Result<(), Error> {
     let dir = fuzzer.work_dir()?;
     let corpora_dir = wasm_dir()?;
 
+    prepare_target_workspace()?;
     // create hfuzz folder inside workspace/
     prepare_fuzzer_workspace(fuzzer, "hfuzz")?;
     // write all fuzz targets inside hfuzz folder
@@ -329,6 +344,7 @@ fn run_honggfuzz(target: &str, timeout: Option<i32>) -> Result<(), Error> {
     let fuzzer_bin = Command::new("cargo")
         .args(&["hfuzz", "run", &target])
         .env("HFUZZ_RUN_ARGS", &args)
+        //.env("HFUZZ_BUILD_ARGS", "opt-level=3")
         .env("HFUZZ_INPUT", corpora_dir) // todo - replace with wasm_folder
         .current_dir(&dir)
         .spawn()
@@ -357,6 +373,7 @@ fn build_targets_afl() -> Result<(), Error> {
 fn build_afl(target: &str) -> Result<(), Error> {
     let fuzzer = Fuzzer::Afl;
 
+    prepare_target_workspace()?;
     // create afl folder inside workspace/
     prepare_fuzzer_workspace(fuzzer, "afl")?;
 
@@ -497,6 +514,7 @@ fn write_libfuzzer_target(fuzzer: Fuzzer, target: &str) -> Result<(), Error> {
 fn run_libfuzzer(target: &str, timeout: Option<i32>) -> Result<(), Error> {
     let fuzzer = Fuzzer::Libfuzzer;
 
+    prepare_target_workspace()?;
     // create afl folder inside workspace/
     prepare_fuzzer_workspace(fuzzer, "libfuzzer")?;
 
@@ -614,6 +632,7 @@ fn prepare_debug_workspace(out_dir: &str) -> Result<(), Error> {
 fn run_debug(target: &str) -> Result<(), Error> {
     let debug_dir = root_dir()?.join("workspace").join("debug");
 
+    prepare_target_workspace()?;
     prepare_debug_workspace("debug")?;
 
     write_debug_target(debug_dir.clone(), target)?;
