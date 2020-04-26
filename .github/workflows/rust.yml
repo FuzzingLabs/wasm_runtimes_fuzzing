@@ -18,7 +18,7 @@ jobs:
         with:
             toolchain: nightly
             override: true
-            components: rustfmt, clippy
+            components: rustfmt
 
       - name: Run cargo fmt
         run: cd warf && make check-fmt
@@ -33,7 +33,6 @@ jobs:
         with:
             toolchain: nightly
             override: true
-            components: rustfmt, clippy
 
       - name: Build
         run: cd warf && make build
@@ -49,7 +48,6 @@ jobs:
         with:
             toolchain: nightly
             override: true
-            components: rustfmt, clippy
 
       - name: Build Docker
         run: cd warf && make docker
@@ -68,9 +66,9 @@ jobs:
 
       - name: Test debug
         run: cd warf && make test-debug
-  
-  test-fuzzers:
-    name: Run each fuzzing hardness on each fuzzer for 3 secs
+
+  test-libfuzzer:
+    name: Test libfuzzer
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -79,7 +77,34 @@ jobs:
         with:
             toolchain: nightly
             override: true
-            components: rustfmt, clippy
 
-      - name: Test all
-        run: cd warf && make test-continuously-all
+      - name: Test honggfuzz
+        run: cd warf && make test-libfuzzer
+
+  test-honggfuzz:
+    name: Test honggfuzz
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: nightly
+            override: true
+
+      - name: Test honggfuzz
+        run: cd warf && make test-honggfuzz
+
+  test-afl:
+    name: Test afl
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: nightly
+            override: true
+
+      - name: Test afl
+        run: cd warf && make test-afl
