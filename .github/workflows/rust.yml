@@ -95,7 +95,9 @@ jobs:
             override: true
 
       - name: install honggfuzz dependencies
-        run: sudo apt install -y build-essential binutils-dev libunwind-dev libblocksruntime-dev
+        run: |
+          sudo apt-get update
+          sudo apt install -y build-essential binutils-dev libunwind-dev libblocksruntime-dev
       - name: install honggfuzz
         run: cargo +nightly install --force honggfuzz
       - name: Test honggfuzz
@@ -113,7 +115,9 @@ jobs:
             override: true
 
       - name: install afl dependencies
-        run: sudo apt install -y build-essential libtool-bin python3 cmake automake bison libglib2.0-dev libpixman-1-dev clang python-setuptools
+        run: |
+          sudo apt-get update
+          sudo apt install -y build-essential libtool-bin python3 cmake automake bison libglib2.0-dev libpixman-1-dev clang python-setuptools
       - name: install afl
         run: cargo +nightly install --force afl
       - name: Test afl
