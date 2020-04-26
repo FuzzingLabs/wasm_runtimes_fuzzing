@@ -5,8 +5,8 @@ extern crate structopt;
 extern crate clap;
 #[macro_use]
 extern crate failure;
-extern crate regex;
 extern crate fs_extra;
+extern crate regex;
 
 use std::env;
 use std::ffi::OsStr;
@@ -280,7 +280,7 @@ fn build_honggfuzz() -> Result<(), Error> {
 }
 
 fn prepare_target_workspace() -> Result<(), Error> {
-    use fs_extra::dir::{CopyOptions, copy};
+    use fs_extra::dir::{copy, CopyOptions};
     let from = targets_dir()?;
     let workspace = workspace_dir()?;
 
