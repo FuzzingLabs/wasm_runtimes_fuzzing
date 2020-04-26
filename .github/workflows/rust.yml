@@ -68,5 +68,18 @@ jobs:
 
       - name: Test debug
         run: cd warf && make test-debug
+  
+  test-fuzzers:
+    name: Run each fuzzing hardness on each fuzzer for 3 secs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: nightly
+            override: true
+            components: rustfmt, clippy
+
       - name: Test all
         run: cd warf && make test-continuously-all
