@@ -66,5 +66,7 @@ jobs:
             override: true
             components: rustfmt, clippy
 
-      - name: Test
+      - name: Test debug
         run: cd warf && make test-debug
+      - name: Test all
+        run: cd warf && make test-continuously-all
