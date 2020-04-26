@@ -80,7 +80,7 @@ jobs:
   
       - name: install cargo-fuzz
         run: cargo +nightly install --force cargo-fuzz
-      - name: Test honggfuzz
+      - name: Test libfuzzer
         run: cd warf && make test-libfuzzer
 
   test-honggfuzz:
@@ -117,7 +117,7 @@ jobs:
       - name: install afl dependencies
         run: |
           sudo apt-get update
-          sudo apt install -y build-essential libtool-bin python3 cmake automake bison libglib2.0-dev libpixman-1-dev clang python-setuptools
+          sudo apt install -y llvm build-essential libtool-bin python3 cmake automake bison libglib2.0-dev libpixman-1-dev clang python-setuptools
       - name: install afl
         run: cargo +nightly install --force afl
       - name: Test afl
