@@ -49,15 +49,24 @@ test-debug: build
 	./warf debug wasmparser_parser
 	./workspace/debug/target/debug/debug_wasmparser_parser workspace/corpora/wasm/fib.wasm
 
-# Run each fuzzing hardness on each fuzzer for 3 secs
-# (Really) Heavy test
-test-continuously-all: build
+# Run all fuzzing hardness over libfuzzer
+test-libfuzzer: build
 	./warf continuously -t 3 --fuzzer libfuzzer
+
+# Run all fuzzing hardness over honggfuzz
+test-honggfuzz: build
 	./warf continuously -t 3 --fuzzer honggfuzz
+
+# Run all fuzzing hardness over afl
+test-afl: build
 	./warf continuously -t 3 --fuzzer afl
 
+# Run all tests
+# (Really) Heavy test
+test-fuzzers: test-libfuzzer test-honggfuzz test-afl
+
 # TODO - test more stuff here
-test-all: test-debug test-continuously-all
+test-all: test-debug test-fuzzers
 
 
 #
