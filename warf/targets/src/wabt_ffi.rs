@@ -28,5 +28,4 @@ pub fn fuzz_wabt_validate_ffi(data: &[u8]) {
     let _ = module.validate();
 }
 
-// TODO: Module::validate. - https://github.com/pepyakin/wabt-rs/blob/a8337f520b404fc09484654a4c6653ee078ac86b/src/lib.rs#L731
-// TODO: `Module::read_binary` / `wasm2wat::convert`.
+// TODO(RM4) - Module::parse_wat

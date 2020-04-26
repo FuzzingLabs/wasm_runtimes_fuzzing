@@ -27,4 +27,28 @@ pub fn fuzz_wasmparser_validate(data: &[u8]) {
     }
 }
 
-// TODO - wasmparser::ValidatingParserConfig
+/// Fuzzing `wasmparser::ValidatingParser` with all features enabled and loop to read all module.
+pub fn fuzz_wasmparser_validate_all_feat(data: &[u8]) {
+    use wasmparser::{
+        OperatorValidatorConfig, ParserState, ValidatingParser, ValidatingParserConfig, WasmDecoder,
+    };
+
+    // activate all features
+    let validator_config: Option<ValidatingParserConfig> = Some(ValidatingParserConfig {
+        operator_config: OperatorValidatorConfig {
+            enable_threads: true,
+            enable_reference_types: true,
+            enable_simd: true,
+            enable_bulk_memory: true,
+            enable_multi_value: true,
+        },
+    });
+
+    let mut parser = ValidatingParser::new(data, validator_config);
+    loop {
+        match *parser.read() {
+            ParserState::Error(..) | ParserState::EndWasm => break,
+            _ => (),
+        }
+    }
+}

@@ -5,7 +5,7 @@ In this example, we will learn how to add integrate `wasmer` to WARF and fuzz `w
 ## 1. Add the target to `Cargo.toml`
 
 First, we need to:
-- Open the file `warf/common/Cargo.toml`.
+- Open the file `warf/targets/Cargo.toml`.
 - Add `wasmer-runtime = "0.16.2"` to `dependencies` section.
 
 Example:
@@ -17,16 +17,30 @@ wasmer-runtime = "0.16.2"
 ## 2. Create the fuzzing function.
 
 Secondly, we need to create our fuzzing function:
-- Open the file `warf/common/src/lib.rs`.
-- Create a new function starting with the name `fuzz_` followed by target name.
+- Create a new file inside `warf/targets/src/` (e.g `wasmer.rs`)
+- Create a new public function.
 - You can add `extern crate` inside the function but it's not always mandatory.
 - Call the targetted function and provide `data` to it.
 
 Example:
 ``` rust
-pub fn fuzz_wasmer_validate(data: &[u8]) {
+pub fn wasmer_validate(data: &[u8]) {
 	extern crate wasmer_runtime;
     let _ = wasmer_runtime::validate(&data);
+}
+```
+
+Finally, make this function pujblic for fuzzers:
+- Open the file `warf/targets/src/lib.rs`.
+- add `mod` followed by the name of your previous file.
+- add a public function starting with the name `fuzz_` followed by target name.
+- Inside this function, call the function you want to fuzz inside `wasmer.rs`
+
+Example:
+``` rust
+mod wasmer;
+pub fn fuzz_wasmer_validate(data: &[u8]) {
+    wasmer::wasmer_validate(data);
 }
 ```
 
@@ -45,7 +59,7 @@ wasmer_validate
 Verify that your target is working properly using the warf `debug` subcommand. 
 
 ``` sh
-$ cargo run debug wasmer_validate
+$ ./warf debug wasmer_validate
 [...]
 Finished dev [unoptimized + debuginfo] target(s) in 2.47s
 $ ./target/debug/debug_wasmer_validate ../corpora/fib.wasm
@@ -58,5 +72,5 @@ Everything is OK
 
 ``` sh
 # default fuzzing engine is honggfuzz
-$ cargo run target wasmer_validate
+$ ./warf target wasmer_validate
 ```

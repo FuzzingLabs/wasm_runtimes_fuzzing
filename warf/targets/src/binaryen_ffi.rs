@@ -12,4 +12,16 @@ pub fn fuzz_binaryen_ffi(data: &[u8]) {
     let _ = Module::read(&data);
 }
 
-// TODO - binaryen::Module::optimize i.e. wasm-opt
+pub fn fuzz_binaryen_optimize_ffi(data: &[u8]) {
+    use binaryen::{CodegenConfig, Module};
+    let config = CodegenConfig {
+        optimization_level: 4,
+        shrink_level: 0,
+        debug_info: true,
+    };
+    let mut module = match Module::read(&data) {
+        Ok(o) => o,
+        Err(_) => return,
+    };
+    module.optimize(&config);
+}

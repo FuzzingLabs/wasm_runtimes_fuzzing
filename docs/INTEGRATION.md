@@ -13,16 +13,12 @@ Regarding APIs, we will focus first on apis in charge of the following operation
 
 Those projects **are already** supported/integrated.
 
-- TODO
-
-
-# Projects to be integrated.
-
-Those projects **will be** supported/integrated.
-
 ## wasmi (Rust)
 
 Wasm interpreter in Rust: [github](https://github.com/paritytech/wasmi) / [documentation](https://paritytech.github.io/wasmi/wasmi/index.html)
+
+<details><summary>Details</summary>
+<p>
 
 - APIs:
 	- `wasmi::Module::from_buffer`: Load, validate and prepare a `parity_wasm`'s `Module`. - [impl](https://github.com/paritytech/wasmi/blob/b67af25899874de7aac187e08e3b2a30d9bbc388/src/lib.rs#L426)
@@ -35,10 +31,15 @@ Wasm interpreter in Rust: [github](https://github.com/paritytech/wasmi) / [docum
 	- [fuzzing](https://github.com/paritytech/wasmi/blob/master/hfuzz/src/main.rs)
 	- [fuzzing](https://github.com/paritytech/wasmi/tree/master/fuzz/fuzz_targets)
 
+</p>
+</details>
+
 ## wasmtime (Rust)
 
 Standalone JIT-style runtime for WebAssembly: [github](https://github.com/bytecodealliance/wasmtime) / [guide](https://bytecodealliance.github.io/wasmtime/)
 
+<details><summary>Details</summary>
+<p>
 
 - backends:
 	- [cranelift](https://github.com/bytecodealliance/wasmtime/tree/master/cranelift)
@@ -54,9 +55,17 @@ Standalone JIT-style runtime for WebAssembly: [github](https://github.com/byteco
 	- [examples](https://github.com/bytecodealliance/wasmtime/tree/master/examples)
 	- [fuzzing](https://github.com/bytecodealliance/wasmtime/tree/master/fuzz)
 
+</p>
+</details>
+
+
 ## wasmer (Rust)
 
 Standalone WebAssembly runtime: [github](https://github.com/wasmerio/wasmer) / [documentation](https://docs.wasmer.io/)
+
+
+<details><summary>Details</summary>
+<p>
 
 - backends:
 	- [singlepass](https://github.com/wasmerio/wasmer/tree/master/lib/singlepass-backend)
@@ -75,9 +84,16 @@ Standalone WebAssembly runtime: [github](https://github.com/wasmerio/wasmer) / [
 	- [fuzzing](https://github.com/wasmerio/wasmer/tree/master/fuzz)
 	- [fuzzing](https://github.com/wasmerio/wasm-fuzz)
 
+</p>
+</details>
+
+
 ## parity-wasm (Rust)
 
 WebAssembly serialization/deserialization in rust: [github](https://github.com/paritytech/parity-wasm) / [documentation](https://docs.rs/parity-wasm/0.41.0/parity_wasm/)
+
+<details><summary>Details</summary>
+<p>
 
 - APIs:
 	- `parity_wasm::deserialize_file`: module parsing - [test](https://github.com/paritytech/parity-wasm/blob/master/src/elements/module.rs#L650-L656)
@@ -89,9 +105,15 @@ WebAssembly serialization/deserialization in rust: [github](https://github.com/p
 	- [examples](https://github.com/paritytech/parity-wasm/tree/master/examples)
 	- [fuzzing](https://github.com/paritytech/parity-wasm/blob/master/fuzz/fuzz_targets/deserialize.rs)
 
+</p>
+</details>
+
 ## wasmparser (Rust)
 
 A simple event-driven library for parsing WebAssembly binary files: [github](https://github.com/bytecodealliance/wasmparser) / [documentation](https://docs.rs/wasmparser/0.51.4/wasmparser/)
+
+<details><summary>Details</summary>
+<p>
 
 - APIs:
 	- `wasmparser::Parser`: Event-driven parser of WebAssembly binary - [impl](https://github.com/bytecodealliance/wasmparser/blob/master/src/parser.rs#L212)
@@ -103,9 +125,15 @@ A simple event-driven library for parsing WebAssembly binary files: [github](htt
 	- [examples](https://github.com/bytecodealliance/wasmparser/tree/master/examples)
 	- [fuzzing](https://github.com/bytecodealliance/wasmparser/tree/master/fuzz/fuzz_targets)
 
+</p>
+</details>
+
 ## binaryen (C++/Rust)
 
 Compiler infrastructure and toolchain: [github](https://github.com/WebAssembly/binaryen) / [rust bindings](https://github.com/pepyakin/binaryen-rs)
+
+<details><summary>Details</summary>
+<p>
 
 - Rust APIs:
 	- `binaryen::Module::read`: Deserialize a module from binary form. - [impl](https://github.com/pepyakin/binaryen-rs/blob/abe2babb2d1d8e88a5f2aa47fb6e24393e19e8c0/src/lib.rs#L64)
@@ -115,9 +143,15 @@ Compiler infrastructure and toolchain: [github](https://github.com/WebAssembly/b
 - Rust examples:
 	- [examples](https://github.com/pepyakin/binaryen-rs/tree/abe2babb2d1d8e88a5f2aa47fb6e24393e19e8c0/examples)
 
+</p>
+</details>
+
 ## wabt (C++/Rust)
 
-- [wabt](https://github.com/WebAssembly/wabt) - The WebAssembly Binary Toolkit - [rust bindings](https://github.com/pepyakin/wabt-rs)
+The WebAssembly Binary Toolkit - [github](https://github.com/WebAssembly/wabt) / [rust bindings](https://github.com/pepyakin/wabt-rs)
+
+<details><summary>Details</summary>
+<p>
 
 - Rust Apis:
 	- `Module`: WebAssembly module. (take a `Features` struct - possible to active `enable_all`(https://github.com/pepyakin/wabt-rs/blob/master/src/lib.rs#L182))
@@ -128,14 +162,22 @@ Compiler infrastructure and toolchain: [github](https://github.com/WebAssembly/b
 	- `wat2wasm`: Translate wasm text source to wasm binary format. - NOT A PRIORITY TO IMPLEMENT - [doc](https://docs.rs/wabt/0.9.2/wabt/fn.wat2wasm.html)
 	- `wat2wasm_with_features`: Translate wasm text source to wasm binary format with the given features. - NOT A PRIORITY TO IMPLEMENT - [doc](https://docs.rs/wabt/0.9.2/wabt/fn.wat2wasm_with_features.html)
 
-
 - Rust examples:
 	- [examples](https://github.com/pepyakin/wabt-rs/blob/a8337f520b404fc09484654a4c6653ee078ac86b/src/lib.rs#L1111)
+
+</p>
+</details>
+
+
+# Projects to be integrated in the future.
+
+Those projects **will be** supported/integrated in the future.
+
+- [wasm3](https://github.com/wasm3/wasm3) - high performance WebAssembly interpreter written in C. - [rust bindings](https://github.com/Veykril/wasm3-rs)
 
 # Projects potentially integrated.
 
 Those projects **will be potentially** supported/integrated in the future.
 
-- [wasm3](https://github.com/wasm3/wasm3) - high performance WebAssembly interpreter written in C. - [rust bindings](https://github.com/Veykril/wasm3-rs)
 - [WAVM](https://github.com/WAVM/WAVM) - WebAssembly Virtual Machine in C++.
 - [webassemblyjs](https://github.com/xtuc/webassemblyjs) - Toolchain for WebAssembly in JavaScript.

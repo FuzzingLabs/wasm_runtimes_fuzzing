@@ -31,14 +31,23 @@ mod wasmtime;
 pub fn fuzz_wasmtime_validate(data: &[u8]) {
     wasmtime::fuzz_wasmtime_validate(data);
 }
+pub fn fuzz_wasmtime_validate_all_feat(data: &[u8]) {
+    wasmtime::fuzz_wasmtime_validate_all_feat(data);
+}
 pub fn fuzz_wasmtime_compile(data: &[u8]) {
     wasmtime::fuzz_wasmtime_compile(data);
 }
-pub fn fuzz_wasmtime_all_cranelift(data: &[u8]) {
-    wasmtime::fuzz_wasmtime_all_cranelift(data);
+pub fn fuzz_wasmtime_compile_all_cranelift(data: &[u8]) {
+    wasmtime::fuzz_wasmtime_compile_all_cranelift(data);
 }
-pub fn fuzz_wasmtime_all_lightbeam(data: &[u8]) {
-    wasmtime::fuzz_wasmtime_all_lightbeam(data);
+pub fn fuzz_wasmtime_compile_all_lightbeam(data: &[u8]) {
+    wasmtime::fuzz_wasmtime_compile_all_lightbeam(data);
+}
+pub fn fuzz_wasmtime_instantiate_all_cranelift(data: &[u8]) {
+    wasmtime::fuzz_wasmtime_instantiate_all_cranelift(data);
+}
+pub fn fuzz_wasmtime_instantiate_all_lightbeam(data: &[u8]) {
+    wasmtime::fuzz_wasmtime_instantiate_all_lightbeam(data);
 }
 
 mod lightbeam;
@@ -53,10 +62,16 @@ pub fn fuzz_wasmparser_parser(data: &[u8]) {
 pub fn fuzz_wasmparser_validate(data: &[u8]) {
     wasmparser::fuzz_wasmparser_validate(data);
 }
+pub fn fuzz_wasmparser_validate_all_feat(data: &[u8]) {
+    wasmparser::fuzz_wasmparser_validate_all_feat(data);
+}
 
 mod binaryen_ffi;
 pub fn fuzz_binaryen_ffi(data: &[u8]) {
     binaryen_ffi::fuzz_binaryen_ffi(data);
+}
+pub fn fuzz_binaryen_optimize_ffi(data: &[u8]) {
+    binaryen_ffi::fuzz_binaryen_optimize_ffi(data);
 }
 
 mod wabt_ffi;
@@ -67,4 +82,6 @@ pub fn fuzz_wabt_validate_ffi(data: &[u8]) {
     wabt_ffi::fuzz_wabt_validate_ffi(data);
 }
 
-// mod cranelift
+// TODO(RM4) - mod cranelift
+
+// TODO(RM3) - https://docs.rs/wast/14.0.0/wast/index.html
