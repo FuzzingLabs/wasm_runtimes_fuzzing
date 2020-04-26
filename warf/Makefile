@@ -1,4 +1,20 @@
 #
+# User utils
+#
+
+# Build the project locally
+build:
+	cargo +nightly build --release --out-dir=. -Z unstable-options
+
+# Build the docker
+docker:
+	cd .. && docker build . -t warf
+
+# Create an initial corpora of wasm modules
+corpora:
+	echo "TODO ../script/"
+
+#
 # Developer utils
 #
 
@@ -6,19 +22,12 @@
 fmt:
 	cargo fmt --all
 
-# Check code style quickly by running `rustfmt` over all code
-check-fmt:
-	cargo fmt --all -- --check
-
-# Clean generated fuzz target harnesses
+# Clean only warf target
 clean:
-	rm -rf debug/src/bin/*
-	rm -rf fuzzer-afl/src/bin/*
-	rm -rf fuzzer-honggfuzz/src/bin/*
-	# todo for libfuzzer
+	rm -rf target/
 
 # Clean all generated fuzz target harnesses
-clean-all: clean
+clean-all:
 	rm -rf target/
 	rm -rf workspace/afl/target/
 	rm -rf workspace/hfuzz/hfuzz_target/
@@ -31,32 +40,30 @@ update:
 	cargo +nightly install --force afl
 
 #
-# Testing warf cli sub-commands
+# Testing utils
+# warf cli sub-commands
 #
+
+# Compile one debug tool and run a simple wasm to it
 test-debug: build
 	./warf debug wasmparser_parser
 	./workspace/debug/target/debug/debug_wasmparser_parser workspace/corpora/wasm/fib.wasm
 
+# Run each fuzzing hardness on each fuzzer for 3 secs
+# (Really) Heavy test
 test-continuously-all: build
-	./warf continuously -t 2 --fuzzer libfuzzer
-	./warf continuously -t 2 --fuzzer honggfuzz
-	./warf continuously -t 2 --fuzzer afl
+	./warf continuously -t 3 --fuzzer libfuzzer
+	./warf continuously -t 3 --fuzzer honggfuzz
+	./warf continuously -t 3 --fuzzer afl
 
 # TODO - test more stuff here
-test-all: build test-debug test-continuously-all
+test-all: test-debug test-continuously-all
+
 
 #
-# User utils
+# CI utils
 #
 
-# Create an initial corpora of wasm modules
-corpora:
-	echo "TODO ../script/"
-
-# Build the docker
-docker:
-	cd .. && docker build . -t warf
-
-# Build the project locally
-build:
-	cargo +nightly build --release --out-dir=. -Z unstable-options
+# Check code style quickly by running `rustfmt` over all code
+check-fmt:
+	cargo fmt --all -- --check

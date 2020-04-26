@@ -9,13 +9,13 @@
 
 ## Roadmap #2
 
-1.	Runtimes Integration / Integration of main runtimes engines. [WIP](../warf/targets/src/lib.rs)
+1.	Runtimes Integration / Integration of main runtimes engines. - [WIP](../warf/targets/src/lib.rs)
 2.	CLI tool / Command line tool allowing execution of wasm modules through all runtimes. (using new subcommand) ?
 3.	Project development / Improvement of the project (threading, runtimes perf monitoring)
-4.	Project development / Development of fuzzing harness per runtimes. [DONE](../warf/targets/src/)
-5.	Runtimes dockers / Dockers to install runtimes engines easily [DONE](../Dockerfile)
-6.	Delivery reports / Tutorial for runtimes installation, compilation, how to run tools and unittests [WIP](../README.md) / [WIP](../docs/)
-7.	Unittest / Unittest to verify runtimes engines work as expected
+4.	Project development / Development of fuzzing harness per runtimes. - [DONE](../warf/targets/src/)
+5.	Runtimes dockers / Dockers to install runtimes engines easily - [DONE](../Dockerfile)
+6.	Delivery reports / Tutorial for runtimes installation, compilation, how to run tools and unittests - [WIP](../README.md) / [WIP](../docs/)
+7.	Unittest / Unittest to verify runtimes engines work as expected - [DONE](../warf/Makefile)
 
 ## Roadmap #3
 

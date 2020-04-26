@@ -181,3 +181,4 @@ Those projects **will be potentially** supported/integrated in the future.
 
 - [WAVM](https://github.com/WAVM/WAVM) - WebAssembly Virtual Machine in C++.
 - [webassemblyjs](https://github.com/xtuc/webassemblyjs) - Toolchain for WebAssembly in JavaScript.
+- [wagon](https://github.com/go-interpreter/wagon) - WebAssembly-based Go interpreter, for Go.
