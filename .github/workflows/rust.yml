@@ -9,7 +9,7 @@ on:
 jobs:
   # Check code style quickly by running `rustfmt` over all code
   rustfmt:
-    name: Rustfmt
+    name: Check Rust fmt
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -37,7 +37,7 @@ jobs:
       - name: Build
         run: cd warf && make build
 
-
+# Try to compile the dockerfile
   build-docker:
     name: Building docker
     runs-on: ubuntu-latest
@@ -52,8 +52,9 @@ jobs:
       - name: Build Docker
         run: cd warf && make docker
 
+  # Try to compile one debug target and run it 
   test-debug:
-    name: Compile one debug target and run it 
+    name: Test one debug target
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -67,6 +68,7 @@ jobs:
       - name: Test debug
         run: cd warf && make test-debug
 
+  # Try to run all target over libfuzzer
   test-libfuzzer:
     name: Test libfuzzer
     runs-on: ubuntu-latest
@@ -83,6 +85,7 @@ jobs:
       - name: Test libfuzzer
         run: cd warf && make test-libfuzzer
 
+  # Try to run all target over honggfuzz
   test-honggfuzz:
     name: Test honggfuzz
     runs-on: ubuntu-latest
@@ -103,6 +106,7 @@ jobs:
       - name: Test honggfuzz
         run: cd warf && make test-honggfuzz
 
+  # Try to run all target over afl
   test-afl:
     name: Test afl
     runs-on: ubuntu-latest
