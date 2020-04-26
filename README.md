@@ -4,14 +4,16 @@ Goal of this project is to improve security and resilience of WebAssembly VMs/ru
 
 ## Quick Start
 
+- Install Rust nightly
+``` sh
+# Install Rust and Cargo
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain nightly
+```
+
 - Install system dependencies (Ubuntu/Debian):
 ``` sh
 # Install LLVM
 sudo apt install -y llvm curl
-# Install Rust and Cargo
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain nightly
-# It's better to install fuzzers using nightly compiler
-rustup override set nightly
 # Install honggfuzz-rs and subcommand in cargo
 sudo apt install -y build-essential binutils-dev libunwind-dev libblocksruntime-dev
 cargo +nightly install --force honggfuzz
@@ -19,18 +21,24 @@ cargo +nightly install --force honggfuzz
 cargo +nightly install --force cargo-fuzz
 # Install afl-rs and subcommand in cargo
 sudo apt install -y build-essential libtool-bin python3 cmake automake bison libglib2.0-dev libpixman-1-dev clang python-setuptools
-cargo +nightly install --force 
+cargo +nightly install --force afl
+```
 
+- Build warf:
+``` sh
 # Install WARF
 git clone --depth 1 https://github.com/pventuzelo/wasm_runtimes_fuzzing
 cd wasm_runtimes_fuzzing/warf
+
+make build
+# or using Docker
+make docker
 ```
 
-- Build & run the project:
+- Run warf cli:
 ``` sh
-make build
-# Run warf cli
 ./warf
+# docker run -it warf list-targets
 
 warf 0.1.0
 WARF - WebAssembly Runtimes Fuzzing project
@@ -50,30 +58,25 @@ SUBCOMMANDS:
     target          Run one target with specific fuzzer
 ```
 
-- Testing:
+- List fuzzing targets:
 ``` sh
 # List all targets
 ./warf list-targets
+# using docker run -it warf list-targets
+
 wasmi_validate
 wasmi_instantiate
 parity_wasm_deserialize
-wasmer_validate
-wasmer_compile_clif
-wasmer_compile_singlepass
-wasmer_instantiate
-wasmtime_validate
-wasmtime_compile
-wasmtime_all_cranelift
-wasmtime_all_lightbeam
-lightbeam_translate
-wasmparser_parser
-wasmparser_validate
+[...]
 binaryen_ffi
 wabt_wasm2wat_all_feat_ffi
 wabt_validate_ffi
+```
 
-# Run wasmer_validate fuzzer (honggfuzz)
+- Run fuzzing on a target:
+``` sh
 ./warf target wasmer_validate
+
 [...]
 
 ------------------------[  0 days 00 hrs 00 mins 02 secs ]----------------------
@@ -92,21 +95,12 @@ Size:77 (i,b,hw,ed,ip,cmp): 0/0/0/1/0/0, Tot:0/0/0/3159/2/41623
 [...]
 ```
 
-- Using Docker
-```sh
-make docker
-docker run -it warf list-targets
-```
-
-
 Details about the different warf subcommands [here](docs/warf_cli_tutorial.md)
-
 
 # Future of the project
 
 Differents open-source projects (WebAssembly VMs/runtimes/parsers) will be integrated to WARF along the development.
 More details [here](docs/INTEGRATION.md)
-
 
 Global roadmap [here](docs/ROADMAP.md)
 

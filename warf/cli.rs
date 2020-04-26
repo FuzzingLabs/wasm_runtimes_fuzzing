@@ -557,6 +557,7 @@ fn run_libfuzzer(target: &str, timeout: Option<i32>) -> Result<(), Error> {
     let fuzzer_bin = Command::new("cargo")
         .args(&["fuzz", "run", &target])
         .arg(&corpus_dir)
+        .args(&["--", &max_time])
         .current_dir(&fuzz_dir)
         .spawn()
         .context(format!("error starting {:?} to run {}", fuzzer, target))?

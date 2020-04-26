@@ -51,15 +51,15 @@ test-debug: build
 
 # Run all fuzzing hardness over libfuzzer
 test-libfuzzer: build
-	./warf continuously -t 3 --fuzzer libfuzzer
+	./warf continuously -t 2 --fuzzer libfuzzer
 
 # Run all fuzzing hardness over honggfuzz
 test-honggfuzz: build
-	./warf continuously -t 3 --fuzzer honggfuzz
+	./warf continuously -t 2 --fuzzer honggfuzz
 
 # Run all fuzzing hardness over afl
 test-afl: build
-	./warf continuously -t 3 --fuzzer afl
+	./warf continuously -t 2 --fuzzer afl
 
 # Run all tests
 # (Really) Heavy test
