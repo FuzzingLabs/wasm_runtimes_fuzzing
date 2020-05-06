@@ -9,7 +9,7 @@ on:
 jobs:
   # Check code style quickly by running `rustfmt` over all code
   rustfmt:
-    name: Rustfmt
+    name: Check Rust fmt
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -38,7 +38,8 @@ jobs:
       - name: Build
         run: cd warf && make build
 
-  # Build warf docker
+# Try to compile the dockerfile
+
   build-docker:
     name: Building docker
     runs-on: ubuntu-latest
@@ -73,11 +74,12 @@ jobs:
           sudo apt install -y build-essential binutils-dev libunwind-dev libblocksruntime-dev
       - name: Install honggfuzz
         run: cargo +nightly install --force honggfuzz
-      - name: install afl dependencies
+      - name: Test honggfuzz
+      - name: Install afl dependencies
         run: |
           sudo apt-get update
-          sudo apt install -y build-essential libtool-bin python3 cmake automake bison libglib2.0-dev libpixman-1-dev clang python-setuptools
-      - name: install afl
+          sudo apt install -y llvm build-essential libtool-bin python3 cmake automake bison libglib2.0-dev libpixman-1-dev clang python-setuptools
+      - name: Install afl
         run: cargo +nightly install --force afl
       - name: Test All
         run: cd warf && make test-all
