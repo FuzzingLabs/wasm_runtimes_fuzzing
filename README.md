@@ -100,6 +100,7 @@ Details about the different warf subcommands [here](docs/warf_cli_tutorial.md)
 # Future of the project
 
 Differents open-source projects (WebAssembly VMs/runtimes/parsers) will be integrated to WARF along the development.
+
 More details [here](docs/INTEGRATION.md)
 
 Global roadmap [here](docs/ROADMAP.md)
