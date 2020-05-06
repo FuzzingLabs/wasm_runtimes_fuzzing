@@ -74,7 +74,6 @@ jobs:
           sudo apt install -y build-essential binutils-dev libunwind-dev libblocksruntime-dev
       - name: Install honggfuzz
         run: cargo +nightly install --force honggfuzz
-      - name: Test honggfuzz
       - name: Install afl dependencies
         run: |
           sudo apt-get update
