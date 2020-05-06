@@ -6,26 +6,26 @@ WASMTIME:
 use wasmtime::{Config, Engine, Instance, Module, Store, Strategy};
 
 /// Fuzzing `wasmtime::validate` with default Store/Config/Engine
-pub fn fuzz_wasmtime_validate(data: &[u8]) {
+pub fn fuzz_wasmtime_validate(data: &[u8]) -> bool {
     let store = Store::default();
-    let _module = Module::validate(&store, &data);
+    Module::validate(&store, &data).is_ok()
 }
 
 /// Fuzzing `wasmtime::validate` with all the features enabled
-pub fn fuzz_wasmtime_validate_all_feat(data: &[u8]) {
+pub fn fuzz_wasmtime_validate_all_feat(data: &[u8]) -> bool {
     let store = match get_store_all_feat(Strategy::Cranelift) {
-        None => return,
+        None => return false,
         Some(a) => a,
     };
-    let _module = Module::validate(&store, &data);
+    Module::validate(&store, &data).is_ok()
 }
 
 /// Fuzzing `wasmtime::Module` with default Store/Config/Engine
 ///
 /// NOTE: wasmtime::from_binary is also calling wasmtime::validate.
-pub fn fuzz_wasmtime_compile(data: &[u8]) {
+pub fn fuzz_wasmtime_compile(data: &[u8]) -> bool {
     let store = Store::default();
-    let _module = Module::from_binary(&store, &data);
+    Module::from_binary(&store, &data).is_ok()
 }
 
 /// Return a Store created with the given Strategy and with
@@ -52,51 +52,51 @@ fn get_store_all_feat(strategy: Strategy) -> Option<Store> {
 }
 
 /// Fuzzing `wasmtime::Module` with all wasm features and `Cranelift` backend.
-pub fn fuzz_wasmtime_compile_all_cranelift(data: &[u8]) {
+pub fn fuzz_wasmtime_compile_all_cranelift(data: &[u8]) -> bool {
     let store = match get_store_all_feat(Strategy::Cranelift) {
-        None => return,
+        None => return false,
         Some(a) => a,
     };
-    let _module = Module::from_binary(&store, &data);
+    Module::from_binary(&store, &data).is_ok()
 }
 
 /// Fuzzing `wasmtime::Module` with all wasm features and `Lightbeam` backend.
-pub fn fuzz_wasmtime_compile_all_lightbeam(data: &[u8]) {
+pub fn fuzz_wasmtime_compile_all_lightbeam(data: &[u8]) -> bool {
     let store = match get_store_all_feat(Strategy::Lightbeam) {
-        None => return,
+        None => return false,
         Some(a) => a,
     };
-    let _module = Module::from_binary(&store, &data);
+    Module::from_binary(&store, &data).is_ok()
 }
 
 /// Fuzzing `wasmtime::Instance` with all wasm features and `Cranelift` backend.
-pub fn fuzz_wasmtime_instantiate_all_cranelift(data: &[u8]) {
+pub fn fuzz_wasmtime_instantiate_all_cranelift(data: &[u8]) -> bool {
     let store = match get_store_all_feat(Strategy::Cranelift) {
-        None => return,
+        None => return false,
         Some(a) => a,
     };
     // Create a Module
     let module = match Module::from_binary(&store, &data) {
         Ok(a) => a,
-        _ => return,
+        _ => return false,
     };
-    let _instance = Instance::new(&module, &[]);
+    Instance::new(&module, &[]).is_ok()
     // TODO(RM4) - check parameter Instance
     // TODO(RM4) - Execute function of the module
 }
 
 /// Fuzzing `wasmtime::Instance` with all wasm features and `Lightbeam` backend.
-pub fn fuzz_wasmtime_instantiate_all_lightbeam(data: &[u8]) {
+pub fn fuzz_wasmtime_instantiate_all_lightbeam(data: &[u8]) -> bool {
     let store = match get_store_all_feat(Strategy::Lightbeam) {
-        None => return,
+        None => return false,
         Some(a) => a,
     };
     // Create a Module
     let module = match Module::from_binary(&store, &data) {
         Ok(a) => a,
-        _ => return,
+        _ => return false,
     };
-    let _instance = Instance::new(&module, &[]);
+    Instance::new(&module, &[]).is_ok()
     // TODO(RM4) - check parameter Instance
     // TODO(RM4) - Execute function of the module
 }

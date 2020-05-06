@@ -4,24 +4,24 @@ wasmi:
 ************************************************/
 
 /// Fuzzing `wasmi::validate_module`.
-pub fn fuzz_wasmi_validate(data: &[u8]) {
+pub fn wasmi_validate(data: &[u8]) -> bool {
     use parity_wasm::{deserialize_buffer, elements};
     use wasmi_validation::{validate_module, PlainValidator};
     let module: elements::Module = match deserialize_buffer(&data) {
         Ok(module) => module,
-        _ => return,
+        _ => return false,
     };
-    let _ = validate_module::<PlainValidator>(&module);
+    validate_module::<PlainValidator>(&module).is_ok()
 }
 
 /// Fuzzing `wasmi::ModuleInstance` with default `ImportsBuilder`.
-pub fn fuzz_wasmi_instantiate(data: &[u8]) {
+pub fn wasmi_instantiate(data: &[u8]) -> bool {
     use wasmi::{ImportsBuilder, Module, ModuleInstance};
     let module = match Module::from_buffer(data) {
         Ok(module) => module,
-        _ => return,
+        _ => return false,
     };
-    let _ = ModuleInstance::new(&module, &ImportsBuilder::default());
+    ModuleInstance::new(&module, &ImportsBuilder::default()).is_ok()
 
     // TODO(RM3): add calls to instance functions like:
     // - invoke_export: https://github.com/paritytech/wasmi/blob/b67af25899874de7aac187e08e3b2a30d9bbc388/benches/src/lib.rs#L38

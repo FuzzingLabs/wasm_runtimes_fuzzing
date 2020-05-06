@@ -1,22 +1,43 @@
+.PHONY: default update check-fmt help build docker corpora fmt clean clean-all test test-bench test-debug test-libfuzzer test-honggfuzz test-afl test-all
+
 #
 # User utils
 #
 
-# Build the project locally
+default: build
+
+help:
+	@echo 'Management commands for warf'
+	@echo
+	@echo 'Usage:'
+	@echo '    make build 										Compile the project locally.'
+	@echo '    make docker										Build a docker image for this project.'
+	@echo '    make corpora		 								TODO'
+	@echo
+	@echo '    make fmt 										Run Rust fmt.'
+	@echo '    make clean 										Clean only warf binary.'
+	@echo '    make clean-all 									Clean all (warf && compiled fuzz target harnesses).'
+	@echo
+	@echo '    make test										Simple test to check warf and execute_all is working.'
+	@echo '    make test-bench									Simple benchmark using execute_all.'
+	@echo '    make test-debug									Test running a simple wasm to a debugging tool.'
+	@echo '    make test-{libfuzzer, honggfuzz, afl}			Test one fuzzing hardness over choosen fuzzer.'
+	@echo '    make test-continuously-{libfuzzer, hfuzz, afl}	Test all fuzzing hardness over choosen fuzzer.'
+	@echo '    make test-all		 							Test all fuzzing hardness over all fuzzers.'
+	@echo
+
+# Compile the project locally
 build:
 	cargo +nightly build --release --out-dir=. -Z unstable-options
 
 # Build the docker
+# NOTE: `make docker CACHE=--no-cache` to force docker update/build everything again
 docker:
-	cd .. && docker build . -t warf
+	cd .. && DOCKER_BUILDKIT=1 docker build . -t warf $(CACHE)
 
 # Create an initial corpora of wasm modules
 corpora:
-	echo "TODO ../script/"
-
-#
-# Developer utils
-#
+	echo "TODO ../script/corpora"
 
 # Run Rust fmt to make code cleaner
 fmt:
@@ -25,49 +46,73 @@ fmt:
 # Clean only warf target
 clean:
 	rm -rf target/
+	rm ./warf
 
-# Clean all generated fuzz target harnesses
-clean-all:
-	rm -rf target/
+# Clean all (warf && compiled fuzz target harnesses).
+clean-all: clean
 	rm -rf workspace/afl/target/
 	rm -rf workspace/hfuzz/hfuzz_target/
 	rm -rf workspace/libfuzzer/fuzz/target/
-
-# Update rust fuzzers (afl, honggfuzz and libfuzzer) to last version
-update:
-	cargo +nightly install --force honggfuzz
-	cargo +nightly install --force cargo-fuzz
-	cargo +nightly install --force afl
 
 #
 # Testing utils
 # warf cli sub-commands
 #
 
+# Simple test using execute_all 
+test: build
+	./warf execute-all
+	./workspace/exec_all workspace/corpora/wasm/fib.wasm
+
+# Simple benchmark test using execute_all 
+test-bench: build
+	./warf benchmark-all
+	./workspace/exec_all workspace/corpora/wasm/fib.wasm
+
 # Compile one debug tool and run a simple wasm to it
 test-debug: build
 	./warf debug wasmparser_parser
 	./workspace/debug/target/debug/debug_wasmparser_parser workspace/corpora/wasm/fib.wasm
 
-# Run all fuzzing hardness over libfuzzer
+# Run one fuzzing hardness over libfuzzer during 2s
 test-libfuzzer: build
+	./warf target wasmparser_parser -t 2 --fuzzer libfuzzer
+
+# Run fuzzing hardness over honggfuzz during 2s
+test-honggfuzz: build
+	./warf target wasmparser_parser -t 2 --fuzzer honggfuzz
+
+# Run fuzzing hardness over afl during 2s
+test-afl: build
+	./warf target wasmparser_parser -t 2 --fuzzer afl
+
+
+# Run all fuzzing hardness over libfuzzer
+test-continuously-libfuzzer: build
 	./warf continuously -t 2 --fuzzer libfuzzer
 
 # Run all fuzzing hardness over honggfuzz
-test-honggfuzz: build
+test-continuously-honggfuzz: build
 	./warf continuously -t 2 --fuzzer honggfuzz
 
 # Run all fuzzing hardness over afl
-test-afl: build
+test-continuously-afl: build
 	./warf continuously -t 2 --fuzzer afl
 
 # Run all tests
 # (Really) Heavy test
-test-fuzzers: test-libfuzzer test-honggfuzz test-afl
+test-all: test test-bench test-debug test-libfuzzer test-honggfuzz test-afl
 
-# TODO - test more stuff here
-test-all: test-debug test-fuzzers
+#
+# Developer utils
+#
 
+# Update rust fuzzers (afl, honggfuzz and libfuzzer) to last version
+# TODO: move to an install/update script?
+update:
+	cargo +nightly install --force honggfuzz
+	cargo +nightly install --force cargo-fuzz
+	cargo +nightly install --force afl
 
 #
 # CI utils

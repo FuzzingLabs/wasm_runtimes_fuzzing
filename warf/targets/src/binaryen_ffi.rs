@@ -7,12 +7,12 @@ BINARYEN (Rust binding using FFI)
 ///
 /// NOTE: We are fuzzing binaryen over FFI.
 /// TODO: Verify that binary contains coverage for C++ code of binaryen.
-pub fn fuzz_binaryen_ffi(data: &[u8]) {
+pub fn fuzz_binaryen_ffi(data: &[u8]) -> bool {
     use binaryen::Module;
-    let _ = Module::read(&data);
+    Module::read(&data).is_ok()
 }
 
-pub fn fuzz_binaryen_optimize_ffi(data: &[u8]) {
+pub fn fuzz_binaryen_optimize_ffi(data: &[u8]) -> bool {
     use binaryen::{CodegenConfig, Module};
     let config = CodegenConfig {
         optimization_level: 4,
@@ -21,7 +21,8 @@ pub fn fuzz_binaryen_optimize_ffi(data: &[u8]) {
     };
     let mut module = match Module::read(&data) {
         Ok(o) => o,
-        Err(_) => return,
+        Err(_) => return false,
     };
     module.optimize(&config);
+    true
 }

@@ -7,7 +7,7 @@ LIGHTBEAM:
 ///
 /// NOTE: lightbeam not called the same way here than in wasmtime.
 /// NOTE: I'm not sure this method validate the module first.
-pub fn fuzz_lightbeam_translate(data: &[u8]) {
+pub fn fuzz_lightbeam_translate(data: &[u8]) -> bool {
     use lightbeam::translate;
-    let _module = translate(&data);
+    translate(&data).is_ok()
 }

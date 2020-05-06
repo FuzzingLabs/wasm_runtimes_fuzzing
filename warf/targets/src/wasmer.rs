@@ -4,32 +4,32 @@ WASMER:
 ************************************************/
 
 /// Fuzzing `wasmer::validate`
-pub fn fuzz_wasmer_validate(data: &[u8]) {
+pub fn fuzz_wasmer_validate(data: &[u8]) -> bool {
     extern crate wasmer_runtime;
-    let _res = wasmer_runtime::validate(&data);
+    wasmer_runtime::validate(&data)
 }
 
 /// Fuzzing wasmer::compile with Cranelift compiler backend
-pub fn fuzz_wasmer_compile_clif(data: &[u8]) {
+pub fn fuzz_wasmer_compile_clif(data: &[u8]) -> bool {
     use wasmer_runtime::compile;
-    let _res = compile(&data);
+    compile(&data).is_ok()
 }
 
 /// Fuzzing `wasmer::compile` with `SinglePass` compiler backend
-pub fn fuzz_wasmer_compile_singlepass(data: &[u8]) {
+pub fn fuzz_wasmer_compile_singlepass(data: &[u8]) -> bool {
     use wasmer_runtime::compile_with;
     use wasmer_singlepass_backend::SinglePassCompiler;
-    let _ = compile_with(&data, &SinglePassCompiler::new());
+    compile_with(&data, &SinglePassCompiler::new()).is_ok()
 }
 
 /// Fuzzing `wasmer::instantiate` with empty import_object
-pub fn fuzz_wasmer_instantiate(data: &[u8]) {
+pub fn fuzz_wasmer_instantiate(data: &[u8]) -> bool {
     use wasmer_runtime::{imports, instantiate};
     let import_object = imports! {};
     // allow_missing_functions should prevent wasmer to reject
     // modules with imported functions but generate more false positive bugs
     // import_object.allow_missing_functions = true;
-    let _ = instantiate(data, &import_object);
+    instantiate(data, &import_object).is_ok()
 
     // TODO(RM3): improve or create new fuzz harness that iterate
     // over module functions and call them all
