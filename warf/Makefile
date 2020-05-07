@@ -84,6 +84,8 @@ test-honggfuzz: build
 
 # Run fuzzing hardness over afl during 2s
 test-afl: build
+	AFL_SKIP_CPUFREQ=1 \
+	AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 \
 	./warf target wasmparser_parser -t 2 --fuzzer afl
 
 
