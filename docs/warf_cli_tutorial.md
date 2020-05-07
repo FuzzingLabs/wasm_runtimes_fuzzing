@@ -43,14 +43,14 @@ Help: `./warf target --help`.
 
 Fuzzing with default fuzzing engine (honggfuzz):
 ``` sh
-./target/debug/warf target wasmer_validate
+./warf target wasmer_validate
 [...]
 ```
 
 Fuzzing with other fuzzing engines:
 ``` sh
 # --fuzzer <fuzzer>    Which fuzzer to run [default: Honggfuzz]  [possible values: Afl, Honggfuzz, Libfuzzer]
-./target/debug/warf target wasmer_validate --fuzzer afl
+./warf target wasmer_validate --fuzzer afl
 [...]
 ```
 
