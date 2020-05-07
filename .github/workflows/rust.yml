@@ -38,8 +38,7 @@ jobs:
       - name: Build
         run: cd warf && make build
 
-# Try to compile the dockerfile
-
+  # Try to compile the dockerfile
   build-docker:
     name: Building docker
     runs-on: ubuntu-latest
@@ -54,9 +53,9 @@ jobs:
       - name: Build Docker
         run: cd warf && make docker
 
-  # Test all 
-  test-all:
-    name: test all since compilation is long
+  # Test libfuzzer 
+  test-libfuzzer:
+    name: test libfuzzer
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -68,17 +67,74 @@ jobs:
 
       - name: Install cargo-fuzz
         run: cargo +nightly install --force cargo-fuzz
+      - name: Test libfuzzer
+        run: cd warf && make test-libfuzzer
+
+  # Test honggfuzz 
+  test-honggfuzz:
+    name: test honggfuzz
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: nightly
+            override: true
+
       - name: Install honggfuzz dependencies
         run: |
           sudo apt-get update
           sudo apt install -y build-essential binutils-dev libunwind-dev libblocksruntime-dev
       - name: Install honggfuzz
         run: cargo +nightly install --force honggfuzz
+      - name: Test honggfuzz
+        run: cd warf && make test-honggfuzz
+
+  # Test afl 
+  test-afl:
+    name: test afl
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: nightly
+            override: true
       - name: Install afl dependencies
         run: |
           sudo apt-get update
           sudo apt install -y llvm build-essential libtool-bin python3 cmake automake bison libglib2.0-dev libpixman-1-dev clang python-setuptools
       - name: Install afl
         run: cargo +nightly install --force afl
-      - name: Test All
-        run: cd warf && make test-all
+      - name: Test afl
+        run: cd warf && make test-afl
+
+  # Test exec_all 
+  test-exec-all:
+    name: test exec_all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: nightly
+            override: true
+      - name: Test exec_all
+        run: cd warf && make test
+
+  # Test benchmark 
+  test-benchmark:
+    name: test benchmark
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: nightly
+            override: true
+      - name: Test benchmark
+        run: cd warf && make test-benchmark
