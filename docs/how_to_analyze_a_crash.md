@@ -1,6 +1,6 @@
 # How to analyze a crash
 
-In this example, I will explain how to confirm and analyze a crash triggered by the fuzzer for `wasmer_compile_clif` target. 
+In this example, I will explain how to analyze a crash triggered by the fuzzer for `wasmer_compile_clif` target. 
 
 # Where is my crash?
 
