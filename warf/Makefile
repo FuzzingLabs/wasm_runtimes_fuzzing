@@ -121,3 +121,6 @@ update:
 # Check code style quickly by running `rustfmt` over all code
 check-fmt:
 	cargo fmt --all -- --check
+
+build-exec-all: build
+	./warf execute-all

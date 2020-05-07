@@ -1,8 +1,8 @@
-extern crate structopt;
 extern crate clap;
 extern crate failure;
 extern crate fs_extra;
 extern crate regex;
+extern crate structopt;
 
 use std::env;
 
@@ -64,7 +64,6 @@ pub fn run_exec_all(benchmark: bool) -> Result<(), Error> {
 }
 
 fn write_exec_all_target(debug_dir: &PathBuf, benchmark: bool) -> Result<(), Error> {
-
     // TODO - make it cleaner
     let template_path = root_dir()?.join("execute_all").join("exec_all_template.rs");
     let template = fs::read_to_string(&template_path).context(format!(
@@ -391,7 +390,6 @@ pub fn build_libfuzzer() -> Result<(), Error> {
 }
 
 fn write_libfuzzer_target(fuzzer: Fuzzer, target: &str) -> Result<(), Error> {
-
     let fuzz_dir = fuzzer.work_dir()?.join("fuzz");
     let target_dir = fuzz_dir.join("fuzz_targets");
 
@@ -434,7 +432,11 @@ fn write_libfuzzer_target(fuzzer: Fuzzer, target: &str) -> Result<(), Error> {
     Ok(())
 }
 
-pub fn run_libfuzzer(target: &str, timeout: Option<i32>, _thread: Option<i32>) -> Result<(), Error> {
+pub fn run_libfuzzer(
+    target: &str,
+    timeout: Option<i32>,
+    _thread: Option<i32>,
+) -> Result<(), Error> {
     let fuzzer = Fuzzer::Libfuzzer;
 
     prepare_target_workspace()?;
@@ -505,7 +507,6 @@ pub fn run_libfuzzer(target: &str, timeout: Option<i32>, _thread: Option<i32>) -
 /// Copy the fuzzer/template.rs
 /// Replace ###TARGET### by the target
 fn write_fuzzer_target(fuzzer: Fuzzer, target: &str) -> Result<(), Error> {
-
     let template_path = fuzzer.dir()?.join("template.rs");
     let template = fs::read_to_string(&template_path).context(format!(
         "error reading template file {}",
@@ -581,7 +582,6 @@ pub fn run_debug(target: &str) -> Result<(), Error> {
 }
 
 fn write_debug_target(debug_dir: PathBuf, target: &str) -> Result<(), Error> {
-
     // TODO - make it cleaner
     let template_path = root_dir()?.join("debug").join("debug_template.rs");
     let template = fs::read_to_string(&template_path).context(format!(

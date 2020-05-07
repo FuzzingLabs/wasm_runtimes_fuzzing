@@ -6,7 +6,7 @@ extern crate failure;
 extern crate fs_extra;
 extern crate regex;
 
-use failure::{Error};
+use failure::Error;
 
 use structopt::StructOpt;
 
@@ -25,7 +25,10 @@ enum Cli {
         #[structopt(
             long = "fuzzer",
             default_value = "Honggfuzz",
-            raw(possible_values = "&fuzzers::Fuzzer::variants()", case_insensitive = "true")
+            raw(
+                possible_values = "&fuzzers::Fuzzer::variants()",
+                case_insensitive = "true"
+            )
         )]
         fuzzer: fuzzers::Fuzzer,
         /// Set timeout per target
@@ -47,7 +50,10 @@ enum Cli {
         #[structopt(
             long = "fuzzer",
             default_value = "Honggfuzz",
-            raw(possible_values = "&fuzzers::Fuzzer::variants()", case_insensitive = "true")
+            raw(
+                possible_values = "&fuzzers::Fuzzer::variants()",
+                case_insensitive = "true"
+            )
         )]
         fuzzer: fuzzers::Fuzzer,
         /// Set timeout per target
@@ -64,7 +70,10 @@ enum Cli {
         #[structopt(
             long = "fuzzer",
             default_value = "Honggfuzz",
-            raw(possible_values = "&fuzzers::Fuzzer::variants()", case_insensitive = "true")
+            raw(
+                possible_values = "&fuzzers::Fuzzer::variants()",
+                case_insensitive = "true"
+            )
         )]
         fuzzer: fuzzers::Fuzzer,
     },
