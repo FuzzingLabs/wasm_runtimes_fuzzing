@@ -33,7 +33,8 @@ build:
 # Build the docker
 # NOTE: `make docker CACHE=--no-cache` to force docker update/build everything again
 docker:
-	cd .. && DOCKER_BUILDKIT=1 docker build . -t warf $(CACHE)
+	DOCKER_BUILDKIT=1 docker build . -t warf $(CACHE)
+	@echo 'USAGE: docker run -it -v `pwd`/workspace:/warf/workspace warf list-targets'
 
 # Create an initial corpora of wasm modules
 corpora:
@@ -58,6 +59,10 @@ clean-all: clean
 # Testing utils
 # warf cli sub-commands
 #
+
+# Simple test with valid ssz using docker.
+docker-test: docker
+	docker run -it -v `pwd`/workspace:/warf/workspace warf list-targets
 
 # Simple test using execute_all 
 test: build

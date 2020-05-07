@@ -48,7 +48,7 @@ pub fn run_exec_all(benchmark: bool) -> Result<(), Error> {
     write_exec_all_target(&debug_dir, benchmark)?;
 
     let debug_bin = Command::new("cargo")
-        .args(&["build", "--bin", "exec_all"])
+        .args(&["build", "--release", "--bin", "exec_all"])
         .args(&["--out-dir=..", "-Z", "unstable-options"]) // copy exec_all binary in workspace folder
         .current_dir(&debug_dir)
         .spawn()
@@ -59,7 +59,10 @@ pub fn run_exec_all(benchmark: bool) -> Result<(), Error> {
     if !debug_bin.success() {
         Err(FuzzerQuit)?;
     }
-    println!("[WARF] execute_all compiled here: {:#?}", workspace_dir());
+    println!(
+        "[WARF] execute_all compiled here: {:#?}/exec_all",
+        workspace_dir()?
+    );
     Ok(())
 }
 

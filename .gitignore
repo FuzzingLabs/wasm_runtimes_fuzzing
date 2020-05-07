@@ -2,6 +2,7 @@
 
 Cargo.lock
 warf/workspace/*
+warf/warf
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

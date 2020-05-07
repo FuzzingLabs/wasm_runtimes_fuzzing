@@ -38,7 +38,7 @@ make docker
 - Run warf cli:
 ``` sh
 ./warf
-# docker run -it warf list-targets
+# docker run -it -v `pwd`/workspace:/warf/workspace warf
 
 warf 0.1.0
 WARF - WebAssembly Runtimes Fuzzing project
@@ -62,7 +62,7 @@ SUBCOMMANDS:
 ``` sh
 # List all targets
 ./warf list-targets
-# using docker run -it warf list-targets
+# using docker run -it -v `pwd`/workspace:/warf/workspace warf list-targets
 
 wasmi_validate
 wasmi_instantiate

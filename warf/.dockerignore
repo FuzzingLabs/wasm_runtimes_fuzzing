@@ -11,8 +11,7 @@ docs/
 trophies/
 
 # ignore all target folders and their contents
-warf/target/*
-warf/fuzzer*/*target*
+target/*
 
 # ignore local corpora
-warf/workspace/*
+workspace/*

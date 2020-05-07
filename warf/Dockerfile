@@ -36,10 +36,18 @@ RUN cargo +nightly install --force afl
 RUN USER=root cargo new --bin warf
 WORKDIR /warf
 
-# copy your source tree
-COPY ./warf /warf
+# copy over your manifests
+# COPY ./Cargo.lock ./Cargo.lock
+COPY ./Cargo.toml ./Cargo.toml
 
-# Build the CLI tool & download wasm packages
-RUN make build-exec-all 
+# this build step will cache your dependencies
+RUN cargo build
+RUN rm src/*.rs
+
+# Copy all
+COPY . .
+
+# Build the CLI tool
+RUN make build
 
 ENTRYPOINT ["./warf"]
