@@ -1,6 +1,6 @@
 # How to integrate a new target/project?
 
-In this example, we will learn how to add integrate `wasmer` to WARF and fuzz `wasmer_runtime::validate` method.
+In this example, we will learn how to integrate `wasmer` to warf and fuzz the `wasmer_runtime::validate` method.
 
 ## 1. Add the target to `Cargo.toml`
 
@@ -49,12 +49,13 @@ pub fn fuzz_wasmer_validate(data: &[u8]) {
 Additionnaly, you can verify this new target is listed when using warf `list-targets` subcommand. 
 
 ``` sh
-$ cargo run list-targets
+$ ./warf list-targets
 parity_wasm_deserialize
+[...]
 wasmer_validate
 ```
 
-## 4. Test your target (with warf debug subcommand)
+## 4. Test your target (with `warf debug` subcommand)
 
 Verify that your target is working properly using the warf `debug` subcommand. 
 
@@ -62,15 +63,14 @@ Verify that your target is working properly using the warf `debug` subcommand.
 $ ./warf debug wasmer_validate
 [...]
 Finished dev [unoptimized + debuginfo] target(s) in 2.47s
-$ ./target/debug/debug_wasmer_validate ../corpora/fib.wasm
+$ ./workspace/debug/target/debug/debug_wasmer_validate ./workspace/corpora/wasm/fib.wasm
 Start wasmer_validate debug
-file_path: "../corpora/fib.wasm"
+file_path: "./workspace/corpora/wasm/fib.wasm"
 Everything is OK
 ```
 
 ## 5. Start fuzzing
 
 ``` sh
-# default fuzzing engine is honggfuzz
 $ ./warf target wasmer_validate
 ```
