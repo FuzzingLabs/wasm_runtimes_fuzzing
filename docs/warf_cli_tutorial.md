@@ -14,8 +14,9 @@ Main features are:
 
 Current target available can be listed with:
 ```sh
-$ ./target/debug/warf list-targets
+$ ./warf list-targets
 parity_wasm_deserialize
+[...]
 wasmer_validate
 ```
 
@@ -23,28 +24,34 @@ wasmer_validate
 
 Help:
 ``` sh
-$ ./target/debug/warf help
+$ ./warf help
 [...]
 SUBCOMMANDS:
-    build           Build all targets for this specific fuzzer
-    continuously    Run all fuzz targets
-    debug           Debug one target
-    help            Prints this message or the help of the given subcommand(s)
-    list-targets    List all available targets
-    target          Run one target with specific fuzzer
+    benchmark-all    Run WebAssembly module on all targets with benchmark
+    build            Build all targets for this specific fuzzer
+    continuously     Run all fuzz targets
+    debug            Debug one target
+    execute-all      Run WebAssembly module on all targets
+    help             Prints this message or the help of the given subcommand(s)
+    list-targets     List all available targets
+    target           Run one target with specific fuzzer
 ```
 
 ## Run targets
 
-Help: `./target/debug/warf target --help`.
+Help: `./warf target --help`.
 
-Run targets with default fuzzing engine (honggfuzz): `./target/debug/warf target wasmer_validate`.
+Fuzzing with default fuzzing engine (honggfuzz):
+``` sh
+./target/debug/warf target wasmer_validate
+[...]
+```
 
-
-Using other fuzzing engines:
+Fuzzing with other fuzzing engines:
 ``` sh
 # --fuzzer <fuzzer>    Which fuzzer to run [default: Honggfuzz]  [possible values: Afl, Honggfuzz, Libfuzzer]
 ./target/debug/warf target wasmer_validate --fuzzer afl
+[...]
 ```
 
 NOTES FOR AFL:
@@ -59,11 +66,11 @@ cd /sys/devices/system/cpu ; echo performance | tee cpu*/cpufreq/scaling_governo
 
 ## Continuous fuzzing 
 
-CAUTIONS: all_fuzz continuous mode will stop after all target being executed once if you are not providing infinite flag.
+warf in continuous mode will stop after all target being executed once except if you're using infinite flag.
 
 Help:
 ``` sh
-$ ./target/debug/warf continuously --help
+$ ./warf continuously --help
 Run all fuzz targets
 
 USAGE:
@@ -83,47 +90,20 @@ OPTIONS:
 
 Prefered command:
 ``` sh
-./target/debug/warf continuously -i -t 600
+./warf continuously -i -t 600
 # -i => infinite mode
 # -t => timeout of 10 min, will restart the fuzzer every 10 min
 ```
 
 ## Fuzzer engines
 
-It's possible to provide extra flags to fuzzing engines (honggfuzz, afl, libfuzzer)
+It's possible to provide extra flags and environment variables to fuzzing engines (honggfuzz, afl++, libfuzzer).
 
-### honggfuzz-rs (WORKING)
+- honggfuzz-rs [here](https://github.com/rust-fuzz/honggfuzz-rs#environment-variables)
+- afl-rs [here](https://rust-fuzz.github.io/book/afl/tutorial.html)
+- libfuzzer (cargo-fuzz) - [here](https://github.com/rust-fuzz/cargo-fuzz#usage)
 
-FLAG: `HFUZZ_RUN_ARGS`
+# Future improvements for this tool
 
-
-Example:
-- Limit corpus file size: `HFUZZ_RUN_ARGS="-F 500000"`.
-
-
-### afl-rs (ALMOST WORKING)
-
-- You need to execute the following commands to get afl running properly:
-``` sh
-echo core >/proc/sys/kernel/core_pattern
-# sudo su -c "echo core >/proc/sys/kernel/core_pattern"
-cd /sys/devices/system/cpu ; echo performance | tee cpu*/cpufreq/scaling_governor
-# sudo su -c "cd /sys/devices/system/cpu; echo performance | tee cpu*/cpufreq/scaling_governor"
-```
-
-### libfuzzer (NOT WORKING)
-
-TODO
-
-# Improvements
-
-This tool will be improved over the time
-
-## General improvement for this tool
-
-- add first time running script for afl
-- add more documentation
-- fix libfuzzer (cargofuzz) => maybe use cargo-fuzz instead of existing code.
-- support new fuzzers (lain, fuzzcheck, customs, etc.)
-- compile all target before running fuzzing (no need to compile targets each time fuzzer restart) ?
-- Verify sharing coverage + seeds work as expected
+- Support new fuzzers (lain, fuzzcheck, customs, etc.)
+- Compile all target before running fuzzing (no need to compile targets each time fuzzer restart)
