@@ -39,10 +39,6 @@ WORKDIR /warf
 # copy your source tree
 COPY ./warf /warf
 
-RUN mkdir -p /warf/workspace/corpora/wasm/
-
-COPY ./warf/workspace/corpora/wasm/* /warf/workspace/corpora/wasm/
-
 # Build the CLI tool & download wasm packages
 RUN make build-exec-all 
 
