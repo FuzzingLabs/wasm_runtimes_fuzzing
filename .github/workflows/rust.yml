@@ -137,4 +137,4 @@ jobs:
             toolchain: nightly
             override: true
       - name: Test benchmark
-        run: cd warf && make test-benchmark
+        run: cd warf && make test-bench
