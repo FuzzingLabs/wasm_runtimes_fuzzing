@@ -1,6 +1,6 @@
 # How to analyze a crash
 
-In this example, I will explain how to confirm and analyze a crash triggered by the fuzzer for `wasmer_compile_clif` target. 
+In this example, I will explain how to analyze a crash triggered by the fuzzer for `wasmer_compile_clif` target. 
 
 # Where is my crash?
 
@@ -20,9 +20,9 @@ Crash are detected and annonced immediately by the fuzzer (like in the following
 ---------------------------------- [ LOGS ] ------------------/ honggfuzz 2.0 /-
 ```
 
-Crash has been stored by honggfuzz inside:
+Crash has been stored by honggfuzz inside workspace/hfuzz/hfuzz_workspace/:
 ``` sh
-$ ls fuzzer-honggfuzz/hfuzz_workspace/wasmer_compile_clif
+$ ls workspace/hfuzz/hfuzz_workspace/wasmer_compile_clif
 
  HONGGFUZZ.REPORT.TXT
  input
@@ -34,30 +34,30 @@ Copy this file in `warf` and rename it to `crash_to_analyze.wasm`, will be easie
 # Compile your target with warf debug
 
 ``` sh
-$ ./target/debug/warf debug wasmer_compile_clif
+$ ./warf debug wasmer_compile_clif
 
 [...]
 [WARF] Debug: debug_wasmer_compile_clif compiled
 ```
-Your debugging tool is now available here: `./target/debug/debug_wasmer_compile_clif`
+Your debugging tool is now available here: `./workspace/debug/target/debug/debug_wasmer_compile_clif`
 
 # Run the debug tool with the crash
 
 ``` sh
-$ ./target/debug/debug_wasmer_compile_clif crash_to_analyze.wasm
+$ ./debug_wasmer_compile_clif crash_to_analyze.wasm
 
 Start debugging of wasmer_compile_clif
 file_to_process: "crash_to_analyze.wasm"
 thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 0', /rustc/85976442558bf2d09cec3aa49c9c9ba86fb15c1f/src/libcore/slice/mod.rs:2791:10
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
 ```
-We can see here that it is a legitimate/valid bug triggering an index out of bounds panic in wasmer.
+We can see here that it is a legitimate/valid bug triggering an index out of bounds panic in `wasmer`.
 
 # Deeper analysis / BACKTRACE
 
 You can use the `RUST_BACKTRACE` environment variable to get more information about the root cause of this bug:
 ``` sh
-$ RUST_BACKTRACE=1 ./target/debug/debug_wasmer_compile_clif crash_to_analyze.wasm
+$ RUST_BACKTRACE=1 ./debug_wasmer_compile_clif crash_to_analyze.wasm
 
 Start debugging of wasmer_compile_clif
 file_to_process: "crash_to_analyze.wasm"
