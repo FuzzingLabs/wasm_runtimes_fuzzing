@@ -51,6 +51,8 @@ clean:
 
 # Clean all (warf && compiled fuzz target harnesses).
 clean-all: clean
+	rm -rf workspace/debug/target
+	rm -rf workspace/execute_all/target
 	rm -rf workspace/afl/target/
 	rm -rf workspace/hfuzz/hfuzz_target/
 	rm -rf workspace/libfuzzer/fuzz/target/
@@ -66,13 +68,11 @@ docker-test: docker
 
 # Simple test using execute_all 
 test: build
-	./warf execute-all
-	./workspace/exec_all workspace/corpora/wasm/fib.wasm
+	./warf execute-all workspace/corpora/wasm/fib.wasm
 
 # Simple benchmark test using execute_all 
 test-bench: build
-	./warf benchmark-all
-	./workspace/exec_all workspace/corpora/wasm/fib.wasm
+	./warf benchmark-all workspace/corpora/wasm/fib.wasm
 
 # Compile one debug tool and run a simple wasm to it
 test-debug: build

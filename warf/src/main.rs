@@ -88,10 +88,16 @@ enum Cli {
     ListTargets,
     /// Run WebAssembly module on all targets
     #[structopt(name = "execute-all")]
-    ExecuteAll,
+    ExecuteAll {
+        /// Which wasm to execute
+        wasm: String,
+    },
     /// Run WebAssembly module on all targets with benchmark
     #[structopt(name = "benchmark-all")]
-    BenchmarkAll,
+    BenchmarkAll {
+        /// Which wasm to execute
+        wasm: String,
+    },
 }
 
 fn main() {
@@ -109,11 +115,11 @@ fn run() -> Result<(), Error> {
     let cli = Cli::from_args();
 
     match cli {
-        ExecuteAll => {
-            fuzzers::run_exec_all(false)?;
+        ExecuteAll { wasm } => {
+            fuzzers::run_exec_all(wasm, false)?;
         }
-        BenchmarkAll => {
-            fuzzers::run_exec_all(true)?;
+        BenchmarkAll { wasm } => {
+            fuzzers::run_exec_all(wasm, true)?;
         }
         ListTargets => {
             list_targets()?;

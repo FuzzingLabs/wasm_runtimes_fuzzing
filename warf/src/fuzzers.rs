@@ -39,7 +39,7 @@ fn prepare_exec_all_workspace(out_dir: &str) -> Result<(), Error> {
     Ok(())
 }
 
-pub fn run_exec_all(benchmark: bool) -> Result<(), Error> {
+pub fn run_exec_all(wasm: String, benchmark: bool) -> Result<(), Error> {
     let debug_dir = root_dir()?.join("workspace").join("execute_all");
 
     prepare_target_workspace()?;
@@ -63,6 +63,20 @@ pub fn run_exec_all(benchmark: bool) -> Result<(), Error> {
         "[WARF] execute_all compiled here: {:#?}/exec_all",
         workspace_dir()?
     );
+
+    // Execute the exec_all
+    let debug_bin = Command::new(workspace_dir()?.join("exec_all"))
+        .arg(wasm)
+        .current_dir(root_dir()?)
+        .spawn()
+        .context("exec_all")?
+        .wait()
+        .context("exec_all")?;
+
+    if !debug_bin.success() {
+        Err(FuzzerQuit)?;
+    }
+
     Ok(())
 }
 
