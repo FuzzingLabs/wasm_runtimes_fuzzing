@@ -2,45 +2,30 @@
 
 Goal of this project is to improve security and resilience of WebAssembly VMs/runtimes/parsers using differents fuzzing techniques.
 
-## Quick Start
+## Quick Start (using docker)
 
-- Install Rust nightly
-``` sh
-# Install Rust and Cargo
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain nightly
-```
-
-- Install system dependencies (Ubuntu/Debian):
-``` sh
-# Install LLVM
-sudo apt install -y llvm curl
-# Install honggfuzz-rs and subcommand in cargo
-sudo apt install -y build-essential binutils-dev libunwind-dev libblocksruntime-dev
-cargo +nightly install --force honggfuzz
-# Install cargo-fuzz (libfuzzer for Rust) and subcommand in cargo
-cargo +nightly install --force cargo-fuzz
-# Install afl-rs and subcommand in cargo
-sudo apt install -y build-essential libtool-bin python3 cmake automake bison libglib2.0-dev libpixman-1-dev clang python-setuptools
-cargo +nightly install --force afl
-```
-
-- Build warf:
+- Clone the project
 ``` sh
 # Install WARF
-git clone --depth 1 https://github.com/pventuzelo/wasm_runtimes_fuzzing
-cd wasm_runtimes_fuzzing/warf
-
-make build
-# or using Docker
-make docker
+$ git clone --depth 1 https://github.com/pventuzelo/wasm_runtimes_fuzzing
+$ cd wasm_runtimes_fuzzing/warf
 ```
+
+Build warf with docker:
+``` sh
+# Build warf docker
+$ make docker
+# Optional: Create an alias
+$ alias warf="docker run -it -v `pwd`/workspace:/warf/workspace warf"
+# ==> workspace folder is shared between your host and docker container.
+```
+NOTE: If you are on running on `Ubuntu`, installation without docker can be found [here](../docs/INSTALL.md).
+
 
 - Run warf cli:
 ``` sh
-./warf
-# docker run -it -v `pwd`/workspace:/warf/workspace warf
+$ warf help
 
-warf 0.1.0
 WARF - WebAssembly Runtimes Fuzzing project
 
 USAGE:
@@ -51,18 +36,20 @@ FLAGS:
     -V, --version    Prints version information
 
 SUBCOMMANDS:
-    continuously    Run all fuzz targets
-    debug           Debug one target
-    help            Prints this message or the help of the given subcommand(s)
-    list-targets    List all available targets
-    target          Run one target with specific fuzzer
+    benchmark-all    Run WebAssembly module on all targets with benchmark
+    build            Build all targets for this specific fuzzer
+    continuously     Run all fuzz targets
+    debug            Debug one target
+    execute-all      Run WebAssembly module on all targets
+    help             Prints this message or the help of the given subcommand(s)
+    list-targets     List all available targets
+    target           Run one target with specific fuzzer
 ```
+NOTE: Details about the different warf subcommands [here](docs/WARF_SUBCOMMANDS.md).
 
-- List fuzzing targets:
+- List available fuzzing targets:
 ``` sh
-# List all targets
-./warf list-targets
-# using docker run -it -v `pwd`/workspace:/warf/workspace warf list-targets
+$ warf list-targets
 
 wasmi_validate
 wasmi_instantiate
@@ -75,7 +62,7 @@ wabt_validate_ffi
 
 - Run fuzzing on a target:
 ``` sh
-./warf target wasmer_validate
+$ warf target wasmer_validate
 
 [...]
 
@@ -95,31 +82,58 @@ Size:77 (i,b,hw,ed,ip,cmp): 0/0/0/1/0/0, Tot:0/0/0/3159/2/41623
 [...]
 ```
 
-Details about the different warf subcommands [here](docs/warf_cli_tutorial.md)
+# Tests
+
+Tests are documented inside the `Makefile`:
+``` sh
+$ make help
+Management commands for warf
+
+Usage:
+    make build                            Compile the project locally.
+    make docker                           Build a docker image for this project.
+    make corpora                          TODO
+
+    make fmt                              Run Rust fmt.
+    make clean                            Clean only warf binary.
+    make clean-all                        Clean all (warf && compiled fuzz target harnesses).
+
+    make test                                         Simple test to check warf and execute_all is working.
+    make test-bench                                   Simple benchmark using execute_all.
+    make test-debug                                   Test running a simple wasm to a debugging tool.
+    make test-{libfuzzer, honggfuzz, afl}             Test one fuzzing hardness over choosen fuzzer.
+    make test-continuously-{libfuzzer, hfuzz, afl}    Test all fuzzing hardness over choosen fuzzer.
+    make test-all                                     Test all fuzzing hardness over all fuzzers.
+
+```
+
+If you are using docker, try:
+``` sh
+make docker-test
+make docker-test-all
+```
 
 # Future of the project
 
-Differents open-source projects (WebAssembly VMs/runtimes/parsers) will be integrated to WARF along the development.
-
-More details [here](docs/INTEGRATION.md)
-
-Global roadmap [here](docs/ROADMAP.md)
-
+Differents open-source projects (WebAssembly VMs/runtimes/parsers) will be integrated to WARF along the development:
+- Integration details [here](docs/INTEGRATION.md).
+- Global roadmap [here](docs/ROADMAP.md).
 
 # Trophies
 
 This tool helped to find the following bugs/vulnerabilities (crashing files are inside `trophies` folder):
-
 - wasmer/wasmer_clif_fork_wasm: [index out of bounds panic](https://github.com/wasmerio/wasmer/issues/1372)
 - binaryen: [segfault / out-of-bounds read in WasmBinaryBuilder::readImports](https://github.com/WebAssembly/binaryen/issues/2751) - **FIXED**
 - wabt: [SIGABRT due to std::bad_alloc exception (resizing wasm br_table)](https://github.com/WebAssembly/wabt/issues/1386)
 - wasmtime: [assertion failed in wasmtime_debug::transform::simulate::generate_simulated_dwarf](https://github.com/bytecodealliance/wasmtime/issues/1506) - **FIXED**
 - wasmtime: [assertion failed or unimplemented panic when table type is not anyref](https://github.com/bytecodealliance/wasmtime/issues/1601)
 
+
 # Thanks
 
 - [Web 3 Foundation](https://web3.foundation/) for sponsoring this project.
 - [Rust Fuzzing Authority](https://github.com/rust-fuzz) for Rust fuzzing tools.
+
 
 # Contact
 
@@ -127,4 +141,4 @@ Patrick Ventuzelo - [@pat_ventuzelo](https://twitter.com/pat_ventuzelo) - Indepe
 
 Consulting & trainings:
 * 4-days **WebAssembly security** training: [here](https://webassembly-security.com/trainings/)
-* 2-days **Rustlang security** training: [here](https://webassembly-security.com/rust-security-training/)
+* 2-days **Rust security** training: [here](https://webassembly-security.com/rust-security-training/)

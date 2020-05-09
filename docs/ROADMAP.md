@@ -14,7 +14,7 @@
 3.	Project development / Improvement of the project (threading, runtimes perf monitoring) - [DONE - benchmark subcommand, make test-bench](../warf/src/main.rs)
 4.	Project development / Development of fuzzing harness per runtimes. - [DONE](../warf/targets/src/)
 5.	Runtimes dockers / Dockers to install runtimes engines easily - [DONE](../Dockerfile)
-6.	Delivery reports / Tutorial for runtimes installation, compilation, how to run tools and unittests - [WIP](../README.md) / [WIP](../docs/)
+6.	Delivery reports / Tutorial for runtimes installation, compilation, how to run tools and unittests - [DONE](../README.md) / [DONE](WARF_SUBCOMMANDS.md) / [DONE](../docs/)
 7.	Unittest / Unittest to verify runtimes engines work as expected - [DONE - make test\*](../warf/Makefile)
 
 ## Roadmap #3

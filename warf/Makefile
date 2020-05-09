@@ -38,7 +38,7 @@ docker:
 
 # Create an initial corpora of wasm modules
 corpora:
-	echo "TODO ../script/corpora"
+	echo "TODO"
 
 # Run Rust fmt to make code cleaner
 fmt:
@@ -62,9 +62,13 @@ clean-all: clean
 # warf cli sub-commands
 #
 
-# Simple test with valid ssz using docker.
+# Simple test using docker.
 docker-test: docker
 	docker run -it -v `pwd`/workspace:/warf/workspace warf list-targets
+
+# Simple test with wasm using docker.
+docker-test-all: docker
+	docker run -it -v `pwd`/workspace:/warf/workspace warf execute-all workspace/corpora/wasm/fib.wasm
 
 # Simple test using execute_all 
 test: build
@@ -104,6 +108,8 @@ test-continuously-honggfuzz: build
 
 # Run all fuzzing hardness over afl
 test-continuously-afl: build
+	AFL_SKIP_CPUFREQ=1 \
+	AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 \
 	./warf continuously -t 2 --fuzzer afl
 
 # Run all tests
