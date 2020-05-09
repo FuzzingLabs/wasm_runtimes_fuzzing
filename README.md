@@ -19,7 +19,7 @@ $ make docker
 $ alias warf="docker run -it -v `pwd`/workspace:/warf/workspace warf"
 # ==> workspace folder is shared between your host and docker container.
 ```
-NOTE: If you are on running on `Ubuntu`, installation without docker can be found [here](../docs/INSTALL.md).
+NOTE: If you are on running on `Ubuntu`, installation without docker can be found [here](docs/INSTALL.md).
 
 
 - Run warf cli:
