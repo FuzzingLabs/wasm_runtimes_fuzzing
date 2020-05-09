@@ -27,14 +27,11 @@ NOTE: If you are on running on `Ubuntu`, installation without docker can be foun
 $ warf help
 
 WARF - WebAssembly Runtimes Fuzzing project
-
 USAGE:
     warf <SUBCOMMAND>
-
 FLAGS:
     -h, --help       Prints help information
     -V, --version    Prints version information
-
 SUBCOMMANDS:
     benchmark-all    Run WebAssembly module on all targets with benchmark
     build            Build all targets for this specific fuzzer
