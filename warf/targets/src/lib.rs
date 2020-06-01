@@ -66,15 +66,19 @@ pub fn fuzz_wasmtime_compile(data: &[u8]) {
 pub fn fuzz_wasmtime_compile_all_cranelift(data: &[u8]) {
     let _ = wasmtime::fuzz_wasmtime_compile_all_cranelift(data);
 }
-pub fn fuzz_wasmtime_compile_all_lightbeam(data: &[u8]) {
+/* DEACTIVATED FOR NOW
+pub fn _fuzz_wasmtime_compile_all_lightbeam(data: &[u8]) {
     let _ = wasmtime::fuzz_wasmtime_compile_all_lightbeam(data);
 }
+*/
 pub fn fuzz_wasmtime_instantiate_all_cranelift(data: &[u8]) {
     let _ = wasmtime::fuzz_wasmtime_instantiate_all_cranelift(data);
 }
-pub fn fuzz_wasmtime_instantiate_all_lightbeam(data: &[u8]) {
+/* DEACTIVATED FOR NOW
+pub fn _fuzz_wasmtime_instantiate_all_lightbeam(data: &[u8]) {
     let _ = wasmtime::fuzz_wasmtime_instantiate_all_lightbeam(data);
 }
+*/
 // debug target
 pub fn debug_wasmtime_validate(data: &[u8]) -> bool {
     wasmtime::fuzz_wasmtime_validate(data)
@@ -88,25 +92,29 @@ pub fn debug_wasmtime_compile(data: &[u8]) -> bool {
 pub fn debug_wasmtime_compile_all_cranelift(data: &[u8]) -> bool {
     wasmtime::fuzz_wasmtime_compile_all_cranelift(data)
 }
-pub fn debug_wasmtime_compile_all_lightbeam(data: &[u8]) -> bool {
+/* DEACTIVATED FOR NOW
+pub fn _debug_wasmtime_compile_all_lightbeam(data: &[u8]) -> bool {
     wasmtime::fuzz_wasmtime_compile_all_lightbeam(data)
 }
+*/
 pub fn debug_wasmtime_instantiate_all_cranelift(data: &[u8]) -> bool {
     wasmtime::fuzz_wasmtime_instantiate_all_cranelift(data)
 }
-pub fn debug_wasmtime_instantiate_all_lightbeam(data: &[u8]) -> bool {
+/* DEACTIVATED FOR NOW
+pub fn _debug_wasmtime_instantiate_all_lightbeam(data: &[u8]) -> bool {
     wasmtime::fuzz_wasmtime_instantiate_all_lightbeam(data)
 }
 
 mod lightbeam;
 // fuzzing harnesses
-pub fn fuzz_lightbeam_translate(data: &[u8]) {
+pub fn _fuzz_lightbeam_translate(data: &[u8]) {
     let _ = lightbeam::fuzz_lightbeam_translate(data);
 }
 // debug target
-pub fn debug_lightbeam_translate(data: &[u8]) -> bool {
+pub fn _debug_lightbeam_translate(data: &[u8]) -> bool {
     lightbeam::fuzz_lightbeam_translate(data)
 }
+*/
 
 mod wasmparser;
 // fuzzing harnesses
