@@ -1,6 +1,6 @@
 # WARF - WebAssembly Runtimes Fuzzing project
 
-Goal of this project is to improve security and resilience of WebAssembly VMs/runtimes/parsers using differents fuzzing techniques.
+Goal of this project is to improve security and resilience of WebAssembly VMs/runtimes/parsers using different fuzzing techniques.
 
 ## Quick Start (using docker)
 
@@ -121,7 +121,7 @@ Differents open-source projects (WebAssembly VMs/runtimes/parsers) will be integ
 This tool helped to find the following bugs/vulnerabilities (crashing files are inside `trophies` folder):
 - wasmer/wasmer_clif_fork_wasm: [index out of bounds panic](https://github.com/wasmerio/wasmer/issues/1372)
 - binaryen: [segfault / out-of-bounds read in WasmBinaryBuilder::readImports](https://github.com/WebAssembly/binaryen/issues/2751) - **FIXED**
-- wabt: [SIGABRT due to std::bad_alloc exception (resizing wasm br_table)](https://github.com/WebAssembly/wabt/issues/1386)
+- wabt: [SIGABRT due to std::bad_alloc exception (resizing wasm br_table)](https://github.com/WebAssembly/wabt/issues/1386) - **FIXED**
 - wasmtime: [assertion failed in wasmtime_debug::transform::simulate::generate_simulated_dwarf](https://github.com/bytecodealliance/wasmtime/issues/1506) - **FIXED**
 - wasmtime: [assertion failed or unimplemented panic when table type is not anyref](https://github.com/bytecodealliance/wasmtime/issues/1601)
 - wabt: [[wasm2wat] Assertion failure in BinaryReaderIR::OnCallIndirectExpr](https://github.com/WebAssembly/wabt/issues/1413)
@@ -135,7 +135,7 @@ This tool helped to find the following bugs/vulnerabilities (crashing files are 
 
 # Contact
 
-Patrick Ventuzelo - [@pat_ventuzelo](https://twitter.com/pat_ventuzelo) - Independent Security Researcher.
+Patrick Ventuzelo - [@pat_ventuzelo](https://twitter.com/pat_ventuzelo) - Independent Security Researcher / Trainer.
 
 Consulting & trainings:
 * 4-days **WebAssembly security** training: [here](https://webassembly-security.com/trainings/)
