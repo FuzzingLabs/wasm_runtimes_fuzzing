@@ -16,5 +16,5 @@ wasmparser = "0.51"
 binaryen = "0.10"
 wabt = "0.9"
 wasmprinter = "0.2.5"
-wasm3 = "0.1.1"
+#wasm3 = "0.1.1"
 
