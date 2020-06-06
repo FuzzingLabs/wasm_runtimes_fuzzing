@@ -47,7 +47,7 @@ fmt:
 # Clean only warf target
 clean:
 	rm -rf target/
-	rm ./warf
+	rm -rf ./warf
 
 # Clean all (warf && compiled fuzz target harnesses).
 clean-all: clean

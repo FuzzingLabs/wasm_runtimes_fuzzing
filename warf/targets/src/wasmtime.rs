@@ -66,7 +66,8 @@ pub fn fuzz_wasmtime_compile_all_lightbeam(data: &[u8]) -> bool {
         None => return false,
         Some(a) => a,
     };
-    Module::from_binary(&store, &data).is_ok()
+    let res = Module::from_binary(&store, &data);
+    res.is_ok()
 }
 
 /// Fuzzing `wasmtime::Instance` with all wasm features and `Cranelift` backend.
@@ -97,6 +98,7 @@ pub fn fuzz_wasmtime_instantiate_all_lightbeam(data: &[u8]) -> bool {
         _ => return false,
     };
     Instance::new(&module, &[]).is_ok()
+
     // TODO(RM4) - check parameter Instance
     // TODO(RM4) - Execute function of the module
 }

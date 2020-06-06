@@ -170,6 +170,12 @@ pub fn debug_wabt_validate_ffi(data: &[u8]) -> bool {
     wabt_ffi::fuzz_wabt_validate_ffi(data)
 }
 
-// TODO(RM4) - mod cranelift
+//mod wasm3;
+//pub fn fuzz_wasm3_parser_ffi(data: &[u8]) {
+//    let _ = wasm3::fuzz_wasm3_parser_ffi(data);
+//}
 
-// TODO(RM3) - https://docs.rs/wast/14.0.0/wast/index.html
+mod wasmprinter;
+pub fn fuzz_wasmprinter_parser(data: &[u8]) {
+    let _ = wasmprinter::fuzz_wasmprinter_parser(data);
+}
