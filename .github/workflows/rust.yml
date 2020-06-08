@@ -16,7 +16,7 @@ jobs:
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
         with:
-            toolchain: nightly-2020-06-01
+            toolchain: nightly
             override: true
             components: rustfmt
 
@@ -32,7 +32,7 @@ jobs:
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
         with:
-            toolchain: nightly-2020-06-01
+            toolchain: nightly
             override: true
 
       - name: Build
@@ -47,7 +47,7 @@ jobs:
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
         with:
-            toolchain: nightly-2020-06-01
+            toolchain: nightly
             override: true
 
       - name: Build Docker
@@ -62,7 +62,7 @@ jobs:
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
         with:
-            toolchain: nightly-2020-06-01
+            toolchain: nightly
             override: true
 
       - name: Install cargo-fuzz
@@ -79,7 +79,7 @@ jobs:
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
         with:
-            toolchain: nightly-2020-06-01
+            toolchain: nightly
             override: true
 
       - name: Install honggfuzz dependencies
@@ -100,7 +100,7 @@ jobs:
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
         with:
-            toolchain: nightly-2020-06-01
+            toolchain: nightly
             override: true
       - name: Install afl dependencies
         run: |
@@ -120,7 +120,7 @@ jobs:
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
         with:
-            toolchain: nightly-2020-06-01
+            toolchain: nightly
             override: true
       - name: Test exec_all
         run: cd warf && make test
@@ -134,7 +134,7 @@ jobs:
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
         with:
-            toolchain: nightly-2020-06-01
+            toolchain: nightly
             override: true
       - name: Test benchmark
         run: cd warf && make test-bench
