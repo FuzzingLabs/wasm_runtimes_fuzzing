@@ -1,3 +1,56 @@
+/*
+Differential fuzzing:
+We are checking that all those different implementation return
+the same thing i.e. true or false in our cases.
+*/
+
+pub fn fuzz_diff_parsing(data: &[u8]) {
+    let a = parity_wasm::parity_wasm_deserialize(data);
+    let b = wasmer::fuzz_wasmer_compile_clif(data);
+    let c = wasmer::fuzz_wasmer_compile_singlepass(data);
+    let d = wasmtime::fuzz_wasmtime_compile_all_cranelift(data);
+    let e = wasmparser::fuzz_wasmparser_validate_all_feat(data);
+    let f = binaryen_ffi::fuzz_binaryen_ffi(data);
+    let g = wasmprinter::fuzz_wasmprinter_parser(data);
+
+    let _ = match (a, b, c, d, e, f, g) {
+        (true, true, true, true, true, true, true) => true,
+        (false, false, false, false, false, false, false) => false,
+        _ => panic!(
+            "fuzz_diff_parsing panic: {}-{}-{}-{}-{}-{}-{}",
+            a, b, c, d, e, f, g
+        ),
+    };
+}
+
+pub fn fuzz_diff_all_validate(data: &[u8]) {
+    let a = wasmi::wasmi_validate(data);
+    let b = wasmer::fuzz_wasmer_validate(data);
+    let c = wasmtime::fuzz_wasmtime_validate_all_feat(data);
+    let d = wasmparser::fuzz_wasmparser_validate_all_feat(data);
+    let e = wabt_ffi::fuzz_wabt_validate_ffi(data);
+
+    let _ = match (a, b, c, d, e) {
+        (true, true, true, true, true) => true,
+        (false, false, false, false, false) => false,
+        _ => panic!(
+            "fuzz_diff_all_validate panic: {}-{}-{}-{}-{}",
+            a, b, c, d, e
+        ),
+    };
+}
+
+pub fn fuzz_diff_instantiate(data: &[u8]) {
+    let a = wasmi::wasmi_instantiate(data);
+    let b = wasmer::fuzz_wasmer_instantiate(data);
+    let c = wasmtime::fuzz_wasmtime_instantiate_all_cranelift(data);
+    let _ = match (a, b, c) {
+        (true, true, true) => true,
+        (false, false, false) => false,
+        _ => panic!("fuzz_diff_instantiate panic: {}-{}-{}", a, b, c),
+    };
+}
+
 mod wasmi;
 // fuzzing harnesses
 pub fn fuzz_wasmi_validate(data: &[u8]) {
