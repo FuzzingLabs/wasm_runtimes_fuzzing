@@ -124,8 +124,10 @@ This tool helped to find the following bugs/vulnerabilities (crashing files are 
 - wabt: [SIGABRT due to std::bad_alloc exception (resizing wasm br_table)](https://github.com/WebAssembly/wabt/issues/1386) - **FIXED**
 - wasmtime: [assertion failed in wasmtime_debug::transform::simulate::generate_simulated_dwarf](https://github.com/bytecodealliance/wasmtime/issues/1506) - **FIXED**
 - wasmtime: [assertion failed or unimplemented panic when table type is not anyref](https://github.com/bytecodealliance/wasmtime/issues/1601)
-- wabt: [[wasm2wat] Assertion failure in BinaryReaderIR::OnCallIndirectExpr](https://github.com/WebAssembly/wabt/issues/1413)
-- wabt: [[wasm2wat] Assertion failure in BinaryReaderIR::OnReturnCallIndirectExpr](https://github.com/WebAssembly/wabt/issues/1414)
+- wabt: [[wasm2wat] Assertion failure in BinaryReaderIR::OnCallIndirectExpr](https://github.com/WebAssembly/wabt/issues/1413) - **FIXED**
+- wabt: [[wasm2wat] Assertion failure in BinaryReaderIR::OnReturnCallIndirectExpr](https://github.com/WebAssembly/wabt/issues/1414) - **FIXED**
+- wabt: [Incorrect validation of module with malformed alignment by wabt](https://github.com/WebAssembly/wabt/issues/1453)
+- wabt: [[wasm2wat] Incorrect rejection of valid module](https://github.com/WebAssembly/wabt/issues/1455)
 
 # Thanks
 

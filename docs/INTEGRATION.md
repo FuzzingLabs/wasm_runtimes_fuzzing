@@ -168,6 +168,18 @@ The WebAssembly Binary Toolkit - [github](https://github.com/WebAssembly/wabt) /
 </p>
 </details>
 
+## wasm-tools/wasmprinter (Rust)
+
+wasm-tools/wasmprinter - [github](https://github.com/bytecodealliance/wasm-tools/tree/master/crates/wasmprinter)
+
+<details><summary>Details</summary>
+<p>
+
+- Rust Apis:
+	- `print_bytes`: Prints an in-memory wasm binary blob into an in-memory String which is its textual representation. - [doc](https://docs.rs/wasmprinter/0.2.5/wasmprinter/fn.print_bytes.html)
+
+</p>
+</details>
 
 # Projects to be integrated in the future.
 
@@ -182,3 +194,4 @@ Those projects **will be potentially** supported/integrated in the future.
 - [WAVM](https://github.com/WAVM/WAVM) - WebAssembly Virtual Machine in C++.
 - [webassemblyjs](https://github.com/xtuc/webassemblyjs) - Toolchain for WebAssembly in JavaScript.
 - [wagon](https://github.com/go-interpreter/wagon) - WebAssembly-based Go interpreter, for Go.
+- [wain](https://github.com/rhysd/wain) - WebAssembly implementation from scratch in Safe Rust with zero dependencies
