@@ -39,14 +39,14 @@ SUBCOMMANDS:
     debug            Debug one target
     execute-all      Run WebAssembly module on all targets
     help             Prints this message or the help of the given subcommand(s)
-    list-targets     List all available targets
+    list             List all available targets
     target           Run one target with specific fuzzer
 ```
 NOTE: Details about the different warf subcommands [here](docs/WARF_SUBCOMMANDS.md).
 
 - List available fuzzing targets:
 ``` sh
-$ warf list-targets
+$ warf list
 
 wasmi_validate
 wasmi_instantiate
@@ -126,8 +126,10 @@ This tool helped to find the following bugs/vulnerabilities (crashing files are 
 - wasmtime: [assertion failed or unimplemented panic when table type is not anyref](https://github.com/bytecodealliance/wasmtime/issues/1601)
 - wabt: [[wasm2wat] Assertion failure in BinaryReaderIR::OnCallIndirectExpr](https://github.com/WebAssembly/wabt/issues/1413) - **FIXED**
 - wabt: [[wasm2wat] Assertion failure in BinaryReaderIR::OnReturnCallIndirectExpr](https://github.com/WebAssembly/wabt/issues/1414) - **FIXED**
-- wabt: [Incorrect validation of module with malformed alignment by wabt](https://github.com/WebAssembly/wabt/issues/1453)
+- wabt: [Incorrect validation of module with malformed alignment by wabt](https://github.com/WebAssembly/wabt/issues/1453) - **FIXED**
 - wabt: [[wasm2wat] Incorrect rejection of valid module](https://github.com/WebAssembly/wabt/issues/1455)
+- wain: [unwrap panic while parsing invalid wasm module](https://github.com/rhysd/wain/issues/29) - **FIXED**
+- wain: [memory allocation failed error during parsing](https://github.com/rhysd/wain/issues/30) - **FIXED**
 
 # Thanks
 

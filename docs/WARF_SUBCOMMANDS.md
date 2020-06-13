@@ -25,15 +25,15 @@ SUBCOMMANDS:
     debug            Debug one target
     execute-all      Run WebAssembly module on all targets
     help             Prints this message or the help of the given subcommand(s)
-    list-targets     List all available targets
+    list             List all available targets
     target           Run one target with specific fuzzer
 ```
 
-## List available targets (`list-targets`)
+## List available targets (`list`)
 
 Available fuzzing targets can be listed with:
 ```sh
-$ ./warf list-targets
+$ ./warf list
 
 wasmi_validate
 wasmi_instantiate
@@ -224,7 +224,3 @@ benchmark (sec): 0.0000000295
 
 No crash, everything is OK
 ```
-
-## Build all targets (`build`)
-
-This command is still under development.

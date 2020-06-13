@@ -30,7 +30,7 @@ pub fn wasmer_validate(data: &[u8]) {
 }
 ```
 
-Finally, make this function pujblic for fuzzers:
+Make this function public for fuzzers:
 - Open the file `warf/targets/src/lib.rs`.
 - add `mod` followed by the name of your previous file.
 - add a public function starting with the name `fuzz_` followed by target name.
@@ -44,18 +44,29 @@ pub fn fuzz_wasmer_validate(data: &[u8]) {
 }
 ```
 
-## 3. Verify your target is available
+## 3. Add your new target inside warf targets
 
-Additionnaly, you can verify this new target is listed when using warf `list-targets` subcommand. 
+- Open `warf/src/targets.rs`:
+- add a new line into the `Targets` enum (e.g `WasmerValidate`)
+
+- add the fuzzing function name (without the `fuzz_`) inside `fn name(&self)`  (e.g `Targets::WasmerValidate => "wasmer_validate",`)
+
+- associate the name of the corpora folder to your targer (e.g `Targets::DiffInstantiate => "wasm"`)
+
+- add your target to `fn template` and `fn language`.
+
+## 4. Verify your target is available
+
+Additionnaly, you can verify this new target is listed when using warf `list` subcommand. 
 
 ``` sh
-$ ./warf list-targets
+$ ./warf list
 parity_wasm_deserialize
 [...]
 wasmer_validate
 ```
 
-## 4. Test your target (with `warf debug` subcommand)
+## 5. Test your target (with `warf debug` subcommand)
 
 Verify that your target is working properly using the warf `debug` subcommand. 
 
@@ -69,7 +80,7 @@ file_path: "./workspace/corpora/wasm/fib.wasm"
 Everything is OK
 ```
 
-## 5. Start fuzzing
+## 6. Start fuzzing
 
 ``` sh
 $ ./warf target wasmer_validate

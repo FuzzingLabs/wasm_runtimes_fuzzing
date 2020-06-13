@@ -170,7 +170,7 @@ The WebAssembly Binary Toolkit - [github](https://github.com/WebAssembly/wabt) /
 
 ## wasm-tools/wasmprinter (Rust)
 
-wasm-tools/wasmprinter - [github](https://github.com/bytecodealliance/wasm-tools/tree/master/crates/wasmprinter)
+A Rust parser for printing a WebAssembly binary in the WebAssembly Text Format (WAT). - [github](https://github.com/bytecodealliance/wasm-tools/tree/master/crates/wasmprinter)
 
 <details><summary>Details</summary>
 <p>
@@ -180,6 +180,21 @@ wasm-tools/wasmprinter - [github](https://github.com/bytecodealliance/wasm-tools
 
 </p>
 </details>
+
+## wain (Rust)
+
+WebAssembly implementation from scratch in Safe Rust with zero dependencies - [github](https://github.com/rhysd/wain)
+
+<details><summary>Details</summary>
+<p>
+
+- Rust Apis:
+	- `wain_syntax_binary::parse`: [github](https://docs.rs/wain-syntax-binary/0.1.2/wain_syntax_binary/fn.parse.html)
+	- `wain_validate::validate`: [github](https://docs.rs/wain-validate/0.1.3/wain_validate/fn.validate.html)
+
+</p>
+</details>
+
 
 # Projects to be integrated in the future.
 

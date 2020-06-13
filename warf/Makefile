@@ -34,7 +34,7 @@ build:
 # NOTE: `make docker CACHE=--no-cache` to force docker update/build everything again
 docker:
 	DOCKER_BUILDKIT=1 docker build . -t warf $(CACHE)
-	@echo 'USAGE: docker run -it -v `pwd`/workspace:/warf/workspace warf list-targets'
+	@echo 'USAGE: docker run -it -v `pwd`/workspace:/warf/workspace warf list'
 
 # Create an initial corpora of wasm modules
 corpora:
@@ -64,7 +64,7 @@ clean-all: clean
 
 # Simple test using docker.
 docker-test: docker
-	docker run -it -v `pwd`/workspace:/warf/workspace warf list-targets
+	docker run -it -v `pwd`/workspace:/warf/workspace warf list
 
 # Simple test with wasm using docker.
 docker-test-all: docker
@@ -85,32 +85,32 @@ test-debug: build
 
 # Run one fuzzing hardness over libfuzzer during 2s
 test-libfuzzer: build
-	./warf target wasmparser_parser -t 2 --fuzzer libfuzzer
+	./warf target wasmparser_parser -t 2 -s 1234 --fuzzer libfuzzer
 
 # Run fuzzing hardness over honggfuzz during 2s
 test-honggfuzz: build
-	./warf target wasmparser_parser -t 2 --fuzzer honggfuzz
+	./warf target wasmparser_parser -t 2 -s 1234 --fuzzer honggfuzz
 
 # Run fuzzing hardness over afl during 2s
 test-afl: build
 	AFL_SKIP_CPUFREQ=1 \
 	AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 \
-	./warf target wasmparser_parser -t 2 --fuzzer afl
+	./warf target wasmparser_parser -t 2 -s 1234 --fuzzer afl
 
 
 # Run all fuzzing hardness over libfuzzer
 test-continuously-libfuzzer: build
-	./warf continuously -t 2 --fuzzer libfuzzer
+	./warf continuously -t 2 -s 1234 --fuzzer libfuzzer
 
 # Run all fuzzing hardness over honggfuzz
 test-continuously-honggfuzz: build
-	./warf continuously -t 2 --fuzzer honggfuzz
+	./warf continuously -t 2 -s 1234 --fuzzer honggfuzz
 
 # Run all fuzzing hardness over afl
 test-continuously-afl: build
 	AFL_SKIP_CPUFREQ=1 \
 	AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 \
-	./warf continuously -t 2 --fuzzer afl
+	./warf continuously -t 2 -s 1234 --fuzzer afl
 
 # Run all tests
 # (Really) Heavy test

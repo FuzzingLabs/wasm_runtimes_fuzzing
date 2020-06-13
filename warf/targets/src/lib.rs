@@ -23,6 +23,10 @@ pub fn fuzz_diff_parsing(data: &[u8]) {
     };
 }
 
+pub fn debug_diff_parsing(_data: &[u8]) -> bool {
+    true
+}
+
 pub fn fuzz_diff_all_validate(data: &[u8]) {
     let a = wasmi::wasmi_validate(data);
     let b = wasmer::fuzz_wasmer_validate(data);
@@ -40,6 +44,11 @@ pub fn fuzz_diff_all_validate(data: &[u8]) {
     };
 }
 
+// TODO - modify
+pub fn debug_diff_all_validate(_data: &[u8]) -> bool {
+    true
+}
+
 pub fn fuzz_diff_instantiate(data: &[u8]) {
     let a = wasmi::wasmi_instantiate(data);
     let b = wasmer::fuzz_wasmer_instantiate(data);
@@ -49,6 +58,11 @@ pub fn fuzz_diff_instantiate(data: &[u8]) {
         (false, false, false) => false,
         _ => panic!("fuzz_diff_instantiate panic: {}-{}-{}", a, b, c),
     };
+}
+
+// TODO - modify
+pub fn debug_diff_instantiate(_data: &[u8]) -> bool {
+    true
 }
 
 mod wasmi;
@@ -231,4 +245,24 @@ pub fn debug_wabt_validate_ffi(data: &[u8]) -> bool {
 mod wasmprinter;
 pub fn fuzz_wasmprinter_parser(data: &[u8]) {
     let _ = wasmprinter::fuzz_wasmprinter_parser(data);
+}
+
+pub fn debug_wasmprinter_parser(data: &[u8]) -> bool {
+    wasmprinter::fuzz_wasmprinter_parser(data)
+}
+
+mod wain;
+pub fn fuzz_wain_parser(data: &[u8]) {
+    let _ = wain::fuzz_wain_parser(data);
+}
+pub fn fuzz_wain_validate(data: &[u8]) {
+    let _ = wain::fuzz_wain_validate(data);
+}
+
+pub fn debug_wain_parser(data: &[u8]) -> bool {
+    wain::fuzz_wain_parser(data)
+}
+
+pub fn debug_wain_validate(data: &[u8]) -> bool {
+    wain::fuzz_wain_validate(data)
 }

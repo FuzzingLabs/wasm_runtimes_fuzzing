@@ -1,16 +1,26 @@
+extern crate regex;
 extern crate structopt;
 #[macro_use]
 extern crate clap;
 #[macro_use]
 extern crate failure;
-extern crate fs_extra;
-extern crate regex;
 
+// Strum contains all the trait definitions
+extern crate strum;
+#[macro_use]
+extern crate strum_macros;
+
+use crate::strum::IntoEnumIterator;
 use failure::Error;
-
 use structopt::StructOpt;
 
+mod debug;
+mod env;
+mod exec_all;
 mod fuzzers;
+mod rust_fuzzers;
+mod targets;
+mod utils;
 
 /// WARF - WebAssembly Runtimes Fuzzing project
 #[derive(StructOpt, Debug)]
@@ -23,6 +33,7 @@ enum Cli {
         filter: Option<String>,
         /// Which fuzzer to run
         #[structopt(
+            short = "f",
             long = "fuzzer",
             default_value = "Honggfuzz",
             raw(
@@ -34,9 +45,21 @@ enum Cli {
         /// Set timeout per target
         #[structopt(short = "t", long = "timeout", default_value = "10")]
         timeout: i32,
-        /// Set number of thread (only for hfuzz)
+        /// Set number of thread
         #[structopt(short = "n", long = "thread")]
         thread: Option<i32>,
+        /// Set seed
+        #[structopt(short = "s", long = "seed")]
+        seed: Option<i32>,
+        /// Set a compilation Sanitizer (advanced)
+        #[structopt(
+            long = "sanitizer",
+            raw(
+                possible_values = "&fuzzers::Sanitizer::variants()",
+                case_insensitive = "true"
+            )
+        )]
+        sanitizer: Option<fuzzers::Sanitizer>,
         // Run until the end of time (or Ctrl+C)
         #[structopt(short = "i", long = "infinite")]
         infinite: bool,
@@ -48,6 +71,7 @@ enum Cli {
         target: String,
         /// Which fuzzer to run
         #[structopt(
+            short = "f",
             long = "fuzzer",
             default_value = "Honggfuzz",
             raw(
@@ -56,26 +80,24 @@ enum Cli {
             )
         )]
         fuzzer: fuzzers::Fuzzer,
-        /// Set timeout per target
+        /// Set timeout
         #[structopt(short = "t", long = "timeout")]
         timeout: Option<i32>,
         /// Set number of thread (only for hfuzz)
         #[structopt(short = "n", long = "thread")]
         thread: Option<i32>,
-    },
-    /// Build all targets for this specific fuzzer
-    #[structopt(name = "build")]
-    Build {
-        /// Which fuzzer to run
+        /// Set seed
+        #[structopt(short = "s", long = "seed")]
+        seed: Option<i32>,
+        /// Set a compilation Sanitizer (advanced)
         #[structopt(
-            long = "fuzzer",
-            default_value = "Honggfuzz",
+            long = "sanitizer",
             raw(
-                possible_values = "&fuzzers::Fuzzer::variants()",
+                possible_values = "&fuzzers::Sanitizer::variants()",
                 case_insensitive = "true"
             )
         )]
-        fuzzer: fuzzers::Fuzzer,
+        sanitizer: Option<fuzzers::Sanitizer>,
     },
     /// Debug one target
     #[structopt(name = "debug")]
@@ -84,7 +106,7 @@ enum Cli {
         target: String,
     },
     /// List all available targets
-    #[structopt(name = "list-targets")]
+    #[structopt(name = "list")]
     ListTargets,
     /// Run WebAssembly module on all targets
     #[structopt(name = "execute-all")]
@@ -100,6 +122,7 @@ enum Cli {
     },
 }
 
+/// Main function catching errors
 fn main() {
     if let Err(e) = run() {
         eprintln!("{}", e);
@@ -110,118 +133,150 @@ fn main() {
     }
 }
 
+/// Parsing of CLI arguments
 fn run() -> Result<(), Error> {
     use Cli::*;
     let cli = Cli::from_args();
 
     match cli {
         ExecuteAll { wasm } => {
-            fuzzers::run_exec_all(wasm, false)?;
+            exec_all::run_exec_all(wasm, false)?;
         }
         BenchmarkAll { wasm } => {
-            fuzzers::run_exec_all(wasm, true)?;
+            exec_all::run_exec_all(wasm, true)?;
         }
+        // list all targets
         ListTargets => {
             list_targets()?;
         }
-        Build { fuzzer } => {
-            use fuzzers::Fuzzer::*;
-            match fuzzer {
-                Afl => fuzzers::build_targets_afl()?,
-                Honggfuzz => fuzzers::build_honggfuzz()?,
-                Libfuzzer => fuzzers::build_libfuzzer()?,
-            }
-        }
+        // Fuzz one target
         Run {
             target,
             fuzzer,
             timeout,
             thread,
+            seed,
+            sanitizer,
         } => {
-            run_target(&target, fuzzer, timeout, thread)?;
+            let config = fuzzers::FuzzerConfig {
+                timeout,
+                thread,
+                sanitizer,
+                seed,
+            };
+            run_target(target, fuzzer, config)?;
         }
+        // Debug one target
         Debug { target } => {
-            let targets = fuzzers::get_targets()?;
-            if targets.iter().find(|x| *x == &target).is_none() {
-                bail!(
-                    "Don't know target `{}`. {}",
-                    target,
-                    if let Some(alt) = did_you_mean(&target, &targets) {
-                        format!("Did you mean `{}`?", alt)
-                    } else {
-                        "".into()
-                    }
-                );
-            }
-
-            fuzzers::run_debug(&target)?;
+            debug::run_debug(target)?;
         }
+        // Fuzz multiple targets
         Continuous {
             filter,
             timeout,
             fuzzer,
             thread,
+            seed,
+            sanitizer,
             infinite,
         } => {
-            run_continuously(filter, fuzzer, Some(timeout), thread, infinite)?;
+            let config = fuzzers::FuzzerConfig {
+                timeout: Some(timeout),
+                thread,
+                sanitizer,
+                seed,
+            };
+            run_continuously(filter, fuzzer, config, infinite)?;
         }
     }
     Ok(())
 }
 
+/// List all targets available
 fn list_targets() -> Result<(), Error> {
-    for target in &fuzzers::get_targets()? {
+    for target in targets::get_targets() {
         println!("{}", target);
     }
     Ok(())
 }
 
+/// Run fuzzing on only one target
 fn run_target(
-    target: &str,
+    target: String,
     fuzzer: fuzzers::Fuzzer,
-    timeout: Option<i32>,
-    thread: Option<i32>,
+    config: fuzzers::FuzzerConfig,
 ) -> Result<(), Error> {
-    let targets = fuzzers::get_targets()?;
-    if targets.iter().find(|x| *x == &target).is_none() {
-        bail!(
+    let target = match targets::Targets::iter().find(|x| x.name() == target) {
+        None => bail!(
             "Don't know target `{}`. {}",
             target,
-            if let Some(alt) = did_you_mean(&target, &targets) {
+            if let Some(alt) = utils::did_you_mean(&target, &targets::get_targets()) {
                 format!("Did you mean `{}`?", alt)
             } else {
                 "".into()
             }
-        );
-    }
+        ),
+        Some(t) => t,
+    };
 
     use fuzzers::Fuzzer::*;
     match fuzzer {
-        Afl => fuzzers::run_afl(&target, timeout, None)?, // TODO - fix thread
-        Honggfuzz => fuzzers::run_honggfuzz(&target, timeout, thread)?,
-        Libfuzzer => fuzzers::run_libfuzzer(&target, timeout, None)?, // TODO - fix thread
+        Afl => {
+            let afl = rust_fuzzers::FuzzerAfl::new(config)?;
+            afl.run(target)?;
+        }
+        Honggfuzz => {
+            let hfuzz = rust_fuzzers::FuzzerHfuzz::new(config)?;
+            hfuzz.run(target)?;
+        }
+        Libfuzzer => {
+            let lfuzz = rust_fuzzers::FuzzerLibfuzzer::new(config)?;
+            lfuzz.run(target)?;
+        }
     }
     Ok(())
 }
 
+/// Run fuzzing on multiple target matching the filter option
 fn run_continuously(
     filter: Option<String>,
     fuzzer: fuzzers::Fuzzer,
-    timeout: Option<i32>,
-    thread: Option<i32>,
+    config: fuzzers::FuzzerConfig,
     infinite: bool,
 ) -> Result<(), Error> {
     let run = |target: &str| -> Result<(), Error> {
+        let target = match targets::Targets::iter().find(|x| x.name() == target) {
+            None => bail!(
+                "Don't know target `{}`. {}",
+                target,
+                if let Some(alt) = utils::did_you_mean(&target, &targets::get_targets()) {
+                    format!("Did you mean `{}`?", alt)
+                } else {
+                    "".into()
+                }
+            ),
+            Some(t) => t,
+        };
+
         use fuzzers::Fuzzer::*;
         match fuzzer {
-            Afl => fuzzers::run_afl(&target, timeout, None)?, // TODO - fix thread
-            Honggfuzz => fuzzers::run_honggfuzz(&target, timeout, thread)?,
-            Libfuzzer => fuzzers::run_libfuzzer(&target, timeout, None)?, // TODO - fix thread
+            Afl => {
+                let hfuzz = rust_fuzzers::FuzzerAfl::new(config)?;
+                hfuzz.run(target)?;
+            }
+            Honggfuzz => {
+                let hfuzz = rust_fuzzers::FuzzerHfuzz::new(config)?;
+                hfuzz.run(target)?;
+            }
+            Libfuzzer => {
+                let hfuzz = rust_fuzzers::FuzzerLibfuzzer::new(config)?;
+                hfuzz.run(target)?;
+            }
         }
         Ok(())
     };
 
-    let targets = fuzzers::get_targets()?;
+    let targets = targets::get_targets();
     let targets = targets
         .iter()
         .filter(|x| filter.as_ref().map(|f| x.contains(f)).unwrap_or(true));
@@ -234,7 +289,7 @@ fn run_continuously(
                         println!("Fuzzer failed so we'll continue with the next one");
                         continue 'targets_pass;
                     }
-                    Err(other_error) => Err(other_error)?,
+                    Err(other_error) => return Err(other_error),
                 }
             }
         }
@@ -243,35 +298,5 @@ fn run_continuously(
             break 'cycle;
         }
     }
-
     Ok(())
-}
-
-/// Produces a string from a given list of possible values which is similar to
-/// the passed in value `v` with a certain confidence.
-/// Thus in a list of possible values like ["foo", "bar"], the value "fop" will yield
-/// `Some("foo")`, whereas "blark" would yield `None`.
-///
-/// Originally from [clap] which is Copyright (c) 2015-2016 Kevin B. Knapp
-///
-/// [clap]: https://github.com/kbknapp/clap-rs/blob/dc7ae65fb784dc355d56f09554f1216b22755c3e/src/suggestions.rs
-pub fn did_you_mean<'a, T: ?Sized, I>(v: &str, possible_values: I) -> Option<&'a str>
-where
-    T: AsRef<str> + 'a,
-    I: IntoIterator<Item = &'a T>,
-{
-    extern crate strsim;
-
-    let mut candidate: Option<(f64, &str)> = None;
-    for pv in possible_values {
-        let confidence = strsim::jaro_winkler(v, pv.as_ref());
-        if confidence > 0.8 && (candidate.is_none() || (candidate.as_ref().unwrap().0 < confidence))
-        {
-            candidate = Some((confidence, pv.as_ref()));
-        }
-    }
-    match candidate {
-        None => None,
-        Some((_, candidate)) => Some(candidate),
-    }
 }
