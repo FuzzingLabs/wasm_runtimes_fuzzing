@@ -21,7 +21,7 @@ cargo +nightly install --force honggfuzz
 cargo +nightly install --force cargo-fuzz
 
 # Install afl-rs and subcommand in cargo
-sudo apt install -y build-essential libtool-bin python3 cmake automake bison libglib2.0-dev libpixman-1-dev clang python-setuptools
+sudo apt install -y build-essential libtool-bin python3 cmake automake bison libglib2.0-dev libpixman-1-dev clang python-setuptools llvm
 cargo +nightly install --force afl
 ```
 

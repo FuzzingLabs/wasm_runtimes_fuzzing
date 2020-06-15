@@ -89,7 +89,7 @@ enum Cli {
         /// Set seed
         #[structopt(short = "s", long = "seed")]
         seed: Option<i32>,
-        /// Set seed
+        /// Set dictionary file
         #[structopt(short = "d", long = "dict")]
         dict: Option<String>,
         /// Set a compilation Sanitizer (advanced)

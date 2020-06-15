@@ -23,7 +23,7 @@
 2.	Fuzzing Implementation / Differential fuzzing implementation for wasm runtimes and parsers. - [DONE](../warf/targets/src/lib.rs)
 3.	Fuzzing Implementation / Grammar fuzzing implementation specific to WebAssembly module - [DONE - dictionary option](../warf/dictionary)
 4.	Project development / Improvement of the fuzzing (input file sharing, mutation algorithm, speed). - [DONE - sharing folder for samples](../warf/src/targets.rs)
-5.	Delivery reports / Tutorial for running fuzzers and use advanced CLI options
+5.	Delivery reports / Tutorial for running fuzzers and use advanced CLI options - [DONE](warf_advanced_options.md)
 6.	Unittest / unit test to verify fuzzing is deterministic and reproductible - [DONE - seed option make fuzzing reproduc mis make](../warf/src/main.rs)
 
 ## Roadmap #4

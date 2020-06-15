@@ -82,7 +82,7 @@ OPTIONS:
 ARGS:
     <target>    Which target to run
 ```
-NOTE: More informations about the different fuzzing engines can be found [here](FUZZING_ENGINES.md).
+NOTE: More informations about advanced options and the different fuzzing engines can be found [here](warf_advanced_options.md).
 
 
 ## Continuous fuzzing (`continuously`)
