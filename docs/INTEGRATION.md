@@ -181,6 +181,34 @@ A Rust parser for printing a WebAssembly binary in the WebAssembly Text Format (
 </p>
 </details>
 
+
+## wasm-tools/wat (Rust)
+
+A Rust parser for the WebAssembly Text Format (WAT). - [github](https://github.com/bytecodealliance/wasm-tools/tree/master/crates/wat)
+
+<details><summary>Details</summary>
+<p>
+
+- Rust Apis:
+	- `wat::parse_str`: [doc](https://docs.rs/wat/1.0.3/wat/fn.parse_str.html)
+
+</p>
+</details>
+
+## wasm-tools/wast (Rust)
+
+A Rust parser for the WebAssembly Text Format (WAST). - [github](https://github.com/bytecodealliance/wasm-tools/tree/master/crates/wast)
+
+<details><summary>Details</summary>
+<p>
+
+- Rust Apis:
+	- `ParseBuffer::new`
+	- `parser::parse::<Wat>`
+
+</p>
+</details>
+
 ## wain (Rust)
 
 WebAssembly implementation from scratch in Safe Rust with zero dependencies - [github](https://github.com/rhysd/wain)
@@ -195,12 +223,18 @@ WebAssembly implementation from scratch in Safe Rust with zero dependencies - [g
 </p>
 </details>
 
-
-# Projects to be integrated in the future.
-
-Those projects **will be** supported/integrated in the future.
+## wasm3 (C++/Rust)
 
 - [wasm3](https://github.com/wasm3/wasm3) - high performance WebAssembly interpreter written in C. - [rust bindings](https://github.com/Veykril/wasm3-rs)
+
+<details><summary>Details</summary>
+<p>
+
+- Rust Apis:
+	- `Module::parse`
+
+</p>
+</details>
 
 # Projects potentially integrated.
 
@@ -209,4 +243,3 @@ Those projects **will be potentially** supported/integrated in the future.
 - [WAVM](https://github.com/WAVM/WAVM) - WebAssembly Virtual Machine in C++.
 - [webassemblyjs](https://github.com/xtuc/webassemblyjs) - Toolchain for WebAssembly in JavaScript.
 - [wagon](https://github.com/go-interpreter/wagon) - WebAssembly-based Go interpreter, for Go.
-- [wain](https://github.com/rhysd/wain) - WebAssembly implementation from scratch in Safe Rust with zero dependencies

@@ -44,7 +44,7 @@ impl Sanitizer {
 }
 
 /// Configuration structure common for all fuzzers
-#[derive(Debug, Default, Clone, Copy)]
+#[derive(Debug, Default, Clone)]
 pub struct FuzzerConfig {
     // Fuzzer timeout
     pub timeout: Option<i32>,
@@ -54,6 +54,8 @@ pub struct FuzzerConfig {
     pub sanitizer: Option<Sanitizer>,
     // Seed
     pub seed: Option<i32>,
+    // Dictionary
+    pub dict: Option<String>,
 }
 
 /// Write the fuzzing target

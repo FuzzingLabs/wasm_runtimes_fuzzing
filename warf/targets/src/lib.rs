@@ -65,6 +65,23 @@ pub fn debug_diff_instantiate(_data: &[u8]) -> bool {
     true
 }
 
+// TODO - fuzz_diff_wat_parsing
+
+pub fn fuzz_diff_wat_parsing(data: &[u8]) {
+    let a = wabt_ffi::fuzz_wabt_wat2wasm_ffi(data);
+    let b = wat::wat_parser(data);
+    let _ = match (a, b) {
+        (true, true) => true,
+        (false, false) => false,
+        _ => panic!("fuzz_diff_instantiate panic: {}-{}", a, b),
+    };
+}
+
+// TODO - modify
+pub fn debug_diff_wat_parsing(_data: &[u8]) -> bool {
+    true
+}
+
 mod wasmi;
 // fuzzing harnesses
 pub fn fuzz_wasmi_validate(data: &[u8]) {
@@ -229,6 +246,10 @@ pub fn fuzz_wabt_wasm2wat_all_feat_ffi(data: &[u8]) {
 pub fn fuzz_wabt_validate_ffi(data: &[u8]) {
     let _ = wabt_ffi::fuzz_wabt_validate_ffi(data);
 }
+pub fn fuzz_wabt_wat2wasm_ffi(data: &[u8]) {
+    let _ = wabt_ffi::fuzz_wabt_wat2wasm_ffi(data);
+}
+
 // debug target
 pub fn debug_wabt_wasm2wat_all_feat_ffi(data: &[u8]) -> bool {
     wabt_ffi::fuzz_wabt_wasm2wat_all_feat_ffi(data)
@@ -236,11 +257,17 @@ pub fn debug_wabt_wasm2wat_all_feat_ffi(data: &[u8]) -> bool {
 pub fn debug_wabt_validate_ffi(data: &[u8]) -> bool {
     wabt_ffi::fuzz_wabt_validate_ffi(data)
 }
+pub fn debug_wabt_wat2wasm_ffi(data: &[u8]) -> bool {
+    wabt_ffi::fuzz_wabt_wat2wasm_ffi(data)
+}
 
-//mod wasm3;
-//pub fn fuzz_wasm3_parser_ffi(data: &[u8]) {
-//    let _ = wasm3::fuzz_wasm3_parser_ffi(data);
-//}
+mod wasm3;
+pub fn fuzz_wasm3_parser_ffi(data: &[u8]) {
+    let _ = wasm3::fuzz_wasm3_parser_ffi(data);
+}
+pub fn debug_wasm3_parser_ffi(data: &[u8]) -> bool {
+    wasm3::fuzz_wasm3_parser_ffi(data)
+}
 
 mod wasmprinter;
 pub fn fuzz_wasmprinter_parser(data: &[u8]) {
@@ -262,7 +289,22 @@ pub fn fuzz_wain_validate(data: &[u8]) {
 pub fn debug_wain_parser(data: &[u8]) -> bool {
     wain::fuzz_wain_parser(data)
 }
-
 pub fn debug_wain_validate(data: &[u8]) -> bool {
     wain::fuzz_wain_validate(data)
+}
+
+mod wat;
+pub fn fuzz_wat_parser(data: &[u8]) {
+    let _ = wat::wat_parser(data);
+}
+pub fn debug_wat_parser(data: &[u8]) -> bool {
+    wat::wat_parser(data)
+}
+
+mod wast;
+pub fn fuzz_wast_parser(data: &[u8]) {
+    let _ = wast::wast_parser(data);
+}
+pub fn debug_wast_parser(data: &[u8]) -> bool {
+    wast::wast_parser(data)
 }

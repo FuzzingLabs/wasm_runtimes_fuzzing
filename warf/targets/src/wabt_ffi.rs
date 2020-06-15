@@ -28,4 +28,12 @@ pub fn fuzz_wabt_validate_ffi(data: &[u8]) -> bool {
     module.validate().is_ok()
 }
 
+pub fn fuzz_wabt_wat2wasm_ffi(data: &[u8]) -> bool {
+    use wabt::{wat2wasm_with_features, Features};
+    let mut features = Features::new();
+    features.enable_all();
+
+    wat2wasm_with_features(data, features).is_ok()
+}
+
 // TODO(RM4) - Module::parse_wat

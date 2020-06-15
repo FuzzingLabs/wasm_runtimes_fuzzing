@@ -19,10 +19,10 @@
 
 ## Roadmap #3
 
-1.	Project development	/ Evaluation fuzzing hardness + improvement - [DONE - Add more fuzzing targets ([wasmprinter](../warf/targets/src/wasmprinter.rs), [wain](../warf/targets/src/wain.rs))]
+1.	Project development	/ Evaluation fuzzing hardness + improvement - [DONE - Add more fuzzing targets ([wasmprinter](../warf/targets/src/wasmprinter.rs), [wain](../warf/targets/src/wain.rs), [wat](../warf/targets/src/wat.rs), [wast](../warf/targets/src/wast.rs), [wasm3](../warf/targets/src/wasm3.rs))]
 2.	Fuzzing Implementation / Differential fuzzing implementation for wasm runtimes and parsers. - [DONE](../warf/targets/src/lib.rs)
-3.	Fuzzing Implementation / Grammar fuzzing implementation specific to WebAssembly module
-4.	Project development / Improvement of the fuzzing (input file sharing, mutation algorithm, speed). - [WIP]
+3.	Fuzzing Implementation / Grammar fuzzing implementation specific to WebAssembly module - [DONE - dictionary option](../warf/dictionary)
+4.	Project development / Improvement of the fuzzing (input file sharing, mutation algorithm, speed). - [DONE - sharing folder for samples](../warf/src/targets.rs)
 5.	Delivery reports / Tutorial for running fuzzers and use advanced CLI options
 6.	Unittest / unit test to verify fuzzing is deterministic and reproductible - [DONE - seed option make fuzzing reproduc mis make](../warf/src/main.rs)
 

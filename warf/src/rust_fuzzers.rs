@@ -6,7 +6,7 @@ use std::path::PathBuf;
 use std::process::Command;
 use strum::IntoEnumIterator;
 
-use crate::env::corpora_dir;
+use crate::env::{corpora_dir, root_dir};
 use crate::fuzzers::{write_fuzzer_target, FuzzerConfig, FuzzerQuit};
 use crate::targets::{prepare_targets_workspace, Targets};
 use crate::utils::copy_dir;
@@ -113,16 +113,23 @@ impl FuzzerHfuzz {
             "{} \
              {} \
              {} \
+             {} \
              {}",
             if let Some(t) = self.config.timeout {
                 format!("--run_time {}", t)
             } else {
                 "".into()
             },
-            "-t 60",
+            "-t 2",
             // Set number of thread
             if let Some(n) = self.config.thread {
                 format!("--threads {}", n)
+            } else {
+                "".into()
+            },
+            // set the dictionnary
+            if let Some(dict) = self.config.dict.clone() {
+                format!("--dict {}", root_dir()?.join(dict).display())
             } else {
                 "".into()
             },
@@ -296,7 +303,10 @@ impl FuzzerAfl {
         if let Some(seed) = self.config.seed {
             args.push(format!("-s {}", seed));
         };
-
+        // handle dict option
+        if let Some(dict) = self.config.dict.clone() {
+            args.push(format!("-x {}", root_dir()?.join(dict).display()));
+        };
         // Run the fuzzer using cargo
         let fuzzer_bin = Command::new("cargo")
             .args(args)
@@ -458,6 +468,10 @@ impl FuzzerLibfuzzer {
         // handle seed option
         if let Some(seed) = self.config.seed {
             args.push(format!("-seed={}", seed));
+        };
+        // handle dict option
+        if let Some(dict) = self.config.dict.clone() {
+            args.push(format!("-dict={}", root_dir()?.join(dict).display()));
         };
         // Launch the fuzzer using cargo
         let fuzzer_bin = Command::new("cargo") // "+nightly",

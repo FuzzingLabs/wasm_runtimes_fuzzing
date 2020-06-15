@@ -89,6 +89,9 @@ enum Cli {
         /// Set seed
         #[structopt(short = "s", long = "seed")]
         seed: Option<i32>,
+        /// Set seed
+        #[structopt(short = "d", long = "dict")]
+        dict: Option<String>,
         /// Set a compilation Sanitizer (advanced)
         #[structopt(
             long = "sanitizer",
@@ -156,6 +159,7 @@ fn run() -> Result<(), Error> {
             timeout,
             thread,
             seed,
+            dict,
             sanitizer,
         } => {
             let config = fuzzers::FuzzerConfig {
@@ -163,6 +167,7 @@ fn run() -> Result<(), Error> {
                 thread,
                 sanitizer,
                 seed,
+                dict,
             };
             run_target(target, fuzzer, config)?;
         }
@@ -185,6 +190,7 @@ fn run() -> Result<(), Error> {
                 thread,
                 sanitizer,
                 seed,
+                dict: None,
             };
             run_continuously(filter, fuzzer, config, infinite)?;
         }
@@ -261,15 +267,15 @@ fn run_continuously(
         use fuzzers::Fuzzer::*;
         match fuzzer {
             Afl => {
-                let hfuzz = rust_fuzzers::FuzzerAfl::new(config)?;
+                let hfuzz = rust_fuzzers::FuzzerAfl::new(config.clone())?;
                 hfuzz.run(target)?;
             }
             Honggfuzz => {
-                let hfuzz = rust_fuzzers::FuzzerHfuzz::new(config)?;
+                let hfuzz = rust_fuzzers::FuzzerHfuzz::new(config.clone())?;
                 hfuzz.run(target)?;
             }
             Libfuzzer => {
-                let hfuzz = rust_fuzzers::FuzzerLibfuzzer::new(config)?;
+                let hfuzz = rust_fuzzers::FuzzerLibfuzzer::new(config.clone())?;
                 hfuzz.run(target)?;
             }
         }

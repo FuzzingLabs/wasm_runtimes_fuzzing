@@ -32,15 +32,23 @@ pub enum Targets {
     // wabt_ffi
     WabtWasm2watAllFeatFfi,
     WabtValidateFfi,
+    WabtWat2WasmAllFeatFfi,
     // wasmprinter
     WasmprinterParser,
     // wain
     WainParser,
     WainValidate,
+    // wat
+    WatParser,
+    // wast
+    WastParser,
+    // wasm3
+    Wasm3Parser,
     // differential fuzzing
     DiffParsing,
     DiffValidateAllFeat,
     DiffInstantiate,
+    DiffWatParsing,
 }
 
 impl Targets {
@@ -72,15 +80,23 @@ impl Targets {
             // wabt_ffi
             Targets::WabtWasm2watAllFeatFfi => "wabt_wasm2wat_all_feat_ffi",
             Targets::WabtValidateFfi => "wabt_validate_ffi",
+            Targets::WabtWat2WasmAllFeatFfi => "wabt_wat2wasm_ffi",
             // wasmprinter
             Targets::WasmprinterParser => "wasmprinter_parser",
             // wain
             Targets::WainParser => "wain_parser",
             Targets::WainValidate => "wain_validate",
+            // wat
+            Targets::WatParser => "wat_parser",
+            // wast
+            Targets::WastParser => "wast_parser",
+            // wasm3
+            Targets::Wasm3Parser => "wasm3_parser_ffi",
             // differential fuzzing
             Targets::DiffParsing => "diff_parsing",
             Targets::DiffValidateAllFeat => "diff_all_validate",
             Targets::DiffInstantiate => "diff_instantiate",
+            Targets::DiffWatParsing => "diff_wat_parsing",
         }
         .to_string()
     }
@@ -112,16 +128,24 @@ impl Targets {
             | Targets::BinaryenOptimizeFfi
             // wabt_ffi
             | Targets::WabtWasm2watAllFeatFfi
-            | Targets::WabtValidateFfi
+            | Targets::WabtValidateFfi => "wasm",
+            Targets::WabtWat2WasmAllFeatFfi => "wat",
             // wasmprinter
-            | Targets::WasmprinterParser
+            Targets::WasmprinterParser
             // wain
             | Targets::WainParser
-            | Targets::WainValidate
+            | Targets::WainValidate => "wasm",
+            // wat
+            Targets::WatParser => "wat",
+            // wast
+            Targets::WastParser => "wast",
+            // wasm3
+            Targets::Wasm3Parser => "wasm",
             // differential fuzzing
-            | Targets::DiffParsing
+            Targets::DiffParsing
             | Targets::DiffValidateAllFeat
             | Targets::DiffInstantiate => "wasm",
+            Targets::DiffWatParsing => "wat",
         }
         .to_string()
     }
@@ -154,15 +178,23 @@ impl Targets {
             // wabt_ffi
             | Targets::WabtWasm2watAllFeatFfi
             | Targets::WabtValidateFfi
+            | Targets::WabtWat2WasmAllFeatFfi
             // wasmprinter
             | Targets::WasmprinterParser
             // wain
             | Targets::WainParser
             | Targets::WainValidate
+            // wat 
+            | Targets::WatParser
+            // wast
+            | Targets::WastParser
+            // wasm3
+            | Targets::Wasm3Parser
             // differential fuzzing
             | Targets::DiffParsing
             | Targets::DiffValidateAllFeat
-            | Targets::DiffInstantiate => "template.rs",
+            | Targets::DiffInstantiate
+            | Targets::DiffWatParsing => "template.rs",
         }
         .to_string()
     }
@@ -195,15 +227,23 @@ impl Targets {
             // wabt_ffi
             | Targets::WabtWasm2watAllFeatFfi
             | Targets::WabtValidateFfi
+            | Targets::WabtWat2WasmAllFeatFfi
             // wasmprinter
             | Targets::WasmprinterParser
             // wain
             | Targets::WainParser
             | Targets::WainValidate
+            // wat
+            | Targets::WatParser
+            // wast
+            | Targets::WastParser
+            // wasm3
+            | Targets::Wasm3Parser
             // differential fuzzing
             | Targets::DiffParsing
             | Targets::DiffValidateAllFeat
-            | Targets::DiffInstantiate => "rust",
+            | Targets::DiffInstantiate
+            | Targets::DiffWatParsing => "rust",
         }
         .to_string()
     }
