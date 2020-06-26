@@ -10,11 +10,11 @@ wasmi-validation = "*"
 parity-wasm = "*"
 wasmer-runtime = "*"
 wasmer-singlepass-backend = "*"
-wasmtime = {git = "https://github.com/bytecodealliance/wasmtime"}
+wasmtime = "*"
 # lightbeam = "*"
 wasmparser = "*"
-binaryen = { git = "https://github.com/pepyakin/binaryen-rs" }
-wabt = { git = "https://github.com/pepyakin/wabt-rs" }
+binaryen = "*"
+wabt = "*"
 wasmprinter = "*"
 wain-validate = "*"
 wain-syntax-binary = "*"
