@@ -130,6 +130,7 @@ This tool helped to find the following bugs/vulnerabilities (crashing files are 
 - wabt: [[wasm2wat] Incorrect rejection of valid module](https://github.com/WebAssembly/wabt/issues/1455)
 - wain: [unwrap panic while parsing invalid wasm module](https://github.com/rhysd/wain/issues/29) - **FIXED**
 - wain: [memory allocation failed error during parsing](https://github.com/rhysd/wain/issues/30) - **FIXED**
+- wain: ["index out of bounds" in wain validate](https://github.com/rhysd/wain/issues/39)
 - wasm3: [segfault / assertion failed in GetStackTopIndex](https://github.com/wasm3/wasm3/issues/151)
 - wasm3: [segfault / null pointer dereference in GetFunctionNumReturns](https://github.com/wasm3/wasm3/issues/152)
 - wasm3: [heap buffer overflow in ParseSection_Export](https://github.com/wasm3/wasm3/issues/153)
