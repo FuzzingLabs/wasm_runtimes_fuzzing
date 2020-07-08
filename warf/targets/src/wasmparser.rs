@@ -46,6 +46,7 @@ pub fn fuzz_wasmparser_validate_all_feat(data: &[u8]) -> bool {
             enable_bulk_memory: true,
             enable_multi_value: true,
             enable_tail_call: true,
+            enable_module_linking: true,
         },
     });
 
