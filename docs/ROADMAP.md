@@ -7,7 +7,7 @@
 3. APIs / Creation of integration APIs + documentation - [DONE](../warf/targets/src/lib.rs) / [DONE](how_to_add_new_fuzz_target.md)
 4. Delivery report / Tutorial for project installation and testings - [DONE](../README.md#quick-start)
 
-## Roadmap #2
+## Roadmap #2 (DONE)
 
 1.	Runtimes Integration / Integration of main runtimes engines. - [DONE](../warf/targets/src/lib.rs)
 2.	CLI tool / Command line tool allowing execution of wasm modules through all runtimes. - [DONE - ./warf execute-all, make test](../warf/src/main.rs)
@@ -17,7 +17,7 @@
 6.	Delivery reports / Tutorial for runtimes installation, compilation, how to run tools and unittests - [DONE](../README.md) / [DONE](WARF_SUBCOMMANDS.md) / [DONE](../docs/)
 7.	Unittest / Unittest to verify runtimes engines work as expected - [DONE - make test\*](../warf/Makefile)
 
-## Roadmap #3
+## Roadmap #3 (DONE)
 
 1.	Project development	/ Evaluation fuzzing hardness + improvement - [DONE - Add more fuzzing targets ([wasmprinter](../warf/targets/src/wasmprinter.rs), [wain](../warf/targets/src/wain.rs), [wat](../warf/targets/src/wat.rs), [wast](../warf/targets/src/wast.rs), [wasm3](../warf/targets/src/wasm3.rs))]
 2.	Fuzzing Implementation / Differential fuzzing implementation for wasm runtimes and parsers. - [DONE](../warf/targets/src/lib.rs)
