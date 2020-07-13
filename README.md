@@ -142,10 +142,11 @@ This tool helped to find the following bugs/vulnerabilities (crashing files are 
 - [Rust Fuzzing Authority](https://github.com/rust-fuzz) for Rust fuzzing tools.
 
 
-# Contact
+# Trainings & Contact
 
 Patrick Ventuzelo - [@pat_ventuzelo](https://twitter.com/pat_ventuzelo) - Independent Security Researcher / Trainer.
 
 Consulting & trainings:
 * 4-days **WebAssembly security** training: [here](https://fuzzinglabs.com/trainings/)
 * 2-days **Rust security** training: [here](https://fuzzinglabs.com/rust-security-training/)
+
