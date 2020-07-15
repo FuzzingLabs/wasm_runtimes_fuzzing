@@ -55,6 +55,8 @@ pub fn fuzz_wasmer_validate(data: &[u8]) {
 
 - add your target to `fn template` and `fn language`.
 
+- build `warf` using `make build`.
+
 ## 4. Verify your target is available
 
 Additionnaly, you can verify this new target is listed when using warf `list` subcommand. 
