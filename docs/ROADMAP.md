@@ -26,10 +26,10 @@
 5.	Delivery reports / Tutorial for running fuzzers and use advanced CLI options - [DONE](warf_advanced_options.md)
 6.	Unittest / unit test to verify fuzzing is deterministic and reproductible - [DONE - seed option make fuzzing reproduc mis make](../warf/src/main.rs)
 
-## Roadmap #4
+## Roadmap #4 (WIP)
 
-1.	Tutorial / Runtime integration tutorial
-2.	Tutorial / Utilisation tutorial
+1.	Tutorial / Runtime integration tutorial - [DONE - how_to_add_new_fuzz_target.md](https://github.com/pventuzelo/wasm_runtimes_fuzzing/blob/master/docs/how_to_add_new_fuzz_target.md)
+2.	Tutorial / Utilisation tutorial - DONE [WARF_SUBCOMMANDS.md](https://github.com/pventuzelo/wasm_runtimes_fuzzing/blob/master/docs/WARF_SUBCOMMANDS.md), [warf_advanced_options.md](https://github.com/pventuzelo/wasm_runtimes_fuzzing/blob/master/docs/warf_advanced_options.md)
 3.	Documentation / Internal architecture
 4.	Documentation / Details fuzzing engines & techniques
 5.	Performance testing / Improve fuzzing performances and benchmarks
