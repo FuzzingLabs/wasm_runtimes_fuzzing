@@ -128,6 +128,7 @@ NOTE: all debugging tools generated with `debug` subcommand are available inside
 
 This command will create, build and execute a standalone binary running one wasm module throw all fuzzing targets.
 NOTE: This binary will be stored in `workspace/exec_all` allowing you to directly call it later without re-compilation.
+NOTE 2: Targets do not handle the same type of data that's why it can be perfectly valid to have a target returning an error e.g. if you provide a wasm module to `wat_parser`, it will return an error.
 
 ``` sh
 $ ./warf execute-all workspace/corpora/wasm/fib.wasm
