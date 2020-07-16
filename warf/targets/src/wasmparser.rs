@@ -6,7 +6,7 @@ WASMPARSER:
 /// `Fuzzing wasmparser::Parser` and loop to read all module.
 pub fn fuzz_wasmparser_parser(data: &[u8]) -> bool {
     use wasmparser::Parser;
-    let mut res_iter = Parser::new(0).parse_all(&data);
+    let res_iter = Parser::new(0).parse_all(&data);
     for res in res_iter {
         match res {
             Err(_) => return false,

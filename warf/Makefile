@@ -57,6 +57,16 @@ clean-all: clean
 	rm -rf workspace/hfuzz/hfuzz_target/
 	rm -rf workspace/libfuzzer/fuzz/target/
 
+# update to latest cargo package version
+update:
+	cargo update
+	cd targets && cargo update
+	cd execute_all && cargo update
+	cd debug && cargo update
+	(cd workspace/afl && cargo update) || true
+	(cd workspace/hfuzz && cargo update) || true
+	(cd workspace/libfuzzer && cargo update) || true
+
 #
 # Testing utils
 # warf cli sub-commands
@@ -122,7 +132,7 @@ test-all: test test-bench test-debug test-libfuzzer test-honggfuzz test-afl
 
 # Update rust fuzzers (afl, honggfuzz and libfuzzer) to last version
 # TODO: move to an install/update script?
-update:
+update-fuzzer:
 	cargo +nightly install --force honggfuzz
 	cargo +nightly install --force cargo-fuzz
 	cargo +nightly install --force afl

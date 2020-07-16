@@ -13,5 +13,3 @@ pub fn parity_wasm_deserialize(data: &[u8]) -> bool {
     let module: std::result::Result<elements::Module, _> = deserialize_buffer(&data);
     module.is_ok()
 }
-
-// TODO(RM4) - parity_wasm::elements::serialize
