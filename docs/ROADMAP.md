@@ -30,8 +30,8 @@
 
 1.	Tutorial / Runtime integration tutorial - [DONE - how_to_add_new_fuzz_target.md](https://github.com/pventuzelo/wasm_runtimes_fuzzing/blob/master/docs/how_to_add_new_fuzz_target.md)
 2.	Tutorial / Utilisation tutorial - DONE [WARF_SUBCOMMANDS.md](https://github.com/pventuzelo/wasm_runtimes_fuzzing/blob/master/docs/WARF_SUBCOMMANDS.md), [warf_advanced_options.md](https://github.com/pventuzelo/wasm_runtimes_fuzzing/blob/master/docs/warf_advanced_options.md)
-3.	Documentation / Internal architecture [Internals.md](Internals.md#global-functionnement)
-4.	Documentation / Details fuzzing engines & techniques [Internals.md](Internals.md#fuzzing-engines)
+3.	Documentation / Internal architecture - [DONE - Internals.md](Internals.md#global-functionnement)
+4.	Documentation / Details fuzzing engines & techniques - [DONE - Internals.md](Internals.md#fuzzing-engines)
 5.	Performance testing / Improve fuzzing performances and benchmarks
 
 ## Bonus
