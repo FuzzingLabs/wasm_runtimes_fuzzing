@@ -120,23 +120,23 @@ Differents open-source projects (WebAssembly VMs/runtimes/parsers) will be integ
 
 This tool helped to find the following bugs/vulnerabilities (crashing files are inside `trophies` folder):
 - wasmer/wasmer_clif_fork_wasm: [index out of bounds panic](https://github.com/wasmerio/wasmer/issues/1372)
-- binaryen: [segfault / out-of-bounds read in WasmBinaryBuilder::readImports](https://github.com/WebAssembly/binaryen/issues/2751) - **FIXED**
+- binaryen: [segfault / out-of-bounds read in `WasmBinaryBuilder::readImports`](https://github.com/WebAssembly/binaryen/issues/2751) - **FIXED**
 - wabt: [SIGABRT due to std::bad_alloc exception (resizing wasm br_table)](https://github.com/WebAssembly/wabt/issues/1386) - **FIXED**
 - wasmtime: [assertion failed in wasmtime_debug::transform::simulate::generate_simulated_dwarf](https://github.com/bytecodealliance/wasmtime/issues/1506) - **FIXED**
-- wasmtime: [assertion failed or unimplemented panic when table type is not anyref](https://github.com/bytecodealliance/wasmtime/issues/1601)
-- wabt: [[wasm2wat] Assertion failure in BinaryReaderIR::OnCallIndirectExpr](https://github.com/WebAssembly/wabt/issues/1413) - **FIXED**
-- wabt: [[wasm2wat] Assertion failure in BinaryReaderIR::OnReturnCallIndirectExpr](https://github.com/WebAssembly/wabt/issues/1414) - **FIXED**
+- wasmtime: [assertion failed or unimplemented panic when table type is not anyref](https://github.com/bytecodealliance/wasmtime/issues/1601) - **FIXED**
+- wabt: [[wasm2wat] Assertion failure in `BinaryReaderIR::OnCallIndirectExpr`](https://github.com/WebAssembly/wabt/issues/1413) - **FIXED**
+- wabt: [[wasm2wat] Assertion failure in `BinaryReaderIR::OnReturnCallIndirectExpr`](https://github.com/WebAssembly/wabt/issues/1414) - **FIXED**
 - wabt: [Incorrect validation of module with malformed alignment by wabt](https://github.com/WebAssembly/wabt/issues/1453) - **FIXED**
 - wabt: [[wasm2wat] Incorrect rejection of valid module](https://github.com/WebAssembly/wabt/issues/1455)
 - wain: [unwrap panic while parsing invalid wasm module](https://github.com/rhysd/wain/issues/29) - **FIXED**
 - wain: [memory allocation failed error during parsing](https://github.com/rhysd/wain/issues/30) - **FIXED**
-- wasm3: [segfault / assertion failed in GetStackTopIndex](https://github.com/wasm3/wasm3/issues/151)
-- wasm3: [segfault / null pointer dereference in GetFunctionNumReturns](https://github.com/wasm3/wasm3/issues/152)
-- wasm3: [heap buffer overflow in ParseSection_Export](https://github.com/wasm3/wasm3/issues/153)
-- wasm3: [SIGILL in Compile_BlockStatements](https://github.com/wasm3/wasm3/issues/154)
+- wasm3: [segfault / assertion failed in `GetStackTopIndex`](https://github.com/wasm3/wasm3/issues/151)
+- wasm3: [segfault / null pointer dereference in `GetFunctionNumReturns`](https://github.com/wasm3/wasm3/issues/152)
+- wasm3: [heap buffer overflow in `ParseSection_Export`](https://github.com/wasm3/wasm3/issues/153)
+- wasm3: [SIGILL in `Compile_BlockStatements`](https://github.com/wasm3/wasm3/issues/154)
 - wain: ["index out of bounds" in wain validate](https://github.com/rhysd/wain/issues/39) - **FIXED**
-- wasmprinter: [Resources exhaustion (CPU/MEM) using wasmprinter::print_bytes()](https://github.com/bytecodealliance/wasm-tools/issues/52) - **FIXED**
-- wasm3: [heap-use-after-free in ReadLebUnsigned](https://github.com/wasm3/wasm3/issues/156)
+- wasmprinter: [Resources exhaustion (CPU/MEM) using `wasmprinter::print_bytes()`](https://github.com/bytecodealliance/wasm-tools/issues/52) - **FIXED**
+- wasm3: [heap-use-after-free in `ReadLebUnsigned`](https://github.com/wasm3/wasm3/issues/156)
 - wasm3: [global-buffer-overflow in `Compile_BlockStatements`](https://github.com/wasm3/wasm3/issues/157)
 - wasm3: [out of bound read in `Read_f64`](https://github.com/wasm3/wasm3/issues/158)
 - wasm3: [heap-buffer-overflow in `Compile_BlockStatements` (line 2169)](https://github.com/wasm3/wasm3/issues/159)
