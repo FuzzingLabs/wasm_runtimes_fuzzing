@@ -32,4 +32,4 @@
 2.	Tutorial / Utilisation tutorial - DONE [WARF_SUBCOMMANDS.md](WARF_SUBCOMMANDS.md), [warf_advanced_options.md](warf_advanced_options.md)
 3.	Documentation / Internal architecture - [DONE - Internals.md](Internals.md#global-functionnement)
 4.	Documentation / Details fuzzing engines & techniques - [DONE - Internals.md](Internals.md#fuzzing-engines)
-5.	Performance testing / Improve fuzzing performances and benchmarks
+5.	Performance testing / Improve fuzzing performances and benchmarks - [DONE - Leveraging Rust borrowing to improve fuzzing performances](https://github.com/pventuzelo/wasm_runtimes_fuzzing/commit/7b47782f01187571446f2f2d376a1d6183ee68ff)
