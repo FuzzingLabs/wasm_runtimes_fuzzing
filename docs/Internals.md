@@ -71,3 +71,4 @@ All previous fuzzing engines used those differents fuzzing techniques to find bu
 - Coverage-guided fuzzing: Target if compiled with some instrumentation piece of code used to monitor if some new code path has been reached during fuzzing session.
 - Mutation-based fuzzing: Input corpora is used and mutated/modified (using various algorithm) before being provided to the target.
 - Grammar-based fuzzing: Fuzzing dictionnaries will help the fuzzing engines to generate valid mutated samples.
+- Differential fuzzing: Result of different fuzzing targets are compared in order to find logic bugs (like improper validation or rejection of an input module)
