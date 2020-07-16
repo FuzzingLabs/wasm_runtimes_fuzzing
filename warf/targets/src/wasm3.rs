@@ -11,5 +11,5 @@ pub fn fuzz_wasm3_parser_ffi(data: &[u8]) -> bool {
     let _rt = env
         .create_runtime(1024 * 60)
         .expect("Unable to create runtime");
-    Module::parse(&env, data).is_ok()
+    Module::parse(&env, &data).is_ok()
 }

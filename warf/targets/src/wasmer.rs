@@ -29,7 +29,7 @@ pub fn fuzz_wasmer_instantiate(data: &[u8]) -> bool {
     // allow_missing_functions should prevent wasmer to reject
     // modules with imported functions but generate more false positive bugs
     // import_object.allow_missing_functions = true;
-    instantiate(data, &import_object).is_ok()
+    instantiate(&data, &import_object).is_ok()
 
     // TODO(RM3): improve or create new fuzz harness that iterate
     // over module functions and call them all

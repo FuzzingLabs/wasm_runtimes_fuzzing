@@ -9,5 +9,6 @@ LIGHTBEAM:
 /// NOTE: I'm not sure this method validate the module first.
 pub fn fuzz_lightbeam_translate(data: &[u8]) -> bool {
     use lightbeam::translate;
+
     translate(&data).is_ok()
 }
