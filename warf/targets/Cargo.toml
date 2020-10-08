@@ -7,7 +7,7 @@ edition = "2018"
 [dependencies]
 wasmi = "*"
 wasmi-validation = "*"
-parity-wasm = "*"
+parity-wasm = "0.41.0"
 wasmer-runtime = "*"
 wasmer-singlepass-backend = "*"
 wasmtime = "*"
@@ -21,3 +21,4 @@ wain-syntax-binary = "*"
 wat = "*"
 wast = "*"
 wasm3 = { git = "https://github.com/Veykril/wasm3-rs", features=["build-bindgen"]}
+fizzy = "0.6.0-dev"

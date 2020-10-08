@@ -44,6 +44,8 @@ pub enum Targets {
     WastParser,
     // wasm3
     Wasm3Parser,
+    // fizzy,
+    FizzyValidate,
     // differential fuzzing
     DiffParsing,
     DiffValidateAllFeat,
@@ -92,6 +94,8 @@ impl Targets {
             Targets::WastParser => "wast_parser",
             // wasm3
             Targets::Wasm3Parser => "wasm3_parser_ffi",
+            // fizzy
+            Targets::FizzyValidate => "fizzy_validate",
             // differential fuzzing
             Targets::DiffParsing => "diff_parsing",
             Targets::DiffValidateAllFeat => "diff_all_validate",
@@ -141,6 +145,8 @@ impl Targets {
             Targets::WastParser => "wast",
             // wasm3
             Targets::Wasm3Parser => "wasm",
+            // fizzy
+            Targets::FizzyValidate => "wasm",
             // differential fuzzing
             Targets::DiffParsing
             | Targets::DiffValidateAllFeat
@@ -190,6 +196,8 @@ impl Targets {
             | Targets::WastParser
             // wasm3
             | Targets::Wasm3Parser
+            // fizzy
+            | Targets::FizzyValidate
             // differential fuzzing
             | Targets::DiffParsing
             | Targets::DiffValidateAllFeat
@@ -239,6 +247,8 @@ impl Targets {
             | Targets::WastParser
             // wasm3
             | Targets::Wasm3Parser
+            // fizzy
+            | Targets::FizzyValidate
             // differential fuzzing
             | Targets::DiffParsing
             | Targets::DiffValidateAllFeat

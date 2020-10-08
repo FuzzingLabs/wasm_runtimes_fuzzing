@@ -25,17 +25,21 @@ pub fn fuzz_wasmparser_validate(data: &[u8]) -> bool {
 
 /// Fuzzing `wasmparser::ValidatingParser` with all features enabled and loop to read all module.
 pub fn fuzz_wasmparser_validate_all_feat(data: &[u8]) -> bool {
-    use wasmparser::Validator;
+    use wasmparser::{Validator, WasmFeatures};
 
     let mut validator = Validator::new();
-    validator.wasm_reference_types(true);
-    validator.wasm_multi_value(true);
-    validator.wasm_threads(true);
-    validator.wasm_simd(true);
-    validator.wasm_module_linking(true);
-    validator.wasm_tail_call(true);
-    validator.wasm_bulk_memory(true);
-    validator.deterministic_only(true);
+    validator.wasm_features(WasmFeatures {
+        reference_types: true,
+        multi_value: true,
+        threads: true,
+        simd: true,
+        module_linking: true,
+        tail_call: true,
+        bulk_memory: true,
+        deterministic_only: true,
+        multi_memory: true,
+        memory64: true,
+    });
 
     // validate
     validator.validate_all(&data).is_ok()

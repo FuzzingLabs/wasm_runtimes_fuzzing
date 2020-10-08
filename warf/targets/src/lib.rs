@@ -45,13 +45,14 @@ pub fn fuzz_diff_all_validate(data: &[u8]) {
     let c = wasmtime::fuzz_wasmtime_validate_all_feat(&data);
     let d = wasmparser::fuzz_wasmparser_validate_all_feat(&data);
     let e = wabt_ffi::fuzz_wabt_validate_ffi(&data);
+    let f = fizzy::fizzy_validate(&data);
 
-    let _ = match (a, b, c, d, e) {
-        (true, true, true, true, true) => true,
-        (false, false, false, false, false) => false,
+    let _ = match (a, b, c, d, e, f) {
+        (true, true, true, true, true, true) => true,
+        (false, false, false, false, false, false) => false,
         _ => panic!(
-            "fuzz_diff_all_validate panic: {}-{}-{}-{}-{}",
-            a, b, c, d, e
+            "fuzz_diff_all_validate panic: {}-{}-{}-{}-{}-{}",
+            a, b, c, d, e, f
         ),
     };
 }
@@ -62,10 +63,11 @@ pub fn debug_diff_all_validate(data: &[u8]) -> bool {
     let c = wasmtime::fuzz_wasmtime_validate_all_feat(&data);
     let d = wasmparser::fuzz_wasmparser_validate_all_feat(&data);
     let e = wabt_ffi::fuzz_wabt_validate_ffi(&data);
+    let f = fizzy::fizzy_validate(&data);
 
-    match (a, b, c, d, e) {
-        (true, true, true, true, true) => true,
-        (false, false, false, false, false) => true,
+    match (a, b, c, d, e, f) {
+        (true, true, true, true, true, true) => true,
+        (false, false, false, false, false, false) => true,
         _ => false,
     }
 }
@@ -337,4 +339,12 @@ pub fn fuzz_wast_parser(data: &[u8]) {
 }
 pub fn debug_wast_parser(data: &[u8]) -> bool {
     wast::wast_parser(&data)
+}
+
+mod fizzy;
+pub fn fuzz_fizzy_validate(data: &[u8]) {
+    let _ = fizzy::fizzy_validate(&data);
+}
+pub fn debug_fizzy_validate(data: &[u8]) -> bool {
+    fizzy::fizzy_validate(&data)
 }

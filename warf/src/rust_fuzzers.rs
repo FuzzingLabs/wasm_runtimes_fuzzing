@@ -137,8 +137,8 @@ impl FuzzerHfuzz {
         );
 
         // Honggfuzz will first build than run the fuzzer using cargo
-        let fuzzer_bin = Command::new("cargo") // "+nightly",
-            .args(&["hfuzz", "run", &target.name()])
+        let fuzzer_bin = Command::new("cargo") // ,
+            .args(&["+nightly", "hfuzz", "run", &target.name()])
             .env("RUSTFLAGS", &rust_args)
             .env("HFUZZ_RUN_ARGS", &hfuzz_args)
             //.env("HFUZZ_BUILD_ARGS", "opt-level=3")
