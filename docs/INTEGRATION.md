@@ -236,6 +236,19 @@ WebAssembly implementation from scratch in Safe Rust with zero dependencies - [g
 </p>
 </details>
 
+## fizzy (C++/Rust)
+
+- [fizzy](https://github.com/wasmx/fizzy) - fast, deterministic, and pedantic WebAssembly interpreter written in C++. - [rust bindings](https://github.com/wasmx/fizzy/tree/master/bindings/rust)
+
+<details><summary>Details</summary>
+<p>
+
+- Rust Apis:
+	- `fizzy::validate` - [doc](https://docs.rs/fizzy/0.6.0-dev/fizzy/fn.validate.html)
+
+</p>
+</details>
+
 # Projects potentially integrated.
 
 Those projects **will be potentially** supported/integrated in the future.
