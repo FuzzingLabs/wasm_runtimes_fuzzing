@@ -4,6 +4,8 @@ We are checking that all those different implementation return
 the same thing i.e. true or false in our cases.
 */
 
+mod utils;
+
 pub fn fuzz_diff_parsing(data: &[u8]) {
     let a = parity_wasm::parity_wasm_deserialize(&data);
     let b = wasmer::fuzz_wasmer_compile_clif(&data);
@@ -122,6 +124,23 @@ pub fn fuzz_wasmi_validate(data: &[u8]) {
 pub fn fuzz_wasmi_instantiate(data: &[u8]) {
     let _ = wasmi::wasmi_instantiate(&data);
 }
+
+pub fn fuzz_wasmi_translate(data: &[u8]) {
+    let _ = wasmi::wasmi_translate(&data);
+}
+
+pub fn fuzz_wasmi_translate_metered(data: &[u8]) {
+    let _ = wasmi::wasmi_translate_metered(&data);
+}
+
+
+pub fn fuzz_wasmi_execute(data: &[u8]) {
+    let _ = wasmi::wasmi_execute(&data);
+}
+
+
+
+
 // debug target
 pub fn debug_wasmi_validate(data: &[u8]) -> bool {
     wasmi::wasmi_validate(&data)
