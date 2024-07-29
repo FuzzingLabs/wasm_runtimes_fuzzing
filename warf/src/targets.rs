@@ -9,6 +9,9 @@ pub enum Targets {
     // wasmi
     WasmiValidate,
     WasmiInstantiate,
+    WasmiTranslate,
+    WasmiTranslateMetered,
+    WasmiExecute,
     // parity_wasm
     ParityWasmDeserialize,
     // wasmer
@@ -59,6 +62,9 @@ impl Targets {
             // wasmi
             Targets::WasmiValidate => "wasmi_validate",
             Targets::WasmiInstantiate => "wasmi_instantiate",
+            Targets::WasmiTranslate => "wasmi_translate",
+            Targets::WasmiTranslateMetered => "wasmi_translate_metered",
+            Targets::WasmiExecute => "wasmi_execute",
             // parity_wasm
             Targets::ParityWasmDeserialize => "parity_wasm_deserialize",
             // wasmer
@@ -110,6 +116,9 @@ impl Targets {
             // wasmi
             Targets::WasmiValidate
             | Targets::WasmiInstantiate
+            | Targets::WasmiTranslate
+            | Targets::WasmiTranslateMetered
+            | Targets::WasmiExecute
             // parity_wasm
             | Targets::ParityWasmDeserialize
             // wasmer
@@ -161,6 +170,9 @@ impl Targets {
             // wasmi
             Targets::WasmiValidate
             | Targets::WasmiInstantiate
+            | Targets::WasmiTranslate
+            | Targets::WasmiTranslateMetered
+            | Targets::WasmiExecute
             // parity_wasm
             | Targets::ParityWasmDeserialize
             // wasmer
@@ -212,6 +224,9 @@ impl Targets {
             // wasmi
             Targets::WasmiValidate
             | Targets::WasmiInstantiate
+            | Targets::WasmiTranslate
+            | Targets::WasmiTranslateMetered
+            | Targets::WasmiExecute
             // parity_wasm
             | Targets::ParityWasmDeserialize
             // wasmer

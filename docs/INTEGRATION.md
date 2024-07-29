@@ -225,7 +225,7 @@ WebAssembly implementation from scratch in Safe Rust with zero dependencies - [g
 
 ## wasm3 (C++/Rust)
 
-- [wasm3](https://github.com/wasm3/wasm3) - high performance WebAssembly interpreter written in C. - [rust bindings](https://github.com/Veykril/wasm3-rs)
+- [wasm3](https://github.com/wasm3/wasm3) - high performance WebAssembly interpreter written in C. - [rust bindings](https://github.com/raekfo/wasm3-rs)
 
 <details><summary>Details</summary>
 <p>

@@ -33,9 +33,15 @@ impl FuzzerHfuzz {
     /// Check if `cargo hfuzz` is installed
     pub fn is_available() -> Result<(), Error> {
         let fuzzer_output = Command::new("cargo").arg("hfuzz").arg("version").output()?;
-        if !fuzzer_output.status.success() {
+        if fuzzer_output.status.code().unwrap() != 0 {
+            eprintln!("Command failed with status: {}", fuzzer_output.status);
+            eprintln!("stderr: {}", String::from_utf8_lossy(&fuzzer_output.stderr));
             bail!("hfuzz not available, install with `cargo install honggfuzz`");
         }
+
+        let stdout = String::from_utf8_lossy(&fuzzer_output.stdout);
+        println!("stdout: {}", stdout);
+
         Ok(())
     }
 
@@ -43,8 +49,8 @@ impl FuzzerHfuzz {
     pub fn new(config: FuzzerConfig) -> Result<FuzzerHfuzz, Error> {
         // Test if fuzzer engine installed
         FuzzerHfuzz::is_available()?;
-
         let cwd = env::current_dir().context("error getting current directory")?;
+
         let fuzzer = FuzzerHfuzz {
             name: "Honggfuzz".to_string(),
             dir: cwd.join("fuzzers").join("rust-honggfuzz"),
@@ -52,6 +58,7 @@ impl FuzzerHfuzz {
             workspace_dir: cwd.join("workspace").join("hfuzz").join("hfuzz_workspace"),
             config,
         };
+
         Ok(fuzzer)
     }
 
@@ -137,13 +144,49 @@ impl FuzzerHfuzz {
         );
 
         // Honggfuzz will first build than run the fuzzer using cargo
-        let fuzzer_bin = Command::new("cargo") // ,
-            .args(&["+nightly", "hfuzz", "run", &target.name()])
-            .env("RUSTFLAGS", &rust_args)
-            .env("HFUZZ_RUN_ARGS", &hfuzz_args)
-            //.env("HFUZZ_BUILD_ARGS", "opt-level=3")
+
+        // Check rustup which and another command
+
+        // Créer la commande
+        let mut command_check = Command::new("whoami");
+        
+
+        // Afficher les détails de la commande
+
+
+        // Optionnel: Spécifiez le répertoire de travail si nécessaire
+        // command_check.current_dir("/path/to/dir");
+
+        // Exécuter la commande et obtenir la sortie
+        let output = command_check
+            .output()
+            .context("error executing the command")?;
+
+        // Afficher les détails de l'exécution
+   
+
+        // Vérifier le statut de la commande
+        
+            eprintln!("Command failed with status: {}", output.status);
+            eprintln!("stderr: {}", String::from_utf8_lossy(&output.stderr));
+            // La commande a réussi, afficher la sortie
+            println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
+        
+        // ==================================================
+
+        let mut command = Command::new("rustup");
+        command
+            .args(&["run", "nightly", "cargo", "hfuzz", "run", &target.name()])
+            .env("RUST_BACKTRACE", "full")
+            .env("RUSTFLAGS", rust_args)
+            .env("HFUZZ_RUN_ARGS", hfuzz_args)
             .env("HFUZZ_INPUT", corpora_dir)
-            .current_dir(&self.work_dir)
+            .current_dir(&self.work_dir);
+
+ 
+
+        // Exécuter la commande
+        let fuzzer_bin = command
             .spawn()
             .context(format!(
                 "error starting {} to run {}",

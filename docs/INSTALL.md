@@ -25,4 +25,4 @@ sudo apt install -y build-essential libtool-bin python3 cmake automake bison lib
 cargo +nightly install --force afl
 ```
 
-You're good to go now, build warf with `make build` ;)
+You're good to go now, build warf with `cd ./warf && make build` ;)
